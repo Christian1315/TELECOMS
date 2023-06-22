@@ -55,3 +55,7 @@ Acceder au Projet par :http://127.0.0.1:8000
 ## CONSOMMATION DE L'API & UTILISATION DES ROUTES
 
 Accéder à AGBANDE_API/DOCUMENTATION.txt POUR VOIR TOUTES LES ROUTES AINSI QUE LEURS MODES D'EMPLOI.
+
+## TEST DE L'API
+
+Importer  FINANFA.postman_collection.json sur Postman puis passer au test de l'API
