@@ -34,7 +34,7 @@ Configuration de la base de donnée
     ==> Allez dans le fichier .env puis renseigner les coordonnées de votre DB que vous venez de créer
 
 ```
-Migration des data par defaut dan sla DB
+Migration des data par defaut dans la DB
 ```bash
 
 ==== DB migration  ============
