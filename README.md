@@ -14,8 +14,8 @@ les possibilités d’optimisation, en mutualisant les chargements, par exemple
 
 Accéder au projet
 ```bash
-$ git clone https://github.com/Christian1315/AGBANDE.git
-$ cd AGBANDE
+$ git clone https://github.com/joelppj/AGBANDE_API.git
+$ cd AGBANDE_API
 
 ```
 Installer les dépendances
@@ -50,3 +50,8 @@ $ php artisan passport:install
 $ php artisan serve
 
 Acceder au Projet par :http://127.0.0.1:8000
+
+
+## CONSOMMATION DE L'API & UTILISATION DES ROUTES
+
+Accéder à AGBANDE_API/DOCUMENTATION.txt POUR VOIR TOUTES LES ROUTES AINSI QUE LEURS MODES D'EMPLOI.
