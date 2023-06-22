@@ -48,9 +48,8 @@ Démarrer le serveur en développement
 ==== DEMARRAGE REEL DU PROJET ============
 $ php artisan passport:install
 $ php artisan serve
-
+```
 Acceder au Projet par :http://127.0.0.1:8000
-
 
 ## CONSOMMATION DE L'API & UTILISATION DES ROUTES
 
