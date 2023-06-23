@@ -687,7 +687,7 @@
 '''
 ##============ UPDATE D'UNE NOTIFICATION ==========##
 
-    url = BASE_URL/api/v1/frets/<fret_id>/update
+    url = BASE_URL/api/v1/notifications/< notification_id>/update
 
     FORME DU DATA JSON à ENVOYER
 

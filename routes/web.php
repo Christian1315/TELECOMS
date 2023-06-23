@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\Notifications;
 use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,9 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
 });
 
+Route::get('/documentation', function () {
+    return view('documentation');
+});
 Route::get("user/{id?}",function($id=null){
     return 'User '.$id;
 });

@@ -23,6 +23,7 @@ Installer les dépendances
 
 ==== INSATALLATION DES DEPENDANCES  ============
 composer require laravel/passport
+composer require barryvdh/laravel-dompdf
 
 
 ```
