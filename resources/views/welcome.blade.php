@@ -31,12 +31,12 @@
                                 <li class="nav-item">
                                     <a href="#" class="nav-link active" aria-current="page" href="#">Site Officiel</a>
                                 </li>
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a class="nav-link" href="/documentation">Api Documentation</a>
-                                </li>
+                                </li> -->
                             </ul>
                             <form class="d-flex" role="search">
-                                <img src="logo.png" class="shadow-lg p-3 bg-body rounded" alt="" srcset="">
+                                <!-- <img src="logo.png" class="shadow-lg p-3 bg-body rounded" alt="" srcset=""> -->
                             </form>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
             <div class="col-md-12 text-center">
                 <h1 class="title">Soyez les bienvenus sur l'API du HSMC</h1>
                 <p class="text-dark">Pour commencer,veuillez jetter un oeil sur la documentation pour avoir une vision plus claire de l'implementation des différentes routes!</p>
-                <a href="/documentation" class="btn documentation">Voir la documentation</a>
+                <a href="#" class="btn documentation">Voir la documentation</a>
             </div>
         </div>
 
