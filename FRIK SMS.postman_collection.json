@@ -1,0 +1,898 @@
+{
+	"info": {
+		"_postman_id": "1942c10a-6527-47a1-9087-42ad2722ee71",
+		"name": "FRIK SMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16699963"
+	},
+	"item": [
+		{
+			"name": "USERs",
+			"item": [
+				{
+					"name": "Registe a User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "gogo",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "gogo",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "gogo@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/register",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve A User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/users/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout d'un User",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SMS",
+			"item": [
+				{
+					"name": "Sms Unitaire",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOGU3ZjYyYTMxMmUyOGM4NDQwNzBhMTg2MmZiNzhjMTJkNDgxMmZhNDNiNjg2ZTUyZjNlMjAxMDhiYTZhYjU1NjQ2OTNjOTNkYjNjODMxMmEiLCJpYXQiOjE2ODkyMzcxNjIuNDMzMjkzLCJuYmYiOjE2ODkyMzcxNjIuNDMzMjk3LCJleHAiOjE3MDUxMzQ3NjIuNDEzNjEsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.M4MJJHneFGOj8sfD6CVz8n6qtOaHi_6HA3EdcST9SpD5O24o8B0yI7cHX5XPRnRBb-Vnspm4XuuuWVvHfQwop_xgL6IgGGTE3_yQVRPKKxX_KUtSSpX2QgFnwXuel2e1Nf_d0XmaF5srQ2NRbyZXU9_zQdAy9Azh7ALzSCqhRbLLsKWI2N62vyx87B0jjjOql-_bt549yliFVLC8jpTQfG8rAQ9pB5bEXcpyne9weyog-fdvVymIoPhyqzPaIF9bD3ICdIEGIAqVOhF-zF0KmrpdIZdzQLLlS6pMk5nbBAs5_8_NvJ-7qOXzIBkQZ1GdyEWbtWNb2czYhZhG9xriwVJubZlxcHTMRszJqwZcsjrzCIdi9elUDECg52hh7cHwPVdLJHfHilNkMueoMuVPQ-5ZHIU6sCr0QRFHO2kT2T0OAHNmy4z7T5G5xI6lkUh16I3cCUFOWFm2au9iipRk8RSONtMcEjZNho7qtsqwvY_of5tp_RCKInCvcWjuAWUK8DNrkbLU0GJe0B29pdyWLVvJJLRy_MuxISV3AxCO7uU3AH29ZN1Pn0bdrOlylv1Vfez_AYHWgMx-luekWT5ZI-K_01MTDy5d94viY4KFrchnJzrOVV53ScPq3A8TTXmhSX7gDciQhjBXgBJB0YW0XKksCpzjEqRKzuF9v_WFH5o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone",
+									"value": "22961765590",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "Hello Christ!! Hope you're doing well!!",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/sms/send",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"sms",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sms à un Groupe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOGU3ZjYyYTMxMmUyOGM4NDQwNzBhMTg2MmZiNzhjMTJkNDgxMmZhNDNiNjg2ZTUyZjNlMjAxMDhiYTZhYjU1NjQ2OTNjOTNkYjNjODMxMmEiLCJpYXQiOjE2ODkyMzcxNjIuNDMzMjkzLCJuYmYiOjE2ODkyMzcxNjIuNDMzMjk3LCJleHAiOjE3MDUxMzQ3NjIuNDEzNjEsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.M4MJJHneFGOj8sfD6CVz8n6qtOaHi_6HA3EdcST9SpD5O24o8B0yI7cHX5XPRnRBb-Vnspm4XuuuWVvHfQwop_xgL6IgGGTE3_yQVRPKKxX_KUtSSpX2QgFnwXuel2e1Nf_d0XmaF5srQ2NRbyZXU9_zQdAy9Azh7ALzSCqhRbLLsKWI2N62vyx87B0jjjOql-_bt549yliFVLC8jpTQfG8rAQ9pB5bEXcpyne9weyog-fdvVymIoPhyqzPaIF9bD3ICdIEGIAqVOhF-zF0KmrpdIZdzQLLlS6pMk5nbBAs5_8_NvJ-7qOXzIBkQZ1GdyEWbtWNb2czYhZhG9xriwVJubZlxcHTMRszJqwZcsjrzCIdi9elUDECg52hh7cHwPVdLJHfHilNkMueoMuVPQ-5ZHIU6sCr0QRFHO2kT2T0OAHNmy4z7T5G5xI6lkUh16I3cCUFOWFm2au9iipRk8RSONtMcEjZNho7qtsqwvY_of5tp_RCKInCvcWjuAWUK8DNrkbLU0GJe0B29pdyWLVvJJLRy_MuxISV3AxCO7uU3AH29ZN1Pn0bdrOlylv1Vfez_AYHWgMx-luekWT5ZI-K_01MTDy5d94viY4KFrchnJzrOVV53ScPq3A8TTXmhSX7gDciQhjBXgBJB0YW0XKksCpzjEqRKzuF9v_WFH5o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "groupe_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "Encore un text",
+									"type": "text"
+								},
+								{
+									"key": "expediteur",
+									"value": "FinanFa",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/sms/send-to-groupe",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"sms",
+								"send-to-groupe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EDOKING TEST",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "APIKEY",
+								"value": "SZfYYTe4V8JWYUVilWavCWHRb0ACzlCO",
+								"type": "text"
+							},
+							{
+								"key": "CLIENTID",
+								"value": "3660",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "date_start",
+									"value": "2023-07-12",
+									"type": "text"
+								},
+								{
+									"key": "date_end",
+									"value": "2023-07-12",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://edok-api.kingsmspro.org/api/v1/sms/reports",
+							"protocol": "https",
+							"host": [
+								"edok-api",
+								"kingsmspro",
+								"org"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sms",
+								"reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sms Rapports",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2E5ZmE3ODliOTFiYmFjYmY2NDQxYTQ4OWEwNTNiYWU5MjYwNmZkZjk4NGY2NTI5MTFkZDRmYzNhMmY3Y2MyMzY4ZjA3MjlhMzM2YTk3YWEiLCJpYXQiOjE2ODkxNzU5NzguODg4MzMyLCJuYmYiOjE2ODkxNzU5NzguODg4MzM1LCJleHAiOjE3MDUwNzM1NzguODc3OTM3LCJzdWIiOiIxIiwic2NvcGVzIjpbImFwaS1hY2Nlc3MiXX0.cDpJBfc8Y6MYYpLqWXg3H5Xywwy0dhmJoHOFDpNYy-tpll8gd9Rzc0UhtqwNQO5QDnqh8GFr07CMU7qzCBx5Lvo_yFiiit995A4oTvr7KzgohLn9yDOYYar6qtf-QTeweWv0Px-vPMeWQMv2U3bTbKAoBnZZRV9RYs4z2RElCwLf5OBaRtlR7RjJQ2cVFY4T4BIlXJUVdAklHEGisVNsTUcI8XRRxq7wzJI1WUOmi7tTAHaLX4H2eXfjiI6Bj54bG-c93Y-WzWmF7jatKx0-Dyi7-sC3SlUFwYY2ujKojtsKWq7wHh9A74tgs-6JUoENO1Z21Omgl4PqXTeS5gM9kXEP_XL-uwz6lPgLCevWwdA26FipXn_HSynEvSr_X21k1Fo7P6fxvTaugv3oXeTYx4vq9kfctOkB5r5B55fLl-qwzczO4-QtSmrOBGMOV2VfpU0CJjWtq_9EVMO20JOUQD_VEvBWaIXTFdwYsOzkC60GstkPrwxjiH740LG7igXN4_wxA45MzIcC8FX79yY4jkRVONvqTvXhtr1PIiDfNK6SSkBD_xfd-iJ4eABJBt6AifGHej6UhvPu4kvRQ_QvoJJ1wrZ79VG3f8rFzvkTRX-e14dGqoHLe0nzK6X-xn-W4ozyLJtwk14FEsJ2qZGzgfRRK3qWXd65GTMMRX4sVyQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "date_start",
+									"value": "2023-07-12",
+									"type": "text"
+								},
+								{
+									"key": "date_end",
+									"value": "2023-07-13",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/sms/reports",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"sms",
+								"reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Sms",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOGU3ZjYyYTMxMmUyOGM4NDQwNzBhMTg2MmZiNzhjMTJkNDgxMmZhNDNiNjg2ZTUyZjNlMjAxMDhiYTZhYjU1NjQ2OTNjOTNkYjNjODMxMmEiLCJpYXQiOjE2ODkyMzcxNjIuNDMzMjkzLCJuYmYiOjE2ODkyMzcxNjIuNDMzMjk3LCJleHAiOjE3MDUxMzQ3NjIuNDEzNjEsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.M4MJJHneFGOj8sfD6CVz8n6qtOaHi_6HA3EdcST9SpD5O24o8B0yI7cHX5XPRnRBb-Vnspm4XuuuWVvHfQwop_xgL6IgGGTE3_yQVRPKKxX_KUtSSpX2QgFnwXuel2e1Nf_d0XmaF5srQ2NRbyZXU9_zQdAy9Azh7ALzSCqhRbLLsKWI2N62vyx87B0jjjOql-_bt549yliFVLC8jpTQfG8rAQ9pB5bEXcpyne9weyog-fdvVymIoPhyqzPaIF9bD3ICdIEGIAqVOhF-zF0KmrpdIZdzQLLlS6pMk5nbBAs5_8_NvJ-7qOXzIBkQZ1GdyEWbtWNb2czYhZhG9xriwVJubZlxcHTMRszJqwZcsjrzCIdi9elUDECg52hh7cHwPVdLJHfHilNkMueoMuVPQ-5ZHIU6sCr0QRFHO2kT2T0OAHNmy4z7T5G5xI6lkUh16I3cCUFOWFm2au9iipRk8RSONtMcEjZNho7qtsqwvY_of5tp_RCKInCvcWjuAWUK8DNrkbLU0GJe0B29pdyWLVvJJLRy_MuxISV3AxCO7uU3AH29ZN1Pn0bdrOlylv1Vfez_AYHWgMx-luekWT5ZI-K_01MTDy5d94viY4KFrchnJzrOVV53ScPq3A8TTXmhSX7gDciQhjBXgBJB0YW0XKksCpzjEqRKzuF9v_WFH5o",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/sms/<sms_id>/retrieve",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"sms",
+								"<sms_id>",
+								"retrieve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve All Sms",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOGU3ZjYyYTMxMmUyOGM4NDQwNzBhMTg2MmZiNzhjMTJkNDgxMmZhNDNiNjg2ZTUyZjNlMjAxMDhiYTZhYjU1NjQ2OTNjOTNkYjNjODMxMmEiLCJpYXQiOjE2ODkyMzcxNjIuNDMzMjkzLCJuYmYiOjE2ODkyMzcxNjIuNDMzMjk3LCJleHAiOjE3MDUxMzQ3NjIuNDEzNjEsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.M4MJJHneFGOj8sfD6CVz8n6qtOaHi_6HA3EdcST9SpD5O24o8B0yI7cHX5XPRnRBb-Vnspm4XuuuWVvHfQwop_xgL6IgGGTE3_yQVRPKKxX_KUtSSpX2QgFnwXuel2e1Nf_d0XmaF5srQ2NRbyZXU9_zQdAy9Azh7ALzSCqhRbLLsKWI2N62vyx87B0jjjOql-_bt549yliFVLC8jpTQfG8rAQ9pB5bEXcpyne9weyog-fdvVymIoPhyqzPaIF9bD3ICdIEGIAqVOhF-zF0KmrpdIZdzQLLlS6pMk5nbBAs5_8_NvJ-7qOXzIBkQZ1GdyEWbtWNb2czYhZhG9xriwVJubZlxcHTMRszJqwZcsjrzCIdi9elUDECg52hh7cHwPVdLJHfHilNkMueoMuVPQ-5ZHIU6sCr0QRFHO2kT2T0OAHNmy4z7T5G5xI6lkUh16I3cCUFOWFm2au9iipRk8RSONtMcEjZNho7qtsqwvY_of5tp_RCKInCvcWjuAWUK8DNrkbLU0GJe0B29pdyWLVvJJLRy_MuxISV3AxCO7uU3AH29ZN1Pn0bdrOlylv1Vfez_AYHWgMx-luekWT5ZI-K_01MTDy5d94viY4KFrchnJzrOVV53ScPq3A8TTXmhSX7gDciQhjBXgBJB0YW0XKksCpzjEqRKzuF9v_WFH5o",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/sms/all",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"sms",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GROUPES",
+			"item": [
+				{
+					"name": "Add Groupe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOGU3ZjYyYTMxMmUyOGM4NDQwNzBhMTg2MmZiNzhjMTJkNDgxMmZhNDNiNjg2ZTUyZjNlMjAxMDhiYTZhYjU1NjQ2OTNjOTNkYjNjODMxMmEiLCJpYXQiOjE2ODkyMzcxNjIuNDMzMjkzLCJuYmYiOjE2ODkyMzcxNjIuNDMzMjk3LCJleHAiOjE3MDUxMzQ3NjIuNDEzNjEsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.M4MJJHneFGOj8sfD6CVz8n6qtOaHi_6HA3EdcST9SpD5O24o8B0yI7cHX5XPRnRBb-Vnspm4XuuuWVvHfQwop_xgL6IgGGTE3_yQVRPKKxX_KUtSSpX2QgFnwXuel2e1Nf_d0XmaF5srQ2NRbyZXU9_zQdAy9Azh7ALzSCqhRbLLsKWI2N62vyx87B0jjjOql-_bt549yliFVLC8jpTQfG8rAQ9pB5bEXcpyne9weyog-fdvVymIoPhyqzPaIF9bD3ICdIEGIAqVOhF-zF0KmrpdIZdzQLLlS6pMk5nbBAs5_8_NvJ-7qOXzIBkQZ1GdyEWbtWNb2czYhZhG9xriwVJubZlxcHTMRszJqwZcsjrzCIdi9elUDECg52hh7cHwPVdLJHfHilNkMueoMuVPQ-5ZHIU6sCr0QRFHO2kT2T0OAHNmy4z7T5G5xI6lkUh16I3cCUFOWFm2au9iipRk8RSONtMcEjZNho7qtsqwvY_of5tp_RCKInCvcWjuAWUK8DNrkbLU0GJe0B29pdyWLVvJJLRy_MuxISV3AxCO7uU3AH29ZN1Pn0bdrOlylv1Vfez_AYHWgMx-luekWT5ZI-K_01MTDy5d94viY4KFrchnJzrOVV53ScPq3A8TTXmhSX7gDciQhjBXgBJB0YW0XKksCpzjEqRKzuF9v_WFH5o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Groupe 1",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/groupe/add",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"groupe",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Groupe",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGNmMmVmZDJiYzYzMWQxZmQ2Njc3MTcwNmM3ZGNiZDM5ZTAxMDljNzZiODYxMGY2ZGQ3ZTA1MjY1MDc1ODFiOWRkNTMxN2E2MTQ0ZWFmZmQiLCJpYXQiOjE2ODg5ODY5MDYuNDQ5NzUzLCJuYmYiOjE2ODg5ODY5MDYuNDQ5NzYsImV4cCI6MTcwNDg4NDUwNi4yMDUzMDMsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.OBdiTsA7PcxvI9kzhlYdyC6fbSWYmK37ujJERkidLI3Me5rXS982aYCn35FxfPWWv5Ib1503CrsrLzVaZqnSjH7TW151vTv-MpMh7ReJ_NVHqciWfQK1Ds6PhdICRnABdACaCZ2x2u6kCONiy5TxnWhj5kIoPHGNawgP-QBNgEAj11cZbUbERSBnyE6zUn9AYn3LnmeAhoCbiX5_6q7-KNcseQ5Zq5V2syIn2ndEhsw59MLdf7lCqk7xv3xsxLMU9WzQZRm408CtPGpL3h_b5hYWJ8MS3tUd17TUsu3gNHveF4hjYM8Koy4Buevl-P53jzKx84N4txrsC18Y492UQvUTBn6N6zO7KyKgNZhQkoOrW33jXIHn4iBJ7RuPJVUh9sJe96Zg7dTFaZbQCAvHg3QJR3LgovArT-AJp6dbvkkQpAhBPtKndGJmLZjUy_bADhSlKMhZf_gdkSa6tu7y7aAqmTt9DXFdeZ0HrbK9wOELOqr-Y3AyOyUbfILtMIJh3u-cCfEfCTlChXSQwf0iNG3AhNGpTvfSyiys2MjnaNXm0BWB9ZJpP9wcd61A-bPQl4QBoPfLd88-tV25f8-c1wuwzbEuUldYcPi8Iqe1aue4t7y0zm7MzlCfFF4zhIg7evFFHFDTmm1ddUXiJLCc60BEZty5FPI21_BAzHDDjSw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/groupe/1/delete",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"groupe",
+								"1",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Groupe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGNmMmVmZDJiYzYzMWQxZmQ2Njc3MTcwNmM3ZGNiZDM5ZTAxMDljNzZiODYxMGY2ZGQ3ZTA1MjY1MDc1ODFiOWRkNTMxN2E2MTQ0ZWFmZmQiLCJpYXQiOjE2ODg5ODY5MDYuNDQ5NzUzLCJuYmYiOjE2ODg5ODY5MDYuNDQ5NzYsImV4cCI6MTcwNDg4NDUwNi4yMDUzMDMsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.OBdiTsA7PcxvI9kzhlYdyC6fbSWYmK37ujJERkidLI3Me5rXS982aYCn35FxfPWWv5Ib1503CrsrLzVaZqnSjH7TW151vTv-MpMh7ReJ_NVHqciWfQK1Ds6PhdICRnABdACaCZ2x2u6kCONiy5TxnWhj5kIoPHGNawgP-QBNgEAj11cZbUbERSBnyE6zUn9AYn3LnmeAhoCbiX5_6q7-KNcseQ5Zq5V2syIn2ndEhsw59MLdf7lCqk7xv3xsxLMU9WzQZRm408CtPGpL3h_b5hYWJ8MS3tUd17TUsu3gNHveF4hjYM8Koy4Buevl-P53jzKx84N4txrsC18Y492UQvUTBn6N6zO7KyKgNZhQkoOrW33jXIHn4iBJ7RuPJVUh9sJe96Zg7dTFaZbQCAvHg3QJR3LgovArT-AJp6dbvkkQpAhBPtKndGJmLZjUy_bADhSlKMhZf_gdkSa6tu7y7aAqmTt9DXFdeZ0HrbK9wOELOqr-Y3AyOyUbfILtMIJh3u-cCfEfCTlChXSQwf0iNG3AhNGpTvfSyiys2MjnaNXm0BWB9ZJpP9wcd61A-bPQl4QBoPfLd88-tV25f8-c1wuwzbEuUldYcPi8Iqe1aue4t7y0zm7MzlCfFF4zhIg7evFFHFDTmm1ddUXiJLCc60BEZty5FPI21_BAzHDDjSw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Groupe 2 updated",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/groupe/<groupe_id>/update",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"groupe",
+								"<groupe_id>",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Groupe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGNmMmVmZDJiYzYzMWQxZmQ2Njc3MTcwNmM3ZGNiZDM5ZTAxMDljNzZiODYxMGY2ZGQ3ZTA1MjY1MDc1ODFiOWRkNTMxN2E2MTQ0ZWFmZmQiLCJpYXQiOjE2ODg5ODY5MDYuNDQ5NzUzLCJuYmYiOjE2ODg5ODY5MDYuNDQ5NzYsImV4cCI6MTcwNDg4NDUwNi4yMDUzMDMsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.OBdiTsA7PcxvI9kzhlYdyC6fbSWYmK37ujJERkidLI3Me5rXS982aYCn35FxfPWWv5Ib1503CrsrLzVaZqnSjH7TW151vTv-MpMh7ReJ_NVHqciWfQK1Ds6PhdICRnABdACaCZ2x2u6kCONiy5TxnWhj5kIoPHGNawgP-QBNgEAj11cZbUbERSBnyE6zUn9AYn3LnmeAhoCbiX5_6q7-KNcseQ5Zq5V2syIn2ndEhsw59MLdf7lCqk7xv3xsxLMU9WzQZRm408CtPGpL3h_b5hYWJ8MS3tUd17TUsu3gNHveF4hjYM8Koy4Buevl-P53jzKx84N4txrsC18Y492UQvUTBn6N6zO7KyKgNZhQkoOrW33jXIHn4iBJ7RuPJVUh9sJe96Zg7dTFaZbQCAvHg3QJR3LgovArT-AJp6dbvkkQpAhBPtKndGJmLZjUy_bADhSlKMhZf_gdkSa6tu7y7aAqmTt9DXFdeZ0HrbK9wOELOqr-Y3AyOyUbfILtMIJh3u-cCfEfCTlChXSQwf0iNG3AhNGpTvfSyiys2MjnaNXm0BWB9ZJpP9wcd61A-bPQl4QBoPfLd88-tV25f8-c1wuwzbEuUldYcPi8Iqe1aue4t7y0zm7MzlCfFF4zhIg7evFFHFDTmm1ddUXiJLCc60BEZty5FPI21_BAzHDDjSw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/groupe/2/retrieve",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"groupe",
+								"2",
+								"retrieve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Groupe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2E5ZmE3ODliOTFiYmFjYmY2NDQxYTQ4OWEwNTNiYWU5MjYwNmZkZjk4NGY2NTI5MTFkZDRmYzNhMmY3Y2MyMzY4ZjA3MjlhMzM2YTk3YWEiLCJpYXQiOjE2ODkxNzU5NzguODg4MzMyLCJuYmYiOjE2ODkxNzU5NzguODg4MzM1LCJleHAiOjE3MDUwNzM1NzguODc3OTM3LCJzdWIiOiIxIiwic2NvcGVzIjpbImFwaS1hY2Nlc3MiXX0.cDpJBfc8Y6MYYpLqWXg3H5Xywwy0dhmJoHOFDpNYy-tpll8gd9Rzc0UhtqwNQO5QDnqh8GFr07CMU7qzCBx5Lvo_yFiiit995A4oTvr7KzgohLn9yDOYYar6qtf-QTeweWv0Px-vPMeWQMv2U3bTbKAoBnZZRV9RYs4z2RElCwLf5OBaRtlR7RjJQ2cVFY4T4BIlXJUVdAklHEGisVNsTUcI8XRRxq7wzJI1WUOmi7tTAHaLX4H2eXfjiI6Bj54bG-c93Y-WzWmF7jatKx0-Dyi7-sC3SlUFwYY2ujKojtsKWq7wHh9A74tgs-6JUoENO1Z21Omgl4PqXTeS5gM9kXEP_XL-uwz6lPgLCevWwdA26FipXn_HSynEvSr_X21k1Fo7P6fxvTaugv3oXeTYx4vq9kfctOkB5r5B55fLl-qwzczO4-QtSmrOBGMOV2VfpU0CJjWtq_9EVMO20JOUQD_VEvBWaIXTFdwYsOzkC60GstkPrwxjiH740LG7igXN4_wxA45MzIcC8FX79yY4jkRVONvqTvXhtr1PIiDfNK6SSkBD_xfd-iJ4eABJBt6AifGHej6UhvPu4kvRQ_QvoJJ1wrZ79VG3f8rFzvkTRX-e14dGqoHLe0nzK6X-xn-W4ozyLJtwk14FEsJ2qZGzgfRRK3qWXd65GTMMRX4sVyQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/groupe/all",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"groupe",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CONTACTS",
+			"item": [
+				{
+					"name": "Add Contact",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOGU3ZjYyYTMxMmUyOGM4NDQwNzBhMTg2MmZiNzhjMTJkNDgxMmZhNDNiNjg2ZTUyZjNlMjAxMDhiYTZhYjU1NjQ2OTNjOTNkYjNjODMxMmEiLCJpYXQiOjE2ODkyMzcxNjIuNDMzMjkzLCJuYmYiOjE2ODkyMzcxNjIuNDMzMjk3LCJleHAiOjE3MDUxMzQ3NjIuNDEzNjEsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.M4MJJHneFGOj8sfD6CVz8n6qtOaHi_6HA3EdcST9SpD5O24o8B0yI7cHX5XPRnRBb-Vnspm4XuuuWVvHfQwop_xgL6IgGGTE3_yQVRPKKxX_KUtSSpX2QgFnwXuel2e1Nf_d0XmaF5srQ2NRbyZXU9_zQdAy9Azh7ALzSCqhRbLLsKWI2N62vyx87B0jjjOql-_bt549yliFVLC8jpTQfG8rAQ9pB5bEXcpyne9weyog-fdvVymIoPhyqzPaIF9bD3ICdIEGIAqVOhF-zF0KmrpdIZdzQLLlS6pMk5nbBAs5_8_NvJ-7qOXzIBkQZ1GdyEWbtWNb2czYhZhG9xriwVJubZlxcHTMRszJqwZcsjrzCIdi9elUDECg52hh7cHwPVdLJHfHilNkMueoMuVPQ-5ZHIU6sCr0QRFHO2kT2T0OAHNmy4z7T5G5xI6lkUh16I3cCUFOWFm2au9iipRk8RSONtMcEjZNho7qtsqwvY_of5tp_RCKInCvcWjuAWUK8DNrkbLU0GJe0B29pdyWLVvJJLRy_MuxISV3AxCO7uU3AH29ZN1Pn0bdrOlylv1Vfez_AYHWgMx-luekWT5ZI-K_01MTDy5d94viY4KFrchnJzrOVV53ScPq3A8TTXmhSX7gDciQhjBXgBJB0YW0XKksCpzjEqRKzuF9v_WFH5o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "firstname",
+									"value": "GOGO",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "Christian",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "22961765590",
+									"type": "text"
+								},
+								{
+									"key": "detail",
+									"value": "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/contact/add",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"contact",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Contact",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2E5ZmE3ODliOTFiYmFjYmY2NDQxYTQ4OWEwNTNiYWU5MjYwNmZkZjk4NGY2NTI5MTFkZDRmYzNhMmY3Y2MyMzY4ZjA3MjlhMzM2YTk3YWEiLCJpYXQiOjE2ODkxNzU5NzguODg4MzMyLCJuYmYiOjE2ODkxNzU5NzguODg4MzM1LCJleHAiOjE3MDUwNzM1NzguODc3OTM3LCJzdWIiOiIxIiwic2NvcGVzIjpbImFwaS1hY2Nlc3MiXX0.cDpJBfc8Y6MYYpLqWXg3H5Xywwy0dhmJoHOFDpNYy-tpll8gd9Rzc0UhtqwNQO5QDnqh8GFr07CMU7qzCBx5Lvo_yFiiit995A4oTvr7KzgohLn9yDOYYar6qtf-QTeweWv0Px-vPMeWQMv2U3bTbKAoBnZZRV9RYs4z2RElCwLf5OBaRtlR7RjJQ2cVFY4T4BIlXJUVdAklHEGisVNsTUcI8XRRxq7wzJI1WUOmi7tTAHaLX4H2eXfjiI6Bj54bG-c93Y-WzWmF7jatKx0-Dyi7-sC3SlUFwYY2ujKojtsKWq7wHh9A74tgs-6JUoENO1Z21Omgl4PqXTeS5gM9kXEP_XL-uwz6lPgLCevWwdA26FipXn_HSynEvSr_X21k1Fo7P6fxvTaugv3oXeTYx4vq9kfctOkB5r5B55fLl-qwzczO4-QtSmrOBGMOV2VfpU0CJjWtq_9EVMO20JOUQD_VEvBWaIXTFdwYsOzkC60GstkPrwxjiH740LG7igXN4_wxA45MzIcC8FX79yY4jkRVONvqTvXhtr1PIiDfNK6SSkBD_xfd-iJ4eABJBt6AifGHej6UhvPu4kvRQ_QvoJJ1wrZ79VG3f8rFzvkTRX-e14dGqoHLe0nzK6X-xn-W4ozyLJtwk14FEsJ2qZGzgfRRK3qWXd65GTMMRX4sVyQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/contact/1/delete",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"contact",
+								"1",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Contact",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGNmMmVmZDJiYzYzMWQxZmQ2Njc3MTcwNmM3ZGNiZDM5ZTAxMDljNzZiODYxMGY2ZGQ3ZTA1MjY1MDc1ODFiOWRkNTMxN2E2MTQ0ZWFmZmQiLCJpYXQiOjE2ODg5ODY5MDYuNDQ5NzUzLCJuYmYiOjE2ODg5ODY5MDYuNDQ5NzYsImV4cCI6MTcwNDg4NDUwNi4yMDUzMDMsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.OBdiTsA7PcxvI9kzhlYdyC6fbSWYmK37ujJERkidLI3Me5rXS982aYCn35FxfPWWv5Ib1503CrsrLzVaZqnSjH7TW151vTv-MpMh7ReJ_NVHqciWfQK1Ds6PhdICRnABdACaCZ2x2u6kCONiy5TxnWhj5kIoPHGNawgP-QBNgEAj11cZbUbERSBnyE6zUn9AYn3LnmeAhoCbiX5_6q7-KNcseQ5Zq5V2syIn2ndEhsw59MLdf7lCqk7xv3xsxLMU9WzQZRm408CtPGpL3h_b5hYWJ8MS3tUd17TUsu3gNHveF4hjYM8Koy4Buevl-P53jzKx84N4txrsC18Y492UQvUTBn6N6zO7KyKgNZhQkoOrW33jXIHn4iBJ7RuPJVUh9sJe96Zg7dTFaZbQCAvHg3QJR3LgovArT-AJp6dbvkkQpAhBPtKndGJmLZjUy_bADhSlKMhZf_gdkSa6tu7y7aAqmTt9DXFdeZ0HrbK9wOELOqr-Y3AyOyUbfILtMIJh3u-cCfEfCTlChXSQwf0iNG3AhNGpTvfSyiys2MjnaNXm0BWB9ZJpP9wcd61A-bPQl4QBoPfLd88-tV25f8-c1wuwzbEuUldYcPi8Iqe1aue4t7y0zm7MzlCfFF4zhIg7evFFHFDTmm1ddUXiJLCc60BEZty5FPI21_BAzHDDjSw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "lastname",
+									"value": "Lyne 3",
+									"type": "text"
+								},
+								{
+									"key": "firstname",
+									"value": "Madam",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/contact/2/update",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"contact",
+								"2",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gell All Contact",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2E5ZmE3ODliOTFiYmFjYmY2NDQxYTQ4OWEwNTNiYWU5MjYwNmZkZjk4NGY2NTI5MTFkZDRmYzNhMmY3Y2MyMzY4ZjA3MjlhMzM2YTk3YWEiLCJpYXQiOjE2ODkxNzU5NzguODg4MzMyLCJuYmYiOjE2ODkxNzU5NzguODg4MzM1LCJleHAiOjE3MDUwNzM1NzguODc3OTM3LCJzdWIiOiIxIiwic2NvcGVzIjpbImFwaS1hY2Nlc3MiXX0.cDpJBfc8Y6MYYpLqWXg3H5Xywwy0dhmJoHOFDpNYy-tpll8gd9Rzc0UhtqwNQO5QDnqh8GFr07CMU7qzCBx5Lvo_yFiiit995A4oTvr7KzgohLn9yDOYYar6qtf-QTeweWv0Px-vPMeWQMv2U3bTbKAoBnZZRV9RYs4z2RElCwLf5OBaRtlR7RjJQ2cVFY4T4BIlXJUVdAklHEGisVNsTUcI8XRRxq7wzJI1WUOmi7tTAHaLX4H2eXfjiI6Bj54bG-c93Y-WzWmF7jatKx0-Dyi7-sC3SlUFwYY2ujKojtsKWq7wHh9A74tgs-6JUoENO1Z21Omgl4PqXTeS5gM9kXEP_XL-uwz6lPgLCevWwdA26FipXn_HSynEvSr_X21k1Fo7P6fxvTaugv3oXeTYx4vq9kfctOkB5r5B55fLl-qwzczO4-QtSmrOBGMOV2VfpU0CJjWtq_9EVMO20JOUQD_VEvBWaIXTFdwYsOzkC60GstkPrwxjiH740LG7igXN4_wxA45MzIcC8FX79yY4jkRVONvqTvXhtr1PIiDfNK6SSkBD_xfd-iJ4eABJBt6AifGHej6UhvPu4kvRQ_QvoJJ1wrZ79VG3f8rFzvkTRX-e14dGqoHLe0nzK6X-xn-W4ozyLJtwk14FEsJ2qZGzgfRRK3qWXd65GTMMRX4sVyQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/contact/all",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"contact",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve A Contact",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGNmMmVmZDJiYzYzMWQxZmQ2Njc3MTcwNmM3ZGNiZDM5ZTAxMDljNzZiODYxMGY2ZGQ3ZTA1MjY1MDc1ODFiOWRkNTMxN2E2MTQ0ZWFmZmQiLCJpYXQiOjE2ODg5ODY5MDYuNDQ5NzUzLCJuYmYiOjE2ODg5ODY5MDYuNDQ5NzYsImV4cCI6MTcwNDg4NDUwNi4yMDUzMDMsInN1YiI6IjEiLCJzY29wZXMiOlsiYXBpLWFjY2VzcyJdfQ.OBdiTsA7PcxvI9kzhlYdyC6fbSWYmK37ujJERkidLI3Me5rXS982aYCn35FxfPWWv5Ib1503CrsrLzVaZqnSjH7TW151vTv-MpMh7ReJ_NVHqciWfQK1Ds6PhdICRnABdACaCZ2x2u6kCONiy5TxnWhj5kIoPHGNawgP-QBNgEAj11cZbUbERSBnyE6zUn9AYn3LnmeAhoCbiX5_6q7-KNcseQ5Zq5V2syIn2ndEhsw59MLdf7lCqk7xv3xsxLMU9WzQZRm408CtPGpL3h_b5hYWJ8MS3tUd17TUsu3gNHveF4hjYM8Koy4Buevl-P53jzKx84N4txrsC18Y492UQvUTBn6N6zO7KyKgNZhQkoOrW33jXIHn4iBJ7RuPJVUh9sJe96Zg7dTFaZbQCAvHg3QJR3LgovArT-AJp6dbvkkQpAhBPtKndGJmLZjUy_bADhSlKMhZf_gdkSa6tu7y7aAqmTt9DXFdeZ0HrbK9wOELOqr-Y3AyOyUbfILtMIJh3u-cCfEfCTlChXSQwf0iNG3AhNGpTvfSyiys2MjnaNXm0BWB9ZJpP9wcd61A-bPQl4QBoPfLd88-tV25f8-c1wuwzbEuUldYcPi8Iqe1aue4t7y0zm7MzlCfFF4zhIg7evFFHFDTmm1ddUXiJLCc60BEZty5FPI21_BAzHDDjSw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/contact/<contact_id>/retrieve",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"contact",
+								"<contact_id>",
+								"retrieve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Contact To Groupe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2E5ZmE3ODliOTFiYmFjYmY2NDQxYTQ4OWEwNTNiYWU5MjYwNmZkZjk4NGY2NTI5MTFkZDRmYzNhMmY3Y2MyMzY4ZjA3MjlhMzM2YTk3YWEiLCJpYXQiOjE2ODkxNzU5NzguODg4MzMyLCJuYmYiOjE2ODkxNzU5NzguODg4MzM1LCJleHAiOjE3MDUwNzM1NzguODc3OTM3LCJzdWIiOiIxIiwic2NvcGVzIjpbImFwaS1hY2Nlc3MiXX0.cDpJBfc8Y6MYYpLqWXg3H5Xywwy0dhmJoHOFDpNYy-tpll8gd9Rzc0UhtqwNQO5QDnqh8GFr07CMU7qzCBx5Lvo_yFiiit995A4oTvr7KzgohLn9yDOYYar6qtf-QTeweWv0Px-vPMeWQMv2U3bTbKAoBnZZRV9RYs4z2RElCwLf5OBaRtlR7RjJQ2cVFY4T4BIlXJUVdAklHEGisVNsTUcI8XRRxq7wzJI1WUOmi7tTAHaLX4H2eXfjiI6Bj54bG-c93Y-WzWmF7jatKx0-Dyi7-sC3SlUFwYY2ujKojtsKWq7wHh9A74tgs-6JUoENO1Z21Omgl4PqXTeS5gM9kXEP_XL-uwz6lPgLCevWwdA26FipXn_HSynEvSr_X21k1Fo7P6fxvTaugv3oXeTYx4vq9kfctOkB5r5B55fLl-qwzczO4-QtSmrOBGMOV2VfpU0CJjWtq_9EVMO20JOUQD_VEvBWaIXTFdwYsOzkC60GstkPrwxjiH740LG7igXN4_wxA45MzIcC8FX79yY4jkRVONvqTvXhtr1PIiDfNK6SSkBD_xfd-iJ4eABJBt6AifGHej6UhvPu4kvRQ_QvoJJ1wrZ79VG3f8rFzvkTRX-e14dGqoHLe0nzK6X-xn-W4ozyLJtwk14FEsJ2qZGzgfRRK3qWXd65GTMMRX4sVyQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "contact_id",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "groupe_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/contact/add-to-groupe",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"contact",
+								"add-to-groupe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Import de Contacts",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiM2E5ZmE3ODliOTFiYmFjYmY2NDQxYTQ4OWEwNTNiYWU5MjYwNmZkZjk4NGY2NTI5MTFkZDRmYzNhMmY3Y2MyMzY4ZjA3MjlhMzM2YTk3YWEiLCJpYXQiOjE2ODkxNzU5NzguODg4MzMyLCJuYmYiOjE2ODkxNzU5NzguODg4MzM1LCJleHAiOjE3MDUwNzM1NzguODc3OTM3LCJzdWIiOiIxIiwic2NvcGVzIjpbImFwaS1hY2Nlc3MiXX0.cDpJBfc8Y6MYYpLqWXg3H5Xywwy0dhmJoHOFDpNYy-tpll8gd9Rzc0UhtqwNQO5QDnqh8GFr07CMU7qzCBx5Lvo_yFiiit995A4oTvr7KzgohLn9yDOYYar6qtf-QTeweWv0Px-vPMeWQMv2U3bTbKAoBnZZRV9RYs4z2RElCwLf5OBaRtlR7RjJQ2cVFY4T4BIlXJUVdAklHEGisVNsTUcI8XRRxq7wzJI1WUOmi7tTAHaLX4H2eXfjiI6Bj54bG-c93Y-WzWmF7jatKx0-Dyi7-sC3SlUFwYY2ujKojtsKWq7wHh9A74tgs-6JUoENO1Z21Omgl4PqXTeS5gM9kXEP_XL-uwz6lPgLCevWwdA26FipXn_HSynEvSr_X21k1Fo7P6fxvTaugv3oXeTYx4vq9kfctOkB5r5B55fLl-qwzczO4-QtSmrOBGMOV2VfpU0CJjWtq_9EVMO20JOUQD_VEvBWaIXTFdwYsOzkC60GstkPrwxjiH740LG7igXN4_wxA45MzIcC8FX79yY4jkRVONvqTvXhtr1PIiDfNK6SSkBD_xfd-iJ4eABJBt6AifGHej6UhvPu4kvRQ_QvoJJ1wrZ79VG3f8rFzvkTRX-e14dGqoHLe0nzK6X-xn-W4ozyLJtwk14FEsJ2qZGzgfRRK3qWXd65GTMMRX4sVyQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "contacts",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/contact/import",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"contact",
+								"import"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

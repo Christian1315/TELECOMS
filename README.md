@@ -1,9 +1,8 @@
 
-## POURQUOI AGBANDE
+## POURQUOI FRIK SMS
 
-AGBANWA innove afin de garantir à ses clients 
-une visibilité optimale sur leurs coûts logistiques tout en leur permettant de visualiser 
-les possibilités d’optimisation, en mutualisant les chargements, par exemple
+FRIK SMS innove afin de garantir à ses clients 
+une visibilité optimale DE MARKETING par messagérie
 
 ## Development Technology
 
@@ -14,16 +13,15 @@ les possibilités d’optimisation, en mutualisant les chargements, par exemple
 
 Accéder au projet
 ```bash
-$ git clone https://github.com/joelppj/AGBANDE_API.git
-$ cd AGBANDE_API
+$ git clone https://github.com/joelppj/FrikSMS_Backend.git
+$ cd FrikSMS_Backend
 
 ```
 Installer les dépendances
 ```bash
 
 ==== INSATALLATION DES DEPENDANCES  ============
-composer require laravel/passport
-composer require barryvdh/laravel-dompdf
+composer install
 
 
 ```
@@ -58,4 +56,4 @@ Accéder à AGBANDE_API/DOCUMENTATION.txt POUR VOIR TOUTES LES ROUTES AINSI QUE 
 
 ## TEST DE L'API
 
-Importer  FINANFA.postman_collection.json sur Postman puis passer au test de l'API
+Importer  FRIK SMS.postman_collection.json sur Postman puis passer au test de l'API
