@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
     ];
@@ -43,25 +43,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    #MANY TO MANY RELATIONSHIP(UN USER PEUT AVOIR PLUISIEURS ROLES & DE ME UN ROLE PEUT APPARTENIR A PLUISIEURS USERS)
-    public function roles():BelongsToMany{
-        return $this->BelongsToMany(Role::class,'roles_users','user_id','role_id');
-    }
-
-    #ONE TO MANY RELATIONSHIP(UN USER[celui qui a le role **is_transporter**] PEUT AJOUTER PLUISIEURS MOYENS DE TRANSPORT)
-    function transports() : HasMany {
-        return $this->hasMany(Transport::class);
-    }
-
-    #ONE TO MANY RELATIONSHIP(UN USER[celui qui a le role **is_sender**] PEUT AJOUTER PLUISIEURS FRETS)
-    function frets() : HasMany {
-        return $this->hasMany(Frets::class);
-    }
-
-    
-    #ONE TO MANY RELATIONSHIP(UN USER PEUT RECEVOIR PLUISIEURS NOTIFICATIONS)
-    function notifications() : HasMany {
-        return $this->hasMany(Notification::class,'receiver_id');
-    }
 }

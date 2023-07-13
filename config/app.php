@@ -158,20 +158,20 @@ return [
     'providers' => ServiceProvider::defaultProviders()->merge([
         /*
          * Package Service Providers...
-         */
+        */
 
         /*
          * Application Service Providers...
          */
-
-        // Service Provider DomPDF
-        Barryvdh\DomPDF\ServiceProvider::class,
 
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        // Maatwebsite\Excel\ExcelServiceProvider::class
+
     ])->toArray(),
 
     /*
@@ -186,9 +186,6 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // Façade Laravel-dompdf
-        "PDF" => Barryvdh\DomPDF\Facade::class,
-        // 'Example' => App\Facades\Example::class,
+        // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ])->toArray(),
-
 ];

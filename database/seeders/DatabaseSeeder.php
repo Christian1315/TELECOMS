@@ -12,38 +12,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        ##======== CREATION DES ROLES PAR DEFAUT ============####
-
-        \App\Models\Role::factory()->create([
-            'role'=>'is_transporter'
+        \App\Models\User::factory()->create([
+            'username' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => '$2y$10$CI5P59ICr/HOihqlnYUrLeKwCajgMKd34HB66.JsJBrIOQY9fazrG',
+            'is_admin'=>true
         ]);
-
-        \App\Models\Role::factory()->create([
-            'role'=>'is_sender'
-        ]);
-        \App\Models\Role::factory()->create([
-            'role'=>'is_admin'
-        ]);
-        \App\Models\Role::factory()->create([
-            'role'=>'is_supervisor'
-        ]);
-        \App\Models\Role::factory()->create([
-            'role'=>'is_shipper'
-        ]);
-        \App\Models\Role::factory()->create([
-            'role'=>'is_biller'
-        ]);
-
-
-         ##======== CREATION DES TYPES DE MOYEN DE TRANSPORT PAR DEFAUT ============####
-
-         \App\Models\Type::factory(10)->create();
     }
 }
