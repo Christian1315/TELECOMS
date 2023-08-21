@@ -11,36 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('rights', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('username')->nullable();
-            $table->string('phone');
-            $table->string('password')->nullable();
-            $table->string('email')->unique();
-            $table->boolean('is_admin')->default(false);
+            $table->integer("module")->default(0);
 
-            $table->foreignId("rang_id")
-                ->nullable()
+            $table->foreignId("action")
+                ->constrained('actions', 'id')
+                ->onUpdate('CASCADE')
+                ->onDelete('CASCADE');
+
+            $table->foreignId("rang")
                 ->constrained('rangs', 'id')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
 
-            $table->foreignId("profil_id")
-                ->nullable()
+            $table->foreignId("profil")
                 ->constrained('profils', 'id')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
 
-            $table->foreignId("owner")
+            $table->foreignId("user_id")
                 ->nullable()
                 ->constrained('users', 'id')
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
 
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
+            $table->text("description");
             $table->timestamps();
         });
     }
@@ -50,6 +46,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('rights');
     }
 };

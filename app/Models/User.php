@@ -5,6 +5,7 @@ namespace App\Models;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,7 +20,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'username',
+        'firstname',
+        'lastname',
+        'phone',
         'email',
         'password',
     ];
@@ -43,4 +46,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    #ONE TO ONE/REVERSE RELATIONSHIP(UN UTILISATEUR NE PEUT QU'AVOIR UN SEUL RANG)
+    function rang(): BelongsTo
+    {
+        return $this->belongsTo(Rang::class, 'rang_id');
+    }
+
+    #ONE TO MANY/INVERSE RELATIONSHIP (UN USER PEUT APPARTENIR A PLUISIEURS PROFILS)
+    function profil(): BelongsTo
+    {
+        return $this->belongsTo(Profil::class, 'profil_id');
+    }
+
+    function drts(): HasMany
+    {
+        return $this->hasMany(Right::class, "user_id");
+    }
 }
