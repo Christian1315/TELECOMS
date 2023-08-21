@@ -143,6 +143,20 @@ class USER_HELPER extends BASE_HELPER
         $user->password = $username;
         $user->owner = request()->user()->id;
         $user->save();
+
+        #===== ENVOIE D'SMS AUX ELECTEURS DU VOTE =======~####
+
+        $sms_login =  Login_To_Frik_SMS();
+
+        if ($sms_login['status']) {
+            $token =  $sms_login['data']['token'];
+            Send_SMS(
+                $user->phone,
+                "Votre compte Master a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username,
+                $token
+            );
+        }
+
         return self::sendResponse($user, 'User crée avec succès!!');
     }
 
@@ -242,11 +256,13 @@ class USER_HELPER extends BASE_HELPER
         if (count($user) == 0) {
             return self::sendError("Ce compte n'existe pas!", 404);
         };
+        // return "dfgh";
 
         #
         $user = $user[0];
         $pass_code = Get_passCode($user, "PASS");
         $user->pass_code = $pass_code;
+        $user->pass_code_active = 1;
         $user->save();
 
         #===== ENVOIE D'SMS AUX ELECTEURS DU VOTE =======~####
@@ -257,7 +273,7 @@ class USER_HELPER extends BASE_HELPER
             $token =  $sms_login['data']['token'];
             Send_SMS(
                 $user->phone,
-                "Demande de réinitialisation éffectuée avec succès! sur E-VOTING! Voici vos informations de réinitialisation de password ::" . $pass_code,
+                "Demande de réinitialisation éffectuée avec succès! sur frik6sms! Voici vos informations de réinitialisation de password ::" . $pass_code,
                 $token
             );
         }
@@ -308,7 +324,7 @@ class USER_HELPER extends BASE_HELPER
             $token =  $sms_login['data']['token'];
             Send_SMS(
                 $user->phone,
-                "Réinitialisation de password éffectuée avec succès sur E-VOTING!",
+                "Réinitialisation de password éffectuée avec succès sur FRIK-SMS!",
                 $token
             );
         }

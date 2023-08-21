@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->boolean('is_admin')->default(false);
 
+            $table->string('pass_code')->nullable();
+            $table->string('pass_code_active')->default(true);
+
             $table->foreignId("rang_id")
                 ->nullable()
                 ->constrained('rangs', 'id')
