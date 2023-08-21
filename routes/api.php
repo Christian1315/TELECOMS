@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\GroupeController;
 use App\Http\Controllers\Api\V1\RangController;
 use App\Http\Controllers\Api\V1\RightController;
+use App\Http\Controllers\Api\V1\ExpeditorStatusController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -115,6 +116,14 @@ Route::prefix('v1')->group(function () {
             Route::any('all', 'Rights'); #GET ALL RIGHTS
             Route::any('{id}/retrieve', 'RetrieveRight'); #RECUPERATION D'UN DROIT
             Route::any('{id}/delete', 'DeleteRight'); #SUPPRESSION D'UN DROIT
+        });
+    });
+
+    ###========== EXPEDITOR STATUS ROUTINGS ========###
+    Route::controller(ExpeditorStatusController::class)->group(function () {
+        Route::prefix('expeditor/status')->group(function () {
+            Route::any('all', 'ExpeditorStatus'); #RECUPERATION DE TOUT LES STATUS D'EXPEDITEUR
+            Route::any('{id}/retrieve', 'RetrieveExpeditorStatus'); #RECUPERATION D'UN STATUS D'EXPEDITEUR
         });
     });
 });

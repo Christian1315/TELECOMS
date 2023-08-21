@@ -1566,5 +1566,26 @@ class DatabaseSeeder extends Seeder
         foreach ($users as $user) {
             \App\Models\User::factory()->create($user);
         }
+
+        #=========== CREER DES STATUS D'EXPEDITEUR PAR DEFAUT ============#
+
+        $expeditor_status = [
+            [
+                "name" => "not_check",
+                "description" => "Le traitement de ce expéditeur est en cours!",
+            ],
+            [
+                "name" => "block",
+                "description" => "Ce expéditeur est bloqué!",
+            ],
+            [
+                "name" => "available",
+                "description" => "Ce expéditeur est validé(disponible)",
+            ],
+        ];
+
+        foreach ($expeditor_status as $expeditor_statu) {
+            \App\Models\ExpeditorStatus::factory()->create($expeditor_statu);
+        }
     }
 }
