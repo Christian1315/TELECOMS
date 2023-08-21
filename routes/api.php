@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\Authorization;
 use App\Http\Controllers\Api\V1\SmsController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\ContactController;
+use App\Http\Controllers\Api\V1\ExpeditorController;
 use App\Http\Controllers\Api\V1\GroupeController;
 use App\Http\Controllers\Api\V1\RangController;
 use App\Http\Controllers\Api\V1\RightController;
@@ -124,6 +125,17 @@ Route::prefix('v1')->group(function () {
         Route::prefix('expeditor/status')->group(function () {
             Route::any('all', 'ExpeditorStatus'); #RECUPERATION DE TOUT LES STATUS D'EXPEDITEUR
             Route::any('{id}/retrieve', 'RetrieveExpeditorStatus'); #RECUPERATION D'UN STATUS D'EXPEDITEUR
+        });
+    });
+
+    ###========== EXPEDITOR  ROUTINGS ========###
+    Route::controller(ExpeditorController::class)->group(function () {
+        Route::prefix('expeditor')->group(function () {
+            Route::any('all', 'Expeditors'); #RECUPERATION DE TOUT LES EXPEDITEURS D'EXPEDITEUR
+            Route::any('add', 'AddExpeditor'); #RECUPERATION DE TOUT LES EXPEDITEURS D'EXPEDITEUR
+            Route::any('{id}/retrieve', '_RetrieveExpeditor'); #RECUPERATION D'UN EXPEDITEUR
+            Route::any('{id}/delete', 'DeleteExpeditor'); #DELETE D'UN EXPEDITEUR
+            Route::any('{id}/update_status', 'UpdateExpeditorStatus'); #UPDATE DU STATUT D'UN EXPEDITEUR
         });
     });
 });
