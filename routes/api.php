@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\ActionController;
 use App\Http\Controllers\Api\V1\Authorization;
+use App\Http\Controllers\Api\V1\CampagneController;
 use App\Http\Controllers\Api\V1\SmsController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\ContactController;
@@ -136,6 +137,17 @@ Route::prefix('v1')->group(function () {
             Route::any('{id}/retrieve', '_RetrieveExpeditor'); #RECUPERATION D'UN EXPEDITEUR
             Route::any('{id}/delete', 'DeleteExpeditor'); #DELETE D'UN EXPEDITEUR
             Route::any('{id}/update_status', 'UpdateExpeditorStatus'); #UPDATE DU STATUT D'UN EXPEDITEUR
+        });
+    });
+
+    ###========== CAMPAGNES  ROUTINGS ========###
+    Route::controller(CampagneController::class)->group(function () {
+        Route::prefix('campagne')->group(function () {
+            Route::any('all', 'Campagnes'); #RECUPERATION DE TOUTES LES CAMPAGNES
+            Route::any('add', 'CampagneCreate'); #RECUPERATION DE TOUTES LES CAMPAGNES
+            Route::any('{id}/retrieve', 'CampagneRetrieve'); #RECUPERATION D'UNE CAMPAGNE
+            Route::any('{id}/update', 'UpdateCampagne'); #UPDATE D'UNE CAMAPAGNE
+            Route::any('{id}/delete', 'DeleteCampagne'); #DELETE D'UNE CAMPAGNE
         });
     });
 });
