@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Expeditor;
+use App\Models\ExpeditorStatus;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -22,6 +23,15 @@ class EXPEDITOR_HELPER extends BASE_HELPER
             'name.required' => 'Le nom de  l\'expéditeur est réquis!',
             'name.unique' => ' Ce  expéditeur n\'est pas disponible! Veuillez mettre un autre',
         ];
+    }
+
+    static function Expeditor_Validator($formDatas)
+    {
+        $rules = self::Expeditor_rules();
+        $messages = self::Expeditor_messages();
+
+        $validator = Validator::make($formDatas, $rules, $messages);
+        return $validator;
     }
 
     #####UPDATE D'UN EXPEDITEUR ##########
@@ -93,6 +103,11 @@ class EXPEDITOR_HELPER extends BASE_HELPER
         $Expeditor = Expeditor::find($id);
         if (!$Expeditor) { #QUAND **$Expeditor** n'existe pas
             return self::sendError('Ce Expeditor n\'existe pas!', 404);
+        };
+
+        $ExpeditorSatatus = ExpeditorStatus::find($request->status);
+        if (!$ExpeditorSatatus) { #QUAND **$Expeditor status** n'existe pas
+            return self::sendError('Ce status d\'Expediteur n\'existe pas!', 404);
         };
 
         $Expeditor->status = $request->get("status");

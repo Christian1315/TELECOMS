@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Expeditor;
 use App\Models\Groupe;
 use App\Models\Sms;
 use Illuminate\Support\Facades\Http;
@@ -99,11 +100,22 @@ class SMS_HELPER extends BASE_HELPER
         return $validator;
     }
 
-    static function sendSms($phone, $message,$expediteur)
+    static function sendSms($phone, $message, $expediteur)
     {
         $BASE_URL = env("BASE_URL");
         $API_KEY = env("API_KEY");
         $CLIENT_ID = env("CLIENT_ID");
+
+        ####==== TRAITEMENT DE L'EXPEDITEUR =======###
+        $expeditor = Expeditor::where(["name" => $expediteur])->get();
+        if ($expeditor->count() == 0) {
+            return self::sendError("Ce expéditeur n'existe pas!", 404);
+        }
+
+        ##===== Verifions si l'expediteur est valide ou pas =========####
+        if ($expeditor[0]->status != 3) {
+            return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
+        }
 
         $EXPEDITEUR = $expediteur;
         $DESTINATAIRE = $phone;
@@ -178,10 +190,10 @@ class SMS_HELPER extends BASE_HELPER
         if (!$groupe) {
             return self::sendError("Ce groupe n'existe pas!!", 404);
         }
-        
+
         $contacts =  $groupe->contacts;
 
-        if ($contacts->count()==0) {
+        if ($contacts->count() == 0) {
             return self::sendError("Ce groupe ne contient aucun contact!!", 404);
         }
         $message = $formData['message'];
@@ -191,7 +203,7 @@ class SMS_HELPER extends BASE_HELPER
         foreach ($contacts as $contact) {
             $phone =  $contact->phone;
             // SENDING SMS
-            self::sendSms($phone, $message,$expediteur);
+            self::sendSms($phone, $message, $expediteur);
         }
         return self::sendResponse($formData, "Message envoyé au groupe " . $groupe->name . " avec succès");
     }

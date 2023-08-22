@@ -15,7 +15,7 @@ class CONTACT_HELPER extends BASE_HELPER
         return [
             'firstname' => ['required'],
             'lastname' => ['required'],
-            'phone' => ['required', 'numeric', Rule::unique("contacts", "phone")],
+            'phone' => ['required', 'numeric', Rule::unique("contacts")],
             'detail' => ['required', 'max:200'],
         ];
     }

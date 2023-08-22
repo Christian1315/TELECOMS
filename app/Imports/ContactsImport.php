@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 
-class ContactsImport implements ToModel,WithHeadingRow,WithChunkReading
+class ContactsImport implements ToModel, WithHeadingRow, WithChunkReading
 {
     /**
      * @param array $row

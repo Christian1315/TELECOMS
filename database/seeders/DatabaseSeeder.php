@@ -1587,5 +1587,26 @@ class DatabaseSeeder extends Seeder
         foreach ($expeditor_status as $expeditor_statu) {
             \App\Models\ExpeditorStatus::factory()->create($expeditor_statu);
         }
+
+        #=========== CREER DES EXPEDITEURS PAR DEFAUT ============#
+
+        $expeditors = [
+            [
+                "name" => "Finanfa",
+                "status" => \App\Models\ExpeditorStatus::find(3),
+            ],
+            [
+                "name" => "FrikPay",
+                "status" => \App\Models\ExpeditorStatus::find(3),
+            ],
+            [
+                "name" => "FRIK-TELCO",
+                "status" => \App\Models\ExpeditorStatus::find(3),
+            ],
+        ];
+
+        foreach ($expeditors as $expeditor) {
+            \App\Models\Expeditor::factory()->create($expeditor);
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Imports\ContactsImport;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -34,11 +35,31 @@ class ContactController extends CONTACT_HELPER
 
     public function ImportContacts(Request $request)
     {
+        ### VEUILLEZ CHOISIR COMME UN EXEMPLAIE, LE FICHIER EXCEL **contacts.xlsx** QUI SE TROUVE DANS LA RACINE DU PROJET
         if (!$request->file('contacts')) {
             return $this->sendError("Veuillez charger le fichier excel!", 404);
         }
-        Excel::import(new ContactsImport, $request->file('contacts'));
-        return redirect('/')->with('success', 'All good!');
+        $data = Excel::import(new ContactsImport, $request->file('contacts'));
+
+        $contacts = Contact::all();
+        // return $contacts;
+        foreach ($contacts as $contact) {
+            $contact_duplicates = Contact::where([
+                "lastname" => $contact->lastname,
+                "firstname" => $contact->firstname,
+                "phone" => $contact->phone,
+                "detail" => $contact->detail,
+            ])->get();
+
+            if ($contact_duplicates->count() > 1) {
+                foreach ($contact_duplicates as $key => $contact_duplicate) {
+                    if ($key > 0) { ##On conserve le premier et on supprime les doublons
+                        $contact_duplicate->delete();
+                    }
+                }
+            }
+        }
+        return $this->sendResponse($data, "Contacts importés avec succès!!");
     }
 
     public function Contacts(Request $request)
