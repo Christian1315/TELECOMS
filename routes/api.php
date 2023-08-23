@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\CampagneController;
 use App\Http\Controllers\Api\V1\SmsController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\ContactController;
+use App\Http\Controllers\Api\V1\DeveloperController;
 use App\Http\Controllers\Api\V1\ExpeditorController;
 use App\Http\Controllers\Api\V1\GroupeController;
 use App\Http\Controllers\Api\V1\RangController;
@@ -149,6 +150,18 @@ Route::prefix('v1')->group(function () {
             Route::any('{id}/retrieve', 'CampagneRetrieve'); #RECUPERATION D'UNE CAMPAGNE
             Route::any('{id}/update', 'UpdateCampagne'); #UPDATE D'UNE CAMAPAGNE
             Route::any('{id}/delete', 'DeleteCampagne'); #DELETE D'UNE CAMPAGNE
+        });
+    });
+
+    ###========== DEVELOPER  ROUTINGS ========###
+    Route::controller(DeveloperController::class)->group(function () {
+        Route::prefix('developer')->group(function () {
+            Route::prefix('key')->group(function () {
+                Route::any('generate', 'GenerateDeveloperKey');
+                // Route::any('{id}/retrieve', '_RetrieveDeveloperKey');
+                Route::any('{id}/regenerate', 'RegenerateDeveloperKey'); 
+                // Route::any('{id}/delete', 'DeleteCampagne');
+            });
         });
     });
 });

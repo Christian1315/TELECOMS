@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('active_compte_code')->nullable();
             $table->string('compte_actif')->default(false);
 
+            $table->string('pass_code')->nullable();
+            $table->string('pass_code_active')->default(true);
+
             $table->foreignId("rang_id")
                 ->nullable()
                 ->constrained('rangs', 'id')

@@ -245,7 +245,7 @@ class USER_HELPER extends BASE_HELPER
 
     static function getUsers()
     {
-        $users =  User::with(["rang", "profil"])->where(["owner" => request()->user()->id])->get();
+        $users =  User::with(["rang", "profil"])->get();
 
         foreach ($users as $user) {
             #renvoie des droits du user 
@@ -267,7 +267,7 @@ class USER_HELPER extends BASE_HELPER
 
     static function retrieveUsers($id)
     {
-        $user = User::with(["rang", "profil"])->where(['id' => $id, "owner" => request()->user()->id])->get();
+        $user = User::with(["rang", "profil"])->where(['id' => $id])->get();
         if ($user->count() == 0) {
             return self::sendError("Ce utilisateur n'existe pas!", 404);
         }
