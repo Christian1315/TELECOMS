@@ -156,7 +156,9 @@ class SMS_HELPER extends BASE_HELPER
             "status" => $result->status
         ];
 
-        Sms::create($data);
+        $sms = Sms::create($data);
+        $sms->owner = request()->user()->id;
+        $sms->save();
 
         return self::sendResponse($result, 'Sms envoyé avec succès!!');
     }
@@ -210,13 +212,13 @@ class SMS_HELPER extends BASE_HELPER
 
     static function allSms()
     {
-        $sms =  Sms::latest()->get();
+        $sms =  Sms::where(["owner" => request()->user()->id])->get();
         return self::sendResponse($sms, 'Tout les sms récupérés avec succès!!');
     }
 
     static function retrieveSms($id)
     {
-        $sms = Sms::where('id', $id)->get();
+        $sms = Sms::where(["id" => $id, "owner" => request()->user()->id])->get();
         if ($sms->count() == 0) {
             return self::sendError("Ce sms n'existe pas!", 404);
         }

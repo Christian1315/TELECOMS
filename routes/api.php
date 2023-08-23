@@ -159,8 +159,13 @@ Route::prefix('v1')->group(function () {
             Route::prefix('key')->group(function () {
                 Route::any('generate', 'GenerateDeveloperKey');
                 // Route::any('{id}/retrieve', '_RetrieveDeveloperKey');
-                Route::any('{id}/regenerate', 'RegenerateDeveloperKey'); 
+                Route::any('{id}/regenerate', 'RegenerateDeveloperKey');
                 // Route::any('{id}/delete', 'DeleteCampagne');
+            });
+            Route::prefix('sms')->group(function () {
+                Route::any('send', 'Send');
+                Route::any('{id}/retrieve', 'getSms'); #RECUPERATION D'UN SMS
+                Route::any('all', 'GetAllSms'); #RECUPERATION DE TOUT LES SMS
             });
         });
     });

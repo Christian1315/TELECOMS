@@ -23,6 +23,11 @@ return new class extends Migration
             $table->string('amount');
             $table->string('currency');
             $table->string('status');
+            $table->foreignId("owner")
+                ->nullable()
+                ->constrained("users", "id")
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
             $table->timestamps();
         });
     }

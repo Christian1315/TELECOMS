@@ -19,6 +19,11 @@ return new class extends Migration
                 ->constrained("expeditor_statuses", "id")
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
+            $table->foreignId("owner")
+                ->nullable()
+                ->constrained("users", "id")
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
             $table->timestamps();
         });
     }

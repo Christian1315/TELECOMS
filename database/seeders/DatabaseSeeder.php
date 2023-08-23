@@ -1596,14 +1596,17 @@ class DatabaseSeeder extends Seeder
             [
                 "name" => "Finanfa",
                 "status" => \App\Models\ExpeditorStatus::find(3),
+                "owner" => \App\Models\User::find(1)
             ],
             [
                 "name" => "FrikPay",
                 "status" => \App\Models\ExpeditorStatus::find(3),
+                "owner" => \App\Models\User::find(1)
             ],
             [
                 "name" => "FRIK-TELCO",
                 "status" => \App\Models\ExpeditorStatus::find(3),
+                "owner" => \App\Models\User::find(1)
             ],
         ];
 

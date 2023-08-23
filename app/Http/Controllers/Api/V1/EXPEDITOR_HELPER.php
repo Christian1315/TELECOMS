@@ -63,13 +63,19 @@ class EXPEDITOR_HELPER extends BASE_HELPER
     {
         $Expeditor = Expeditor::create($formData);
         $Expeditor->status = 1;
+        $Expeditor->owner = request()->user()->id;
         $Expeditor->save();
         return self::sendResponse($Expeditor, 'Expediteur enregistré avec succès!!');
     }
 
     static function retrieveExpeditor($id, $innerCall = false)
     {
-        $Expeditor = Expeditor::with(["status"])->where('id', $id)->get();
+        $user = request()->user();
+        if ($user->is_admin) { ##S'il est un admin,il peut recuperer tout les expéditeurs
+            $Expeditor = Expeditor::with(["status"])->where('id', $id)->get();
+        } else { ##S'il n'est pas un admin, on recupère les expediteurs qu'il a creé
+            $Expeditor = Expeditor::with(["status"])->where(['id' => $id, "owner" => $user->id])->get();
+        }
         if ($Expeditor->count() == 0) {
             return self::sendError("Ce Expeditor n'existe pas!!", 404);
         }
@@ -82,7 +88,12 @@ class EXPEDITOR_HELPER extends BASE_HELPER
 
     static function allExpeditors()
     {
-        $Expeditors = Expeditor::with(["status"])->orderBy("id", "desc")->get();
+        $user = request()->user();
+        if ($user->is_admin) { ##S'il est un admin,il peut recuperer tout les expéditeurs
+            $Expeditors = Expeditor::with(["status"])->orderBy("id", "desc")->get();
+        } else { ##S'il n'est pas un admin, on recupère les expediteurs qu'il a creé
+            $Expeditors = Expeditor::with(["status"])->where(["owner" => $user->id])->get();
+        }
         return self::sendResponse($Expeditors, 'Expeditors récupérés avec succès!!');
     }
 
