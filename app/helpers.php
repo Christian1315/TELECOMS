@@ -29,7 +29,7 @@ function Get_Username($user, $type)
 }
 
 ##Ce Helper permet de creér le passCode de réinitialisation de mot de passe
-function Get_passCode($user, $type)
+function Get_compte_active_Code($user, $type)
 {
     $created_date = $user->created_at;
 

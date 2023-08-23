@@ -9,7 +9,13 @@ class UserController extends USER_HELPER
     #VERIFIONS SI LE USER EST AUTHENTIFIE
     public function __construct()
     {
-        $this->middleware(['auth:api', 'scope:api-access'])->except(["DemandReinitializePassword", "ReinitializePassword", "Login"]);
+        $this->middleware(['auth:api', 'scope:api-access'])->except([
+            "DemandReinitializePassword",
+            "ReinitializePassword",
+            "Login",
+            "Register",
+            "AccountActivation"
+        ]);
     }
 
     #INSCRIPTION DU USER
@@ -31,6 +37,18 @@ class UserController extends USER_HELPER
 
         #ENREGISTREMENT DANS LA DB VIA **createUser** DE LA CLASS BASE_HELPER HERITEE PAR USER_HELPER
         return $this->createUser($request->all());
+    }
+
+    #ACTIVATE AN ACCOUNT
+    function AccountActivation(Request $request)
+    {
+        #VERIFICATION DE LA METHOD
+        if ($this->methodValidation($request->method(), "POST") == False) {
+            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR USER_HELPER
+            return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
+        };
+
+        return $this->activateAccount($request);
     }
 
     #GET ALL USERS

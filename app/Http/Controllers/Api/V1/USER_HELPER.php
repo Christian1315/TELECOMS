@@ -77,7 +77,7 @@ class USER_HELPER extends BASE_HELPER
     static function login_rules(): array
     {
         return [
-            'username' => 'required',
+            'account' => 'required',
             'password' => 'required',
         ];
     }
@@ -85,7 +85,7 @@ class USER_HELPER extends BASE_HELPER
     static function login_messages(): array
     {
         return [
-            'username.required' => 'Le champ Username est réquis!',
+            'account.required' => 'Le champ account est réquis!',
             'password.required' => 'Le champ Password est réquis!',
         ];
     }
@@ -132,8 +132,6 @@ class USER_HELPER extends BASE_HELPER
     #CREATION D'UN USER
     static function createUser($formData)
     {
-        // return $formData;
-        // $formData['password'] = Hash::make($formData['password']); #Hashing du password
         $user = User::create($formData); #ENREGISTREMENT DU USER DANS LA DB
 
         $username = Get_Username($user, "MAST");
@@ -141,37 +139,63 @@ class USER_HELPER extends BASE_HELPER
         $user->rang_id = 2;
         $user->profil_id = 6;
         $user->password = $username;
-        $user->owner = request()->user()->id;
+
+        if (request()->user()) { #Si le user(admin) est connecté et essaie de créer un compte pour autruit
+            $user->owner = request()->user()->id;
+        }
+
+        $active_compte_code = Get_compte_active_Code($user, "ACT");
+        $user->active_compte_code = $active_compte_code;
+        $user->compte_actif = 0;
         $user->save();
 
-        #===== ENVOIE D'SMS AUX ELECTEURS DU VOTE =======~####
+        #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 
         $sms_login =  Login_To_Frik_SMS();
 
         if ($sms_login['status']) {
             $token =  $sms_login['data']['token'];
+            #===== ENVOIE D'SMS AU USER DU COMPTE POUR CREATION DE COMPTE =======~####
             Send_SMS(
                 $user->phone,
                 "Votre compte Master a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username,
                 $token
             );
-        }
 
+            #===== ENVOIE D'SMS AU USER DU COMPTE POUR ACTIVER LE COMPTE =======~####
+            Send_SMS(
+                $user->phone,
+                "Votre compte n'est pas encore actif. Veuillez l'activer en utilisant le code ci-dessous :" . $active_compte_code,
+                $token
+            );
+        }
         return self::sendResponse($user, 'User crée avec succès!!');
     }
 
     #AUTHENTIFICATION D'UN USER
     static function userAuthentification($request)
     {
-        $credentials = ['username' => $request->username, 'password' => $request->password];
+        if (is_numeric($request->get('account'))) {
+            $credentials  =  ['phone' => $request->get('account'), 'password' => $request->get('password')];
+        } elseif (filter_var($request->get('account'), FILTER_VALIDATE_EMAIL)) {
+            $credentials  =  ['email' => $request->get('account'), 'password' => $request->get('password')];
+        } else {
+            $credentials  =  ['username' => $request->get('account'), 'password' => $request->get('password')];
+        }
+
         if (Auth::attempt($credentials)) { #SI LE USER EST AUTHENTIFIE
             $user = Auth::user();
+            ###VERIFIONS SI LE COMPTE EST ACTIF
+            if (!$user->compte_actif) {
+                return self::sendError("Ce compte n'est pas actif! Veuillez l'activer", 404);
+            }
+
+            ###
             $token = $user->createToken('MyToken', ['api-access'])->accessToken;
             $user['token'] = $token;
 
             $user['rang'] = $user->rang;
             $user['profil'] = $user->profil;
-            // $user['rights'] = $user->rights;
             $user['token'] = $token;
 
             #renvoie des droits du user 
@@ -194,6 +218,29 @@ class USER_HELPER extends BASE_HELPER
 
         #RENVOIE D'ERREURE VIA **sendResponse** DE LA CLASS BASE_HELPER
         return self::sendError('Connexion échouée! Vérifiez vos données puis réessayez à nouveau!', 500);
+    }
+
+    static function activateAccount($request)
+    {
+        if (!$request->get("active_compte_code")) {
+            return self::sendError("Le Champ **active_compte_code** est réquis", 505);
+        }
+        $user =  User::where(["active_compte_code" => $request->active_compte_code])->get();
+        if ($user->count() == 0) {
+            return self::sendError("Ce Code ne corresponds à aucun compte! Veuillez saisir le vrai code", 505);
+        }
+
+        $user = $user[0];
+        ###VERIFIONS SI LE COMPTE EST ACTIF DEJA
+        // return $user->compte_actif;
+        if ($user->compte_actif) {
+            return self::sendError("Ce compte est déjà actif!", 505);
+        }
+
+        $user->compte_actif = 1;
+        $user->save();
+
+        return self::sendResponse($user, 'Votre compte à été activé avec succès!!');
     }
 
     static function getUsers()

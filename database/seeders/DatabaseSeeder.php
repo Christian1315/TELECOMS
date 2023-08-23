@@ -1549,6 +1549,7 @@ class DatabaseSeeder extends Seeder
                 "rang_id" => \App\Models\Rang::find(1),
                 "profil_id" => \App\Models\Profil::find(9),
                 'is_admin' => true,
+                'compte_actif' => true,
             ],
             [
                 'firstname' => 'PP JJOEL',
@@ -1560,6 +1561,7 @@ class DatabaseSeeder extends Seeder
                 "rang_id" => \App\Models\Rang::find(1),
                 "profil_id" => \App\Models\Profil::find(9),
                 'is_admin' => true,
+                'compte_actif' => true,
             ]
         ];
 

@@ -32,6 +32,7 @@ Route::prefix('v1')->group(function () {
         Route::any('login', 'Login');
         Route::middleware(['auth:api'])->get('logout', 'Logout');
         Route::any('users', 'Users');
+        Route::any('active_account', 'AccountActivation');
         Route::any('{id}/password/update', 'UpdatePassword');
         Route::any('users/{id}', 'RetrieveUser');
 
