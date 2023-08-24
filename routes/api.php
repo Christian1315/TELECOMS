@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\V1\GroupeController;
 use App\Http\Controllers\Api\V1\RangController;
 use App\Http\Controllers\Api\V1\RightController;
 use App\Http\Controllers\Api\V1\ExpeditorStatusController;
-use App\Models\Campagne;
+use App\Http\Controllers\Api\V1\SmsStatusController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +47,13 @@ Route::prefix('v1')->group(function () {
     });
     Route::any('authorization', [Authorization::class, 'Authorization'])->name('authorization');
 
+    ###========== SMS STATUS ROUTINGS ========###
+    Route::controller(SmsStatusController::class)->group(function () {
+        Route::prefix('sms/status')->group(function () {
+            Route::any('all', 'SmsStatus'); #RECUPERATION DE TOUT LES STATUS D'SMS
+            Route::any('{id}/retrieve', 'RetrieveSmsStatus'); #RECUPERATION D'UN STATUS D'SMS
+        });
+    });
     ###========== SMS ROUTINGS ========###
     Route::controller(SmsController::class)->group(function () {
         Route::prefix('sms')->group(function () {

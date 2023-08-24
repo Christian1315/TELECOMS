@@ -19,6 +19,6 @@ class Sms extends Model
         "sms_count",
         "amount",
         "currency",
-        "status"
+        // "status"
     ];
 }

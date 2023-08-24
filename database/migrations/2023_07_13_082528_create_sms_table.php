@@ -22,7 +22,11 @@ return new class extends Migration
             $table->string('sms_count');
             $table->string('amount');
             $table->string('currency');
-            $table->string('status');
+            $table->foreignId("status")
+                ->nullable()
+                ->constrained("sms_statuses", "id")
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
             $table->foreignId("owner")
                 ->nullable()
                 ->constrained("users", "id")

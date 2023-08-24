@@ -153,11 +153,11 @@ class SMS_HELPER extends BASE_HELPER
             "sms_count" => $result->sms_count,
             "amount" => $result->amount,
             "currency" => $result->currency,
-            "status" => $result->status
         ];
 
         $sms = Sms::create($data);
         $sms->owner = request()->user()->id;
+        $sms->status = 1;
         $sms->save();
 
         return self::sendResponse($result, 'Sms envoyé avec succès!!');
@@ -174,7 +174,7 @@ class SMS_HELPER extends BASE_HELPER
         $smsData   = array(
             'date_start' => $formData['date_start'],
             'date_end' => $formData['date_start'],
-            // 'type' => 1
+            'type' => 2
         );
 
         $response = Http::withHeaders([
@@ -182,7 +182,6 @@ class SMS_HELPER extends BASE_HELPER
             'CLIENTID' => $CLIENT_ID
         ])->post($url, $smsData);
 
-        // return $response;
         $result = json_decode($response);
         
         return self::sendResponse($result, 'Rapport recupéré avec succès!!');

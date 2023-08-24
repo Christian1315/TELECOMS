@@ -1634,5 +1634,22 @@ class DatabaseSeeder extends Seeder
         foreach ($campagne_status as $campagne_statu) {
             \App\Models\CampagneStatus::factory()->create($campagne_statu);
         }
+
+        #=========== CREER DES STATUS D'SMS PAR DEFAUT ============#
+
+        $sms_status = [
+            [
+                "name" => "sended",
+                "description" => "Ce sms a été envoyé",
+            ],
+            [
+                "name" => "rejected",
+                "description" => "Ce sms a été rejeté!",
+            ]
+        ];
+
+        foreach ($sms_status as $sms_statu) {
+            \App\Models\SmsStatus::factory()->create($sms_statu);
+        }
     }
 }
