@@ -174,7 +174,7 @@ class SMS_HELPER extends BASE_HELPER
         $smsData   = array(
             'date_start' => $formData['date_start'],
             'date_end' => $formData['date_start'],
-            'type' => 1
+            // 'type' => 1
         );
 
         $response = Http::withHeaders([
@@ -182,7 +182,9 @@ class SMS_HELPER extends BASE_HELPER
             'CLIENTID' => $CLIENT_ID
         ])->post($url, $smsData);
 
+        // return $response;
         $result = json_decode($response);
+        
         return self::sendResponse($result, 'Rapport recupéré avec succès!!');
     }
 

@@ -152,6 +152,7 @@ class USER_HELPER extends BASE_HELPER
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 
         $sms_login =  Login_To_Frik_SMS();
+        // return $sms_login;
 
         if ($sms_login['status']) {
             $token =  $sms_login['data']['token'];
