@@ -65,6 +65,25 @@ class CampagneController extends CAMPAGNE_HELPER
         return $this->_updateCampagne($request->all(), $id);
     }
 
+    function UpdateCampagneStatus(Request $request, $id)
+    {
+        #VERIFICATION DE LA METHOD
+        if ($this->methodValidation($request->method(), "POST") == False) {
+            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS Expeditor_HELPER
+            return $this->sendError("La méthode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
+        };
+
+        #VALIDATION DES DATAs DEPUIS LA CLASS BASE_HELPER HERITEE PAR Expeditor_HELPER
+        $validator = $this->UPDATE_Campagne_Validator($request->all());
+
+        if ($validator->fails()) {
+            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR Expeditor_HELPER
+            return $this->sendError($validator->errors(), 404);
+        }
+
+        return $this->_updateCampagneStatus($request, $id);
+    }
+
     public function DeleteCampagne(Request $request, $id)
     {
         #VERIFICATION DE LA METHOD

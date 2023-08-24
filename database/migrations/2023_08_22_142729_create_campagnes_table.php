@@ -28,6 +28,18 @@ return new class extends Migration
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
             $table->text("sms_type")->nullable();
+
+            $table->foreignId("status")
+                ->nullable()
+                ->constrained("campagne_statuses", "id")
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+
+            $table->foreignId("owner")
+                ->nullable()
+                ->constrained("users", "id")
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
             $table->longText("message");
             $table->timestamps();
         });

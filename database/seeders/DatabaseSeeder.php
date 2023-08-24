@@ -1613,5 +1613,26 @@ class DatabaseSeeder extends Seeder
         foreach ($expeditors as $expeditor) {
             \App\Models\Expeditor::factory()->create($expeditor);
         }
+
+        #=========== CREER DES STATUS D'UNE CAMPAGNE PAR DEFAUT ============#
+
+        $campagne_status = [
+            [
+                "name" => "not_check",
+                "description" => "Le traitement de cette campagne est en cours!",
+            ],
+            [
+                "name" => "on_old",
+                "description" => "Cette campagne est en attente!",
+            ],
+            [
+                "name" => "ended",
+                "description" => "Cette campagne éditeur est validé(disponible)",
+            ],
+        ];
+
+        foreach ($campagne_status as $campagne_statu) {
+            \App\Models\CampagneStatus::factory()->create($campagne_statu);
+        }
     }
 }

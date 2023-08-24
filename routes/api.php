@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\ActionController;
 use App\Http\Controllers\Api\V1\Authorization;
 use App\Http\Controllers\Api\V1\CampagneController;
+use App\Http\Controllers\Api\V1\CampagneStatusController;
 use App\Http\Controllers\Api\V1\SmsController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\ContactController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Api\V1\GroupeController;
 use App\Http\Controllers\Api\V1\RangController;
 use App\Http\Controllers\Api\V1\RightController;
 use App\Http\Controllers\Api\V1\ExpeditorStatusController;
+use App\Models\Campagne;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -150,6 +152,7 @@ Route::prefix('v1')->group(function () {
             Route::any('{id}/retrieve', 'CampagneRetrieve'); #RECUPERATION D'UNE CAMPAGNE
             Route::any('{id}/update', 'UpdateCampagne'); #UPDATE D'UNE CAMAPAGNE
             Route::any('{id}/delete', 'DeleteCampagne'); #DELETE D'UNE CAMPAGNE
+            Route::any('{id}/update_status', 'UpdateCampagneStatus'); #UPDATE DU STATUT D'UNE CAMPAGNE
         });
     });
 
@@ -167,6 +170,14 @@ Route::prefix('v1')->group(function () {
                 Route::any('{id}/retrieve', 'getSms'); #RECUPERATION D'UN SMS
                 Route::any('all', 'GetAllSms'); #RECUPERATION DE TOUT LES SMS
             });
+        });
+    });
+
+    ###========== CAMPAGNE STATUS ROUTINGS ========###
+    Route::controller(CampagneStatusController::class)->group(function () {
+        Route::prefix('campagne/status')->group(function () {
+            Route::any('all', 'CampagneStatus'); #RECUPERATION DE TOUT LES STATUS DE CAMPAGNE
+            Route::any('{id}/retrieve', 'RetrieveCampagneStatus'); #RECUPERATION D'UN STATUS DE CAMPAGNE
         });
     });
 });

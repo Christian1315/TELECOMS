@@ -25,4 +25,9 @@ class Campagne extends Model
     {
         return $this->belongsTo(Groupe::class, "group");
     }
+
+    function status(): BelongsTo
+    {
+        return $this->belongsTo(CampagneStatus::class, "status");
+    }
 }
