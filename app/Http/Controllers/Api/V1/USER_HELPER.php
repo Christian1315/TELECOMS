@@ -19,7 +19,7 @@ class USER_HELPER extends BASE_HELPER
             'lastname' => 'required',
             'phone' => ['required', Rule::unique('users')],
             'email' => ['required', 'email', Rule::unique('users')],
-            // 'password' => ['required'],
+            'password' => ['required'],
         ];
     }
 
@@ -33,6 +33,7 @@ class USER_HELPER extends BASE_HELPER
             'email.unique' => 'Ce mail existe déjà!',
             'phone.required' => 'Le champ Phone est réquis!',
             'phone.unique' => 'Un compte existe déjà au nom de ce phone!',
+            'password.required' => 'Le mot de passe est réquis!',
         ];
     }
 
@@ -138,7 +139,6 @@ class USER_HELPER extends BASE_HELPER
         $user->username = $username;
         $user->rang_id = 2;
         $user->profil_id = 6;
-        $user->password = $username;
 
         if (request()->user()) { #Si le user(admin) est connecté et essaie de créer un compte pour autruit
             $user->owner = request()->user()->id;
@@ -159,7 +159,7 @@ class USER_HELPER extends BASE_HELPER
             #===== ENVOIE D'SMS AU USER DU COMPTE POUR CREATION DE COMPTE =======~####
             Send_SMS(
                 $user->phone,
-                "Votre compte Master a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username,
+                "Votre compte Master a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username . " Password: " . $formData["password"],
                 $token
             );
 
@@ -304,7 +304,6 @@ class USER_HELPER extends BASE_HELPER
         if (count($user) == 0) {
             return self::sendError("Ce compte n'existe pas!", 404);
         };
-        // return "dfgh";
 
         #
         $user = $user[0];
@@ -388,12 +387,18 @@ class USER_HELPER extends BASE_HELPER
         return self::sendResponse([], 'Vous etes déconnecté(e) avec succès!');
     }
 
-    static function _updatePassword($formData, $id)
+    static function _updatePassword($formData)
     {
-        $user = User::where(['id' => $id])->get();
+        $user = User::where(['id' => request()->user()->id])->get();
         if (count($user) == 0) {
             return self::sendError("Ce utilisateur n'existe pas!", 404);
         };
+
+        ####VERIFIONS SI LE NOUVEAU PASSWORD CORRESPONDS ENCORE AU ANCIEN PASSWORD
+        if ($user[0]->password = $formData["new_password"]) {
+            return self::sendError('Le nouveau mot de passe ne doit pas etre identique à votre ancien mot de passe', 404);
+        }
+
 
         if (Hash::check($formData["old_password"], $user[0]->password)) { #SI LE old_password correspond au password du user dans la DB
             $user[0]->update(["password" => $formData["new_password"]]);

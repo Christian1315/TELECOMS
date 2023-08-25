@@ -1557,7 +1557,7 @@ class DatabaseSeeder extends Seeder
                 'username' => 'ppjjoel',
                 'email' => 'ppjjoel@gmail.com',
                 'password' => '$2y$10$ZT2msbcfYEUWGUucpnrHwekWMBDe1H0zGrvB.pzQGpepF8zoaGIMC', #ppjjoel
-                'phone' => "22961765592",
+                'phone' => "22997555619",
                 "rang_id" => \App\Models\Rang::find(1),
                 "profil_id" => \App\Models\Profil::find(9),
                 'is_admin' => true,

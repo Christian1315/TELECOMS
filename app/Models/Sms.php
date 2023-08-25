@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Sms extends Model
 {
@@ -21,4 +22,9 @@ class Sms extends Model
         "currency",
         // "status"
     ];
+
+    function status(): BelongsTo
+    {
+        return $this->belongsTo(SmsStatus::class, "status");
+    }
 }

@@ -110,7 +110,7 @@ class UserController extends USER_HELPER
     }
 
     #MODIFIER UN PASSWORD
-    function UpdatePassword(Request $request, $id)
+    function UpdatePassword(Request $request)
     {
         #VERIFICATION DE LA METHOD
         if ($this->methodValidation($request->method(), "POST") == False) {
@@ -126,7 +126,7 @@ class UserController extends USER_HELPER
         }
 
         #RECUPERATION D'UN USER VIA SON **id**
-        return $this->_updatePassword($request->all(), $id);
+        return $this->_updatePassword($request->all());
     }
 
     #DEMANDE DE REINITIALISATION D'UN PASSWORD
