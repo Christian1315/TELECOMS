@@ -183,7 +183,7 @@ class SMS_HELPER extends BASE_HELPER
         ])->post($url, $smsData);
 
         $result = json_decode($response);
-        
+
         return self::sendResponse($result, 'Rapport recupéré avec succès!!');
     }
 
@@ -213,13 +213,25 @@ class SMS_HELPER extends BASE_HELPER
 
     static function allSms()
     {
-        $sms =  Sms::where(["owner" => request()->user()->id])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $sms =  Sms::all();
+        } else {
+            $sms =  Sms::where(["owner" => request()->user()->id])->get();
+        }
         return self::sendResponse($sms, 'Tout les sms récupérés avec succès!!');
     }
 
     static function retrieveSms($id)
     {
-        $sms = Sms::where(["id" => $id, "owner" => request()->user()->id])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $sms = Sms::where(["id" => $id])->get();
+        } else {
+            $sms = Sms::where(["id" => $id, "owner" => request()->user()->id])->get();
+        }
         if ($sms->count() == 0) {
             return self::sendError("Ce sms n'existe pas!", 404);
         }

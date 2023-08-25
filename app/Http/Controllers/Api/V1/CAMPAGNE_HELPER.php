@@ -102,7 +102,14 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function retrieveCampagne($id, $innerCall = false)
     {
-        $Campagne = Campagne::with(["groupe", "status"])->where(['id' => $id, "visible" => 1])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $Campagne = Campagne::with(["groupe", "status"])->where(['id' => $id])->get();
+        } else {
+            $Campagne = Campagne::with(["groupe", "status"])->where(['id' => $id, "visible" => 1, "owner" => $user->id])->get();
+        }
+
         if ($Campagne->count() == 0) {
             return self::sendError("Cette Campagne n'existe pas!!", 404);
         }
@@ -115,13 +122,25 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function allCampagnes()
     {
-        $Campagnes = Campagne::with(["groupe", "status"])->where("visible", 1)->latest()->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $Campagnes = Campagne::with(["groupe", "status"])->latest()->get();
+        } else {
+            $Campagnes = Campagne::with(["groupe", "status"])->where(["visible" => 1, "owner" => $user->id])->latest()->get();
+        }
         return self::sendResponse($Campagnes, 'Campagnes récupérés avec succès!!');
     }
 
     static function _updateCampagne($formData, $id)
     {
-        $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $Campagne = Campagne::where(["id" => $id])->get();
+        } else {
+            $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
+        }
 
         if ($Campagne->count() == 0) { #QUAND **$Campagne** n'esxiste pas
             return self::sendError('Cette Campagne n\'existe pas!', 404);
@@ -134,7 +153,13 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function _deleteCampagne($id)
     {
-        $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $Campagne = Campagne::where(["id" => $id])->get();
+        } else {
+            $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
+        }
 
         if ($Campagne->count() == 0) { #QUAND **$Campagne** n'esxiste pas
             return self::sendError('Cette Campagne n\'existe pas!', 404);
@@ -149,7 +174,13 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function _updateCampagneStatus($request, $id)
     {
-        $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $Campagne = Campagne::where(["id" => $id])->get();
+        } else {
+            $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
+        }
 
         if ($Campagne->count() == 0) { #QUAND **$Campagne** n'esxiste pas
             return self::sendError('Cette Campagne n\'existe pas!', 404);

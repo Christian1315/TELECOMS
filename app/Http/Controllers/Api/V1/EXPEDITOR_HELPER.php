@@ -76,7 +76,7 @@ class EXPEDITOR_HELPER extends BASE_HELPER
         } else { ##S'il n'est pas un admin, on recupère les expediteurs qu'il a creé
             $Expeditor = Expeditor::with(["status"])->where(['id' => $id, "owner" => $user->id])->get();
         }
-        
+
         if ($Expeditor->count() == 0) {
             return self::sendError("Ce Expeditor n'existe pas!!", 404);
         }
@@ -100,7 +100,13 @@ class EXPEDITOR_HELPER extends BASE_HELPER
 
     static function _deleteExpeditor($id)
     {
-        $Expeditor = Expeditor::where(["id" => $id, "visible" => 1])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $Expeditor = Expeditor::where(["id" => $id])->get();
+        } else {
+            $Expeditor = Expeditor::where(["id" => $id, "visible" => 1])->get();
+        }
 
         if ($Expeditor->count() == 0) { #QUAND **$Expeditor** n'existe pas
             return self::sendError('Ce Expeditor n\'existe pas!', 404);
@@ -115,7 +121,13 @@ class EXPEDITOR_HELPER extends BASE_HELPER
 
     static function _updateExpeditorStatus($request, $id)
     {
-        $Expeditor = Expeditor::where(["id" => $id, "visible" => 1])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $Expeditor = Expeditor::where(["id" => $id])->get();
+        } else {
+            $Expeditor = Expeditor::where(["id" => $id, "visible" => 1])->get();
+        }
 
         if ($Expeditor->count() == 0) { #QUAND **$Expeditor** n'existe pas
             return self::sendError('Ce Expeditor n\'existe pas!', 404);

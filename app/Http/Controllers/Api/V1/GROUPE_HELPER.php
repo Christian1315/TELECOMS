@@ -65,12 +65,21 @@ class GROUPE_HELPER extends BASE_HELPER
             ####CREATION DU GROUPE
             $groupe = Groupe::create($formData);
         }
+
+        $groupe->owner = request()->user()->id;
+        $groupe->save();
         return self::sendResponse($groupe, 'Groupe crée avec succès!!');
     }
 
     static function retrieveGroupe($id, $innerCall = false)
     {
-        $groupe = Groupe::with(["contacts"])->where(["id" => $id, "visible" => 1])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $groupe = Groupe::with(["contacts"])->where(["id" => $id])->get();
+        } else {
+            $groupe = Groupe::with(["contacts"])->where(["id" => $id, "visible" => 1])->get();
+        }
 
         if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
             return self::sendError('Ce groupe n\'existe pas!', 404);
@@ -85,14 +94,26 @@ class GROUPE_HELPER extends BASE_HELPER
 
     static function allGroupes()
     {
-        $Groupes = Groupe::with(["contacts"])->where(["visible" => 1])->latest()->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $Groupes = Groupe::with(["contacts"])->latest()->get();
+        } else {
+            $Groupes = Groupe::with(["contacts"])->where(["visible" => 1])->latest()->get();
+        }
         return self::sendResponse($Groupes, 'Groupes récupérés avec succès!!');
     }
 
     static function _updateGroupe($request, $id)
     {
         $formData = $request->all();
-        $groupe = Groupe::where(["id" => $id, "visible" => 1])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $groupe = Groupe::with(["contacts"])->where(["id" => $id])->get();
+        } else {
+            $groupe = Groupe::with(["contacts"])->where(["id" => $id, "visible" => 1])->latest()->get();
+        }
 
         if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
             return self::sendError('Ce groupe n\'existe pas!', 404);
@@ -129,7 +150,13 @@ class GROUPE_HELPER extends BASE_HELPER
 
     static function _deleteGroupe($id)
     {
-        $groupe = Groupe::where(["id" => $id, "visible" => 1])->get();
+        $user = request()->user();
+        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
+            ###il peut tout recuperer
+            $groupe = Groupe::where(["id" => $id])->get();
+        } else {
+            $groupe = Groupe::where(["id" => $id, "visible" => 1])->get();
+        }
 
         if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
             return self::sendError('Ce groupe n\'existe pas!', 404);

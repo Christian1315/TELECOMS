@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "82e43a94e382889396276a4f1e62f123",
+    "content-hash": "8afaae036602bd981b1d85a292987fdf",
     "packages": [
         {
             "name": "brick/math",
@@ -703,6 +703,54 @@
                 "source": "https://github.com/firebase/php-jwt/tree/v6.8.0"
             },
             "time": "2023-06-20T16:45:35+00:00"
+        },
+        {
+            "name": "flexflux/laravel-elastic-email",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wouterdeberg/laravel-elastic-email.git",
+                "reference": "1feab7656eeae5269bc683a84e318b0e0357c409"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wouterdeberg/laravel-elastic-email/zipball/1feab7656eeae5269bc683a84e318b0e0357c409",
+                "reference": "1feab7656eeae5269bc683a84e318b0e0357c409",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^8.0|^9.0|^10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FlexFlux\\LaravelElasticEmail\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Wouter de Berg",
+                    "email": "info@wouterdeberg.nl"
+                }
+            ],
+            "description": "Package to send emails with attachements via an Elastic Email Mailer.",
+            "keywords": [
+                "elastic",
+                "elastic email",
+                "email",
+                "flexflux",
+                "laravel"
+            ],
+            "support": {
+                "email": "info@wouterdeberg.nl",
+                "issues": "https://github.com/wouterdeberg/laravel-elastic-email/issues",
+                "source": "https://github.com/wouterdeberg/laravel-elastic-email/tree/2.1.1"
+            },
+            "time": "2023-05-23T09:29:58+00:00"
         },
         {
             "name": "fruitcake/php-cors",

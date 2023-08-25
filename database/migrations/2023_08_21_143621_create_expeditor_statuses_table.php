@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->text("description");
+            $table->foreignId("owner")
+                ->nullable()
+                ->constrained("users", "id")
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
             $table->timestamps();
         });
     }

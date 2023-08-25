@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\V1\Notifications;
 use App\Http\Controllers\PdfController;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-
+use App\Mail\SendEmail;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +29,8 @@ Route::get("user/{id?}",function($id=null){
 
 Route::get('pdf',[PdfController::class,'getPostPdf']);
 
-Route::get('send-mail',[Notifications::class,'testMail']);
+Route::get('/sendMail', function () {
+    $user = [];
+    Mail::to("gogochristian009@gmail.com")->send(new SendEmail($user));
+    dd("MESSAGE ENVOYE AVEC SUCCèS");
+});
