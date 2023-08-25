@@ -52,9 +52,8 @@ class ExpeditorController extends EXPEDITOR_HELPER
             #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR Expeditor_HELPER
             return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
         };
-
         #RECUPERATION D'UN EXPEDITOR
-        return $this->_retrieveExpeditor($request, $id);
+        return $this->retrieveExpeditor($request, $id);
     }
 
     function DeleteExpeditor(Request $request, $id)

@@ -68,14 +68,15 @@ class EXPEDITOR_HELPER extends BASE_HELPER
         return self::sendResponse($Expeditor, 'Expediteur enregistré avec succès!!');
     }
 
-    static function retrieveExpeditor($id, $innerCall = false)
+    static function retrieveExpeditor($request, $id, $innerCall = false)
     {
         $user = request()->user();
         if ($user->is_admin) { ##S'il est un admin,il peut recuperer tout les expéditeurs
-            $Expeditor = Expeditor::with(["status"])->where('id', $id)->get();
+            $Expeditor = Expeditor::with(["status"])->where(['id' => 2])->get();
         } else { ##S'il n'est pas un admin, on recupère les expediteurs qu'il a creé
             $Expeditor = Expeditor::with(["status"])->where(['id' => $id, "owner" => $user->id])->get();
         }
+        // return $Expeditor;
         if ($Expeditor->count() == 0) {
             return self::sendError("Ce Expeditor n'existe pas!!", 404);
         }
@@ -90,31 +91,36 @@ class EXPEDITOR_HELPER extends BASE_HELPER
     {
         $user = request()->user();
         if ($user->is_admin) { ##S'il est un admin,il peut recuperer tout les expéditeurs
-            $Expeditors = Expeditor::with(["status"])->orderBy("id", "desc")->get();
+            $Expeditors = Expeditor::with(["status"])->where(["visible" => 1])->orderBy("id", "desc")->get();
         } else { ##S'il n'est pas un admin, on recupère les expediteurs qu'il a creé
-            $Expeditors = Expeditor::with(["status"])->where(["owner" => $user->id])->get();
+            $Expeditors = Expeditor::with(["status"])->where(["owner" => $user->id, "visible" => 1])->get();
         }
         return self::sendResponse($Expeditors, 'Expeditors récupérés avec succès!!');
     }
 
     static function _deleteExpeditor($id)
     {
-        $Expeditor = Expeditor::find($id);
+        $Expeditor = Expeditor::where(["id" => $id, "visible" => 1])->get();
 
-        if (!$Expeditor) { #QUAND **$Expeditor** n'existe pas
+        if ($Expeditor->count() == 0) { #QUAND **$Expeditor** n'existe pas
             return self::sendError('Ce Expeditor n\'existe pas!', 404);
         };
-
-        $Expeditor->delete(); #SUPPRESSION De Expeditor;
+        $Expeditor = $Expeditor[0];
+        #SUPPRESSION De Expeditor;
+        $Expeditor->visible = 0;
+        $Expeditor->deleted_at = now();
+        $Expeditor->save();
         return self::sendResponse($Expeditor, "Ce Expediteur a été supprimé avec succès!!");
     }
 
     static function _updateExpeditorStatus($request, $id)
     {
-        $Expeditor = Expeditor::find($id);
-        if (!$Expeditor) { #QUAND **$Expeditor** n'existe pas
+        $Expeditor = Expeditor::where(["id" => $id, "visible" => 1])->get();
+
+        if ($Expeditor->count() == 0) { #QUAND **$Expeditor** n'existe pas
             return self::sendError('Ce Expeditor n\'existe pas!', 404);
         };
+        $Expeditor = $Expeditor[0];
 
         $ExpeditorSatatus = ExpeditorStatus::find($request->status);
         if (!$ExpeditorSatatus) { #QUAND **$Expeditor status** n'existe pas

@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\GroupeController;
 use App\Http\Controllers\Api\V1\RangController;
 use App\Http\Controllers\Api\V1\RightController;
 use App\Http\Controllers\Api\V1\ExpeditorStatusController;
+use App\Http\Controllers\Api\V1\ProfilController;
 use App\Http\Controllers\Api\V1\SmsStatusController;
 use Illuminate\Support\Facades\Route;
 

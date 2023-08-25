@@ -78,7 +78,7 @@ class CONTACT_HELPER extends BASE_HELPER
 
     static function retrieveContact($id, $innerCall = false)
     {
-        $contact = Contact::with(["groupes"])->where('id', $id)->get();
+        $contact = Contact::with(["groupes"])->where(['id' => $id, "visible" => 1])->get();
         if ($contact->count() == 0) {
             return self::sendError("Ce contact n'existe pas!!", 404);
         }
@@ -91,25 +91,25 @@ class CONTACT_HELPER extends BASE_HELPER
 
     static function allContacts()
     {
-        $contacts = Contact::with(["groupes"])->latest()->get();
+        $contacts = Contact::with(["groupes"])->where(["visible" => 1])->latest()->get();
         return self::sendResponse($contacts, 'Contacts récupérés avec succès!!');
     }
 
     static function addContactToGroupe($formData)
     {
-        $contact = Contact::find($formData['contact_id']);
-        $groupe = Groupe::find($formData['groupe_id']);
+        $contact = Contact::where(["id" => $formData['contact_id'], "visible" => 1])->get();
+        $groupe = Groupe::where(["id" => $formData['groupe_id'], "visible" => 1])->get();
 
-        if (!$contact) {
+        if ($contact->count() == 0) {
             return self::sendError("Ce contact n'existe pas!", 404);
         }
 
-        if (!$groupe) {
+        if ($groupe->count() == 0) {
             return self::sendError("Ce groupe n'existe pas!", 404);
         }
 
         // ATTACHEMENT
-       
+
         $contact->groupes()->attach($groupe);
 
         $data = self::retrieveContact($contact->id, true);
@@ -118,23 +118,28 @@ class CONTACT_HELPER extends BASE_HELPER
 
     static function _updateContact($formData, $id)
     {
-        $contact = Contact::find($id);
-        if (!$contact) { #QUAND **$contact** n'esxiste pas
-            return self::sendError('Ce Contact n\'existe pas!', 404);
+        $contact = Contact::where(["id" => $id, "visible" => 1])->get();
+
+        if ($contact->count() == 0) { #QUAND **$contact** n'existe pas
+            return self::sendError('Ce contact n\'existe pas!', 404);
         };
+
         $contact->update($formData);
         return self::sendResponse($contact, "Contact modifié avec succès!!");
     }
 
     static function _deleteContact($id)
     {
-        $contact = Contact::find($id);
+        $contact = Contact::where(["id" => $id, "visible" => 1])->get();
 
-        if (!$contact) { #QUAND **$contact** n'esxiste pas
-            return self::sendError('Ce Contact n\'existe pas!', 404);
+        if ($contact->count() == 0) { #QUAND **$contact** n'existe pas
+            return self::sendError('Ce contact n\'existe pas!', 404);
         };
-
-        $contact->delete(); #SUPPRESSION DU CONTACT;
+        $contact = $contact[0];
+        #SUPPRESSION DU CONTACT;
+        $contact->visible = 0;
+        $contact->deleted_at = now();
+        $contact->save();
         return self::sendResponse($contact, "Ce contact a été supprimé avec succès!!");
     }
 }

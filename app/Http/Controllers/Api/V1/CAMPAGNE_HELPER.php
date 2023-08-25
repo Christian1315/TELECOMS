@@ -104,7 +104,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
     {
         $Campagne = Campagne::with(["groupe", "status"])->where(['id' => $id, "visible" => 1])->get();
         if ($Campagne->count() == 0) {
-            return self::sendError("Ce Campagne n'existe pas!!", 404);
+            return self::sendError("Cette Campagne n'existe pas!!", 404);
         }
         #$innerCall: Cette variable determine si la function **retrieveCampagne** est appéle de l'intérieur
         if ($innerCall) {
@@ -121,22 +121,25 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function _updateCampagne($formData, $id)
     {
-        $Campagne = Campagne::find($id);
-        if (!$Campagne) { #QUAND **$Campagne** n'esxiste pas
-            return self::sendError('Ce Campagne n\'existe pas!', 404);
+        $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
+
+        if ($Campagne->count() == 0) { #QUAND **$Campagne** n'esxiste pas
+            return self::sendError('Cette Campagne n\'existe pas!', 404);
         };
+        $Campagne = $Campagne[0];
+
         $Campagne->update($formData);
         return self::sendResponse($Campagne, "Campagne modifié avec succès!!");
     }
 
     static function _deleteCampagne($id)
     {
-        $Campagne = Campagne::find($id);
+        $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
 
-        if (!$Campagne) { #QUAND **$Campagne** n'esxiste pas
-            return self::sendError('Ce Campagne n\'existe pas!', 404);
+        if ($Campagne->count() == 0) { #QUAND **$Campagne** n'esxiste pas
+            return self::sendError('Cette Campagne n\'existe pas!', 404);
         };
-
+        $Campagne = $Campagne[0];
         #SUPPRESSION DU Campagne;
         $Campagne->visible = 0;
         $Campagne->deleted_at = now();
@@ -146,10 +149,12 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function _updateCampagneStatus($request, $id)
     {
-        $Campagne = Campagne::find($id);
-        if (!$Campagne) { #QUAND **$Campagne** n'existe pas
+        $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
+
+        if ($Campagne->count() == 0) { #QUAND **$Campagne** n'esxiste pas
             return self::sendError('Cette Campagne n\'existe pas!', 404);
         };
+        $Campagne = $Campagne[0];
 
         $CampagneSatatus = CampagneStatus::find($request->status);
         if (!$CampagneSatatus) { #QUAND **$Campagne status** n'existe pas
