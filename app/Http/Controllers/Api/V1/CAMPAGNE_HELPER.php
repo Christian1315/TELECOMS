@@ -19,7 +19,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             "group" => ['required', "integer"],
             "end_date" => ['required'],
             "num_time_by_day" => ['required', "integer"],
-            "Campagne" => ['required', "integer"],
+            // "Campagne" => ['required', "integer"],
             "message" => ['required'],
         ];
     }
@@ -31,10 +31,10 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             'group.required' => 'Le champ group est réquis!',
             'end_date.required' => 'Le champ end_date est réquis!',
             'num_time_by_day.required' => 'Le champ num_time_by_day est réquis!',
-            'campagne.required' => 'Le champ Campagne est réquis!',
+            // 'campagne.required' => 'Le champ Campagne est réquis!',
 
             'group.numeric' => 'Le champ group doit être un nombre entier',
-            'campagne.numeric' => 'Le champ Campagne doit être un nombre entier',
+            // 'campagne.numeric' => 'Le champ Campagne doit être un nombre entier',
         ];
     }
 
@@ -102,7 +102,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function retrieveCampagne($id, $innerCall = false)
     {
-        $Campagne = Campagne::with(["groupe", "status"])->where('id', $id)->get();
+        $Campagne = Campagne::with(["groupe", "status"])->where(['id' => $id, "visible" => 1])->get();
         if ($Campagne->count() == 0) {
             return self::sendError("Ce Campagne n'existe pas!!", 404);
         }
@@ -115,7 +115,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function allCampagnes()
     {
-        $Campagnes = Campagne::with(["groupe", "status"])->latest()->get();
+        $Campagnes = Campagne::with(["groupe", "status"])->where("visible", 1)->latest()->get();
         return self::sendResponse($Campagnes, 'Campagnes récupérés avec succès!!');
     }
 
@@ -137,7 +137,10 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             return self::sendError('Ce Campagne n\'existe pas!', 404);
         };
 
-        $Campagne->delete(); #SUPPRESSION DU Campagne;
+        #SUPPRESSION DU Campagne;
+        $Campagne->visible = 0;
+        $Campagne->deleted_at = now();
+        $Campagne->save();
         return self::sendResponse($Campagne, "Ce Campagne a été supprimé avec succès!!");
     }
 
