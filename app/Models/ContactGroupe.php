@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ContactGroupe extends Model
 {
     use HasFactory;
+
+    protected $table = "contacts_groupes";
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Contact;
+use App\Models\ContactGroupe;
 use App\Models\Groupe;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -83,6 +84,7 @@ class CONTACT_HELPER extends BASE_HELPER
             return self::sendError("Ce contact n'existe pas!!", 404);
         }
         #$innerCall: Cette variable determine si la function **retrieveContact** est appéle de l'intérieur
+        $contact = $contact[0];
         if ($innerCall) {
             return $contact;
         }
@@ -108,9 +110,17 @@ class CONTACT_HELPER extends BASE_HELPER
             return self::sendError("Ce groupe n'existe pas!", 404);
         }
 
-        // ATTACHEMENT
+        $contact = $contact[0];
+        $groupe = $groupe[0];
 
-        $contact->groupes()->attach($groupe);
+        ####VERIFIONS SI CE ATTACHEMENT EXISTE DEJA
+
+        $contactGroupe = ContactGroupe::where(["contact_id" => $contact->id, "groupe_id" => $groupe->id])->get();
+        if ($contactGroupe->count() == 0) { #### SI L'ATTACHEMENT N'EXISTE PAS
+            // ATTACHEMENT
+            $contact->groupes()->attach($groupe);
+        }
+        ##AUTREMENT ON N'ATTACHE PAS
 
         $data = self::retrieveContact($contact->id, true);
         return self::sendResponse($data, 'Contact ajouté au groupe avec succès!!');
@@ -123,7 +133,7 @@ class CONTACT_HELPER extends BASE_HELPER
         if ($contact->count() == 0) { #QUAND **$contact** n'existe pas
             return self::sendError('Ce contact n\'existe pas!', 404);
         };
-
+        $contact = $contact[0];
         $contact->update($formData);
         return self::sendResponse($contact, "Contact modifié avec succès!!");
     }

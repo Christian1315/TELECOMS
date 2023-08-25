@@ -28,7 +28,7 @@ class GroupeController extends GROUPE_HELPER
         }
 
         #ENREGISTREMENT DANS LA DB VIA **createGroupe** DE LA CLASS BASE_HELPER HERITEE PAR GROUPE_HELPER
-        return $this->createGroupe($request->all());
+        return $this->createGroupe($request);
     }
 
     public function Groupes(Request $request)
@@ -64,7 +64,7 @@ class GroupeController extends GROUPE_HELPER
         };
 
         // return $request;
-        return $this->_updateGroupe($request->all(), $id);
+        return $this->_updateGroupe($request, $id);
     }
 
     public function DeleteGroupe(Request $request, $id)

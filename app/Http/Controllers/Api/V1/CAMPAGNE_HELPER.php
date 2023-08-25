@@ -156,8 +156,8 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         };
         $Campagne = $Campagne[0];
 
-        $CampagneSatatus = CampagneStatus::find($request->status);
-        if (!$CampagneSatatus) { #QUAND **$Campagne status** n'existe pas
+        $CampagneStatus = CampagneStatus::find($request->status);
+        if (!$CampagneStatus) { #QUAND **$Campagne status** n'existe pas
             return self::sendError('Ce status Campagne n\'existe pas!', 404);
         };
 

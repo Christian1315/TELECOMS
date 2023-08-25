@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Contact;
+use App\Models\ContactGroupe;
 use App\Models\Groupe;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -36,20 +37,45 @@ class GROUPE_HELPER extends BASE_HELPER
         return $validator;
     }
 
-    static function createGroupe($formData)
+    static function createGroupe($request)
     {
-        $groupe = Groupe::create($formData);
-        $data = self::retrieveGroupe($groupe->id, true);
-        return self::sendResponse($data, 'Groupe crée avec succès!!');
+        $formData = $request->all();
+
+        #TRAITEMENT DU CHAMP **contacts** S'IL EST renseigné PAR LE USER
+        if ($request->get("contacts")) {
+            $contacts_ids = $formData["contacts"];
+            // $contacts_ids = explode(",", $contacts);
+            foreach ($contacts_ids as $id) {
+                $contact = Contact::where(["id" => $id, "visible" => 1])->get();
+                if ($contact->count() == 0) {
+                    return self::sendError("Le contact d'id :" . $id . " n'existe pas!", 404);
+                }
+            }
+
+            ####CREATION DU GROUPE
+            $groupe = Groupe::create($formData);
+
+            foreach ($contacts_ids as $id) {
+                $contact = Contact::where(["id" => $id, "visible" => 1])->get();
+                $contact = $contact[0];
+                ##### AFFECTATION DU CONTACT AU GROUPE
+                $contact->groupes()->attach($groupe);
+            }
+        } else {
+            ####CREATION DU GROUPE
+            $groupe = Groupe::create($formData);
+        }
+        return self::sendResponse($groupe, 'Groupe crée avec succès!!');
     }
 
     static function retrieveGroupe($id, $innerCall = false)
     {
-        $groupe = Groupe::where(["id" => $id, "visible" => 1])->get();
+        $groupe = Groupe::with(["contacts"])->where(["id" => $id, "visible" => 1])->get();
 
         if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
             return self::sendError('Ce groupe n\'existe pas!', 404);
         };
+        $groupe = $groupe[0];
         #$innerCall: Cette variable determine si la function **retrieveGroupe** est appéle de l'intérieur
         if ($innerCall) {
             return $groupe;
@@ -63,13 +89,40 @@ class GROUPE_HELPER extends BASE_HELPER
         return self::sendResponse($Groupes, 'Groupes récupérés avec succès!!');
     }
 
-    static function _updateGroupe($formData, $id)
+    static function _updateGroupe($request, $id)
     {
+        $formData = $request->all();
         $groupe = Groupe::where(["id" => $id, "visible" => 1])->get();
 
         if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
             return self::sendError('Ce groupe n\'existe pas!', 404);
         };
+
+        $groupe = $groupe[0];
+
+        #TRAITEMENT DU CHAMP **contacts** S'IL EST renseigné PAR LE USER
+        if ($request->get("contacts")) {
+            $contacts_ids = $formData["contacts"];
+            // $contacts_ids = explode(",", $contacts);
+            foreach ($contacts_ids as $id) {
+                $contact = Contact::where(["id" => $id, "visible" => 1])->get();
+                if ($contact->count() == 0) {
+                    return self::sendError("Le contact d'id :" . $id . " n'existe pas!", 404);
+                }
+                #======== AFFECTATION DU CONTACT AU GROUPE
+
+                ####VERIFIONS SI CE ATTACHEMENT EXISTE DEJA
+                $contact = $contact[0];
+
+                $contactGroupe = ContactGroupe::where(["contact_id" => $contact->id, "groupe_id" => $groupe->id])->get();
+                if ($contactGroupe->count() == 0) { #### SI L'ATTACHEMENT N'EXISTE PAS
+                    // ATTACHEMENT
+                    $contact->groupes()->attach($groupe);
+                }
+                ##AUTREMENT ON N'ATTACHE PAS
+            }
+        }
+
         $groupe->update($formData);
         return self::sendResponse($groupe, "Groupe modifié avec succès!!");
     }
