@@ -207,26 +207,13 @@ class SMS_HELPER extends BASE_HELPER
 
     static function smsReports($formData)
     {
-        $BASE_URL = env("BASE_URL");
-        $API_KEY = env("API_KEY");
-        $CLIENT_ID = env("CLIENT_ID");
+        $date_start = $formData['date_start'];
+        $date_end = $formData['date_end'];
 
-        $url = $BASE_URL . "/reports"; #URL DE RAPPORTS D'SMS
+        $user = request()->user();
+        $response =  Sms::where(["owner" => $user->id])->whereBetween('created_at', [$date_start, $date_end])->get();
 
-        $smsData   = array(
-            'date_start' => $formData['date_start'],
-            'date_end' => $formData['date_start'],
-            'type' => 2
-        );
-
-        $response = Http::withHeaders([
-            'APIKEY' => $API_KEY,
-            'CLIENTID' => $CLIENT_ID
-        ])->post($url, $smsData);
-
-        $result = json_decode($response);
-
-        return self::sendResponse($result, 'Rapport recupéré avec succès!!');
+        return self::sendResponse($response, 'Rapport recupéré avec succès!!');
     }
 
     function SendGroupeSms($formData)
