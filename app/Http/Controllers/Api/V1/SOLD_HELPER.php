@@ -55,8 +55,7 @@ class SOLD_HELPER extends BASE_HELPER
         $old_solde->visible = 0;
         $old_solde->save();
 
-        $manager = $old_solde->manager_with_name->firstname;
-
+        
         ##~~le nouveau solde
         $new_solde = new Solde();
         $new_solde->solde = $old_solde->solde + $formData["solde_amount"]; ##creditation du compte
@@ -64,6 +63,8 @@ class SOLD_HELPER extends BASE_HELPER
         $new_solde->owner = $old_solde->owner;
         $new_solde->credited_at = now();
         $new_solde->save();
+
+        $manager = $new_solde->manager_with_name->firstname;
 
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 

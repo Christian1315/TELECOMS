@@ -83,7 +83,7 @@ function Send_SMS($phone, $message, $token)
 
 
 ##======== CE HELPER PERMET DE VERIFIER SI LE USER DISPOSE D'UN COMPTE SUFFISANT OU PAS ==========## 
-function Is_User_Account_Enough($userId)
+function Is_User_Account_Enough($userId, $sms_amount)
 {
     $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get();
     if (count($solde) == 0) {
@@ -91,14 +91,14 @@ function Is_User_Account_Enough($userId)
     }
 
     $solde = $solde[0];
-    if ($solde->solde > 15) {
+    if ($solde->solde > $sms_amount) {
         return true; #Son solde est suffisant! il peut envoyer d'sms
     }
     return false; #Son solde est insuffisant, il ne peut pas envoyer d'SMS
 }
 
 ##======== CE HELPER PERMET DE DECREDITER LE SOLDE D'USER ==========## 
-function Decredite_User_Account($userId, $amount)
+function Decredite_User_Account($userId, $sms_amount)
 {
     $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get();
 
@@ -109,12 +109,11 @@ function Decredite_User_Account($userId, $amount)
 
     ##~~le nouveau solde
     $new_solde = new Solde();
-    $new_solde->solde = $old_solde->solde - $amount; ##creditation du compte
+    $new_solde->solde = $old_solde->solde - $sms_amount; ##creditation du compte
     $new_solde->owner = $old_solde->owner;
     $new_solde->decredited_at = now();
     $new_solde->save();
 }
-
 
 ##======== CE HELPER PERMET DE VERIFIER SI LE USER EST UN ADMIN OU PAS ==========## 
 function Is_User_AN_ADMIN($userId)

@@ -16,11 +16,12 @@ return new class extends Migration
             $table->string('messageId');
             $table->string('from');
             $table->string('to');
-            $table->string('message');
+            $table->longText('message');
             $table->string('type');
             $table->string('route');
             $table->string('sms_count');
             $table->string('amount');
+            $table->integer('sms_num')->nullable();
             $table->string('currency');
             $table->foreignId("status")
                 ->nullable()
