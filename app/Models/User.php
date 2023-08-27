@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -62,5 +63,10 @@ class User extends Authenticatable
     function drts(): HasMany
     {
         return $this->hasMany(Right::class, "user_id");
+    }
+
+    function sold(): HasOne
+    {
+        return $this->hasOne(Solde::class, "owner")->with("manager")->where("visible", 1);
     }
 }

@@ -15,6 +15,8 @@ use App\Http\Controllers\Api\V1\RightController;
 use App\Http\Controllers\Api\V1\ExpeditorStatusController;
 use App\Http\Controllers\Api\V1\ProfilController;
 use App\Http\Controllers\Api\V1\SmsStatusController;
+use App\Http\Controllers\Api\V1\SoldeController;
+use App\Models\Solde;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -152,6 +154,14 @@ Route::prefix('v1')->group(function () {
         });
     });
 
+    ###========== CAMPAGNE STATUS ROUTINGS ========###
+    Route::controller(CampagneStatusController::class)->group(function () {
+        Route::prefix('campagne/status')->group(function () {
+            Route::any('all', 'CampagneStatus'); #RECUPERATION DE TOUT LES STATUS DE CAMPAGNE
+            Route::any('{id}/retrieve', 'RetrieveCampagneStatus'); #RECUPERATION D'UN STATUS DE CAMPAGNE
+        });
+    });
+
     ###========== CAMPAGNES  ROUTINGS ========###
     Route::controller(CampagneController::class)->group(function () {
         Route::prefix('campagne')->group(function () {
@@ -181,11 +191,12 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    ###========== CAMPAGNE STATUS ROUTINGS ========###
-    Route::controller(CampagneStatusController::class)->group(function () {
-        Route::prefix('campagne/status')->group(function () {
-            Route::any('all', 'CampagneStatus'); #RECUPERATION DE TOUT LES STATUS DE CAMPAGNE
-            Route::any('{id}/retrieve', 'RetrieveCampagneStatus'); #RECUPERATION D'UN STATUS DE CAMPAGNE
+    ###========== SOLDES  ROUTINGS ========###
+    Route::controller(SoldeController::class)->group(function () {
+        Route::prefix('sold')->group(function () {
+            Route::any('credite', 'CredidateSold');
+            Route::any('all', 'Soldes');
+            Route::any('{id}/retrieve', 'RetrieveSold');
         });
     });
 });

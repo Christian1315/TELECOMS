@@ -117,6 +117,18 @@ class SMS_HELPER extends BASE_HELPER
             return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
         }
 
+        ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
+
+        $user = request()->user();
+        if (!Is_User_AN_ADMIN($user->id)) { #IL N'EST PAS UN ADMIN
+            #S'il n'est pas un ADMIN
+            # on verifie d'abord s'il dispose d'un solde suffisant
+
+            if (!Is_User_Account_Enough($user->id)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+                return self::sendError("Echec d'envoie d'SMS! Votre solde est insuffisant. Veuillez le recharger", 505);
+            }
+        }
+
         $EXPEDITEUR = $expediteur;
         $DESTINATAIRE = $phone;
         $MESSAGE = $message;
@@ -139,6 +151,12 @@ class SMS_HELPER extends BASE_HELPER
         $result = json_decode($response);
         if (!$result->status === "ACT") { #LE MESSAGE N'A PAS ETE ENVOYE
             return self::sendError("L'envoie a échoué", 505);
+        }
+
+        #####DECREDITATIUON DE SON SOLDE
+        #~~SEULEMENT POUR LES NON ADMINS
+        if (!Is_User_AN_ADMIN($user->id)) {
+            Decredite_User_Account(request()->user()->id, $result->amount);
         }
 
         #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB

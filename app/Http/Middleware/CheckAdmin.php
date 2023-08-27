@@ -15,6 +15,12 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (!Is_User_AN_ADMIN(request()->user()->id)) {
+            return response()->json([
+                'status' => false,
+                "message" => "Vous n'etes pas autorisé.e à éffectuer cette action! Seuls les admins ont ce droit!"
+            ], 404);
+        }
         return $next($request);
     }
 }

@@ -71,7 +71,7 @@ class GROUPE_HELPER extends BASE_HELPER
         return self::sendResponse($groupe, 'Groupe crée avec succès!!');
     }
 
-    static function retrieveGroupe($id, $innerCall = false)
+    static function retrieveGroupe($id)
     {
         $user = request()->user();
         if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
@@ -85,10 +85,7 @@ class GROUPE_HELPER extends BASE_HELPER
             return self::sendError('Ce groupe n\'existe pas!', 404);
         };
         $groupe = $groupe[0];
-        #$innerCall: Cette variable determine si la function **retrieveGroupe** est appéle de l'intérieur
-        if ($innerCall) {
-            return $groupe;
-        }
+        
         return self::sendResponse($groupe, 'Groupe récupéré avec succès!!');
     }
 

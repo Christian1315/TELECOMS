@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Right;
+use App\Models\Solde;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class USER_HELPER extends BASE_HELPER
         return [
             'firstname' => 'required',
             'lastname' => 'required',
-            'phone' => ['required', Rule::unique('users')],
+            'phone' => ['required', "integer", Rule::unique('users')],
             'email' => ['required', 'email', Rule::unique('users')],
             'password' => ['required'],
         ];
@@ -32,6 +33,7 @@ class USER_HELPER extends BASE_HELPER
             'email.email' => 'Ce champ est un mail!',
             'email.unique' => 'Ce mail existe déjà!',
             'phone.required' => 'Le champ Phone est réquis!',
+            'phone.integer' => 'Le champ Phone doit etre un entier!',
             'phone.unique' => 'Un compte existe déjà au nom de ce phone!',
             'password.required' => 'Le mot de passe est réquis!',
         ];
@@ -149,6 +151,12 @@ class USER_HELPER extends BASE_HELPER
         $user->compte_actif = 0;
         $user->save();
 
+        ##CREATION DU SOLDE DU USER
+        $solde = new Solde();
+        $solde->owner = $user->id;
+        $solde->save();
+
+
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 
         $sms_login =  Login_To_Frik_SMS();
@@ -197,6 +205,7 @@ class USER_HELPER extends BASE_HELPER
 
             $user['rang'] = $user->rang;
             $user['profil'] = $user->profil;
+            $user['solde'] = $user->sold;
             $user['token'] = $token;
 
             #renvoie des droits du user 
@@ -246,7 +255,7 @@ class USER_HELPER extends BASE_HELPER
 
     static function getUsers()
     {
-        $users =  User::with(["rang", "profil"])->get();
+        $users =  User::with(["rang", "profil", "sold"])->get();
 
         foreach ($users as $user) {
             #renvoie des droits du user 
@@ -268,7 +277,7 @@ class USER_HELPER extends BASE_HELPER
 
     static function retrieveUsers($id)
     {
-        $user = User::with(["rang", "profil"])->where(['id' => $id])->get();
+        $user = User::with(["rang", "profil", "sold"])->where(['id' => $id])->get();
         if ($user->count() == 0) {
             return self::sendError("Ce utilisateur n'existe pas!", 404);
         }

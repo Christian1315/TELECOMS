@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Organisation;
 use App\Models\Right;
+use App\Models\Solde;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
@@ -81,6 +81,41 @@ function Send_SMS($phone, $message, $token)
     $response->getBody()->rewind();
 }
 
+
+##======== CE HELPER PERMET DE VERIFIER SI LE USER DISPOSE D'UN COMPTE SUFFISANT OU PAS ==========## 
+function Is_User_Account_Enough($userId)
+{
+    $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get();
+    if (count($solde) == 0) {
+        return false; ##IL NE DISPOSE MEME PAS DE COMPTE
+    }
+
+    $solde = $solde[0];
+    if ($solde->solde > 15) {
+        return true; #Son solde est suffisant! il peut envoyer d'sms
+    }
+    return false; #Son solde est insuffisant, il ne peut pas envoyer d'SMS
+}
+
+##======== CE HELPER PERMET DE DECREDITER LE SOLDE D'USER ==========## 
+function Decredite_User_Account($userId, $amount)
+{
+    $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get();
+
+    ##~~l'ancien solde
+    $old_solde = $solde[0];
+    $old_solde->visible = 0;
+    $old_solde->save();
+
+    ##~~le nouveau solde
+    $new_solde = new Solde();
+    $new_solde->solde = $old_solde->solde - $amount; ##creditation du compte
+    $new_solde->owner = $old_solde->owner;
+    $new_solde->decredited_at = now();
+    $new_solde->save();
+}
+
+
 ##======== CE HELPER PERMET DE VERIFIER SI LE USER EST UN ADMIN OU PAS ==========## 
 function Is_User_AN_ADMIN($userId)
 { #
@@ -88,7 +123,7 @@ function Is_User_AN_ADMIN($userId)
     if (count($user) == 0) {
         return false;
     }
-    return true; #Sil est un Super Admin
+    return true; #il est un Admin
 }
 
 ##======== CE HELPER PERMET DE RECUPERER LES DROITS D'UN UTILISATEUR ==========## 
