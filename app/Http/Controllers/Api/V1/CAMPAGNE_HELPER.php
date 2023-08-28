@@ -100,7 +100,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         return self::sendResponse($Campagne, 'Campagne enregistré avec succès!!');
     }
 
-    static function retrieveCampagne($id, $innerCall = false)
+    static function retrieveCampagne($id)
     {
         $user = request()->user();
         if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
@@ -113,10 +113,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         if ($Campagne->count() == 0) {
             return self::sendError("Cette Campagne n'existe pas!!", 404);
         }
-        #$innerCall: Cette variable determine si la function **retrieveCampagne** est appéle de l'intérieur
-        if ($innerCall) {
-            return $Campagne;
-        }
+        
         return self::sendResponse($Campagne, 'Campagne récupré avec succès!!');
     }
 
@@ -135,12 +132,8 @@ class CAMPAGNE_HELPER extends BASE_HELPER
     static function _updateCampagne($formData, $id)
     {
         $user = request()->user();
-        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
-            ###il peut tout recuperer
-            $Campagne = Campagne::where(["id" => $id])->get();
-        } else {
-            $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
-        }
+
+        $Campagne = Campagne::where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
 
         if ($Campagne->count() == 0) { #QUAND **$Campagne** n'esxiste pas
             return self::sendError('Cette Campagne n\'existe pas!', 404);
@@ -154,12 +147,8 @@ class CAMPAGNE_HELPER extends BASE_HELPER
     static function _deleteCampagne($id)
     {
         $user = request()->user();
-        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
-            ###il peut tout recuperer
-            $Campagne = Campagne::where(["id" => $id])->get();
-        } else {
-            $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
-        }
+
+        $Campagne = Campagne::where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
 
         if ($Campagne->count() == 0) { #QUAND **$Campagne** n'esxiste pas
             return self::sendError('Cette Campagne n\'existe pas!', 404);

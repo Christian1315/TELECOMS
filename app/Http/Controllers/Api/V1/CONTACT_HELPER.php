@@ -85,7 +85,7 @@ class CONTACT_HELPER extends BASE_HELPER
             ###il peut tout recuperer
             $contact = Contact::with(["groupes"])->where(["id" => $id])->get();
         } else {
-            $contact = Contact::with(["groupes"])->where(["id" => $id, "visible" => 1])->get();
+            $contact = Contact::with(["groupes"])->where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
         }
 
         if ($contact->count() == 0) {
@@ -106,7 +106,7 @@ class CONTACT_HELPER extends BASE_HELPER
             ###il peut tout recuperer
             $contacts = Contact::with(["groupes"])->latest()->get();
         } else {
-            $contacts = Contact::with(["groupes"])->where(["visible" => 1])->latest()->get();
+            $contacts = Contact::with(["groupes"])->where(["visible" => 1, "owner" => $user->id])->latest()->get();
         }
         return self::sendResponse($contacts, 'Contacts récupérés avec succès!!');
     }
@@ -114,14 +114,9 @@ class CONTACT_HELPER extends BASE_HELPER
     static function addContactToGroupe($formData)
     {
         $user = request()->user();
-        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
-            ###il peut tout recuperer
-            $contact = Contact::where(["id" => $formData['contact_id']])->get();
-            $groupe = Groupe::where(["id" => $formData['groupe_id']])->get();
-        } else {
-            $contact = Contact::where(["id" => $formData['contact_id'], "visible" => 1, "owner" => $user->id])->get();
-            $groupe = Groupe::where(["id" => $formData['groupe_id'], "visible" => 1, "owner" => $user->id])->get();
-        }
+
+        $contact = Contact::where(["id" => $formData['contact_id'], "visible" => 1, "owner" => $user->id])->get();
+        $groupe = Groupe::where(["id" => $formData['groupe_id'], "visible" => 1, "owner" => $user->id])->get();
 
 
         if ($contact->count() == 0) {
@@ -151,12 +146,8 @@ class CONTACT_HELPER extends BASE_HELPER
     static function _updateContact($formData, $id)
     {
         $user = request()->user();
-        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
-            ###il peut tout recuperer
-            $contact = Contact::where(["id" => $id])->get();
-        } else {
-            $contact = Contact::where(["id" => $id, "visible" => 1])->get();
-        }
+
+        $contact = Contact::where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
 
         if ($contact->count() == 0) { #QUAND **$contact** n'existe pas
             return self::sendError('Ce contact n\'existe pas!', 404);
@@ -169,12 +160,7 @@ class CONTACT_HELPER extends BASE_HELPER
     static function _deleteContact($id)
     {
         $user = request()->user();
-        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
-            ###il peut tout recuperer
-            $contact = Contact::where(["id" => $id])->get();
-        } else {
-            $contact = Contact::where(["id" => $id, "visible" => 1])->get();
-        }
+        $contact = Contact::where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
 
         if ($contact->count() == 0) { #QUAND **$contact** n'existe pas
             return self::sendError('Ce contact n\'existe pas!', 404);

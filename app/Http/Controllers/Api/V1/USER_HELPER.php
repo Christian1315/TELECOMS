@@ -124,7 +124,6 @@ class USER_HELPER extends BASE_HELPER
 
     static function ATTACH_Validator($formDatas)
     {
-        #
         $rules = self::ATTACH_rules();
         $messages = self::ATTACH_messages();
 
@@ -136,7 +135,6 @@ class USER_HELPER extends BASE_HELPER
     static function createUser($formData)
     {
         $user = User::create($formData); #ENREGISTREMENT DU USER DANS LA DB
-
         $username = Get_Username($user, "MAST");
         $user->username = $username;
         $user->rang_id = 2;
@@ -160,24 +158,38 @@ class USER_HELPER extends BASE_HELPER
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 
         $sms_login =  Login_To_Frik_SMS();
-        // return $sms_login;
+        $compte_msg = "Votre compte Master a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username . "   Password: " . $formData["password"];
+        $compte_activation_msg = "Votre compte n'est pas encore actif. Veuillez l'activer en utilisant le code ci-dessous : " . $active_compte_code;
 
         if ($sms_login['status']) {
             $token =  $sms_login['data']['token'];
             #===== ENVOIE D'SMS AU USER DU COMPTE POUR CREATION DE COMPTE =======~####
             Send_SMS(
                 $user->phone,
-                "Votre compte Master a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username . " Password: " . $formData["password"],
+                $compte_msg,
                 $token
             );
 
             #===== ENVOIE D'SMS AU USER DU COMPTE POUR ACTIVER LE COMPTE =======~####
             Send_SMS(
                 $user->phone,
-                "Votre compte n'est pas encore actif. Veuillez l'activer en utilisant le code ci-dessous :" . $active_compte_code,
+                $compte_activation_msg,
                 $token
             );
         }
+
+        #=====ENVOIE D'EMAIL =======~####
+        Send_Email(
+            $user->email,
+            "Création de compte sur FRIK-SMS",
+            $compte_msg,
+        );
+
+        Send_Email(
+            $user->email,
+            "Activation de compte sur FRIK-SMS",
+            $compte_activation_msg,
+        );
         return self::sendResponse($user, 'User crée avec succès!!');
     }
 
@@ -206,6 +218,7 @@ class USER_HELPER extends BASE_HELPER
             $user['rang'] = $user->rang;
             $user['profil'] = $user->profil;
             $user['solde'] = $user->sold;
+            $user['expeditors'] = $user->expeditors;
             $user['token'] = $token;
 
             #renvoie des droits du user 
@@ -321,18 +334,26 @@ class USER_HELPER extends BASE_HELPER
         $user->pass_code_active = 1;
         $user->save();
 
-        #===== ENVOIE D'SMS AUX ELECTEURS DU VOTE =======~####
+        #===== ENVOIE D'SMS =======~####
 
         $sms_login =  Login_To_Frik_SMS();
+        $message = "Demande de réinitialisation éffectuée avec succès! sur FRIK SMS! Voici vos informations de réinitialisation de password ::" . $pass_code;
 
         if ($sms_login['status']) {
             $token =  $sms_login['data']['token'];
             Send_SMS(
                 $user->phone,
-                "Demande de réinitialisation éffectuée avec succès! sur frik6sms! Voici vos informations de réinitialisation de password ::" . $pass_code,
+                $message,
                 $token
             );
         }
+
+        #=====ENVOIE D'EMAIL =======~####
+        Send_Email(
+            $user->email,
+            "Demande de réinitialisation de compte sur FRIK-SMS",
+            $message,
+        );
 
         return self::sendResponse($user, "Demande de réinitialisation éffectuée avec succès! Veuillez vous connecter avec le code qui vous a été envoyé par phone ");
     }
@@ -360,8 +381,9 @@ class USER_HELPER extends BASE_HELPER
 
         $user = $user[0];
         #Voyons si le passs_code envoyé par le user est actif
+
         if ($user->pass_code_active == 0) {
-            return self::sendError("Ce Code a déjà été utilisé une fois!Veuillez faire une autre demande de réinitialisation", 404);
+            return self::sendError("Ce Code a déjà été utilisé une fois! Veuillez faire une autre demande de réinitialisation", 404);
         }
 
         #UPDATE DU PASSWORD
@@ -372,18 +394,26 @@ class USER_HELPER extends BASE_HELPER
         $user->save();
 
 
-        #===== ENVOIE D'SMS AUX ELECTEURS DU VOTE =======~####
+        #===== ENVOIE D'SMS =======~####
 
         $sms_login =  Login_To_Frik_SMS();
+        $message = "Réinitialisation de password éffectuée avec succès sur FRIK-SMS!";
 
         if ($sms_login['status']) {
             $token =  $sms_login['data']['token'];
             Send_SMS(
                 $user->phone,
-                "Réinitialisation de password éffectuée avec succès sur FRIK-SMS!",
+                $message,
                 $token
             );
         }
+
+        #=====ENVOIE D'EMAIL =======~####
+        Send_Email(
+            $user->email,
+            "Demande de réinitialisation de compte sur FRIK-SMS",
+            $message,
+        );
 
         return self::sendResponse($user, "Réinitialisation éffectuée avec succès!");
     }
@@ -391,8 +421,6 @@ class USER_HELPER extends BASE_HELPER
     static function userLogout($request)
     {
         $request->user()->token()->revoke();
-        // DELETING ALL TOKENS REMOVED
-        // Artisan::call('passport:purge');
         return self::sendResponse([], 'Vous etes déconnecté(e) avec succès!');
     }
 

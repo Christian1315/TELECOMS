@@ -14,7 +14,13 @@ class Expeditor extends Model
         "name",
     ];
 
-    function status() : BelongsTo {
-        return $this->belongsTo(ExpeditorStatus::class,"status");
+    function status(): BelongsTo
+    {
+        return $this->belongsTo(ExpeditorStatus::class, "status");
+    }
+
+    function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, "owner");
     }
 }

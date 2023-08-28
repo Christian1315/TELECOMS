@@ -98,8 +98,9 @@ class SMS_HELPER extends BASE_HELPER
         return $validator;
     }
 
-    static function sendSms($phone, $message, $expediteur)
+    static function _sendSms($phone, $message, $expediteur)
     {
+        // return $message;
         $BASE_URL = env("BASE_URL");
         $API_KEY = env("API_KEY");
         $CLIENT_ID = env("CLIENT_ID");
@@ -118,13 +119,10 @@ class SMS_HELPER extends BASE_HELPER
 
         $user = request()->user();
 
-
         $EXPEDITEUR = $expediteur;
         $DESTINATAIRE = $phone;
         $MESSAGE = $message;
         $msg_caracters_number = strlen($MESSAGE);
-
-
 
         $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
 
@@ -135,8 +133,6 @@ class SMS_HELPER extends BASE_HELPER
             'message' => $MESSAGE, //le contenu de votre sms
             'dlr' => 's' // 1 pour un retour par contre 0
         );
-
-
 
         if (!Is_User_AN_ADMIN($user->id)) {
             $NombreSms = 1; #PAR DEFAUT
@@ -216,13 +212,14 @@ class SMS_HELPER extends BASE_HELPER
         return self::sendResponse($response, 'Rapport recupéré avec succès!!');
     }
 
-    function SendGroupeSms($formData)
+    static function SendGroupeSms($formData)
     {
-        $groupe = Groupe::with('contacts')->find($formData['groupe_id']);
-        if (!$groupe) {
+        $groupe = Groupe::with('contacts')->where(["id" => $formData['groupe_id'], "owner" => request()->user()->id])->get();
+        if ($groupe->count() == 0) {
             return self::sendError("Ce groupe n'existe pas!!", 404);
         }
 
+        $groupe = $groupe[0];
         $contacts =  $groupe->contacts;
 
         if ($contacts->count() == 0) {
@@ -234,9 +231,105 @@ class SMS_HELPER extends BASE_HELPER
 
         foreach ($contacts as $contact) {
             $phone =  $contact->phone;
-            // SENDING SMS
-            self::sendSms($phone, $message, $expediteur);
+
+            $BASE_URL = env("BASE_URL");
+            $API_KEY = env("API_KEY");
+            $CLIENT_ID = env("CLIENT_ID");
+
+            ####==== TRAITEMENT DE L'EXPEDITEUR =======###
+            $expeditor = Expeditor::where(["name" => $expediteur])->get();
+            if ($expeditor->count() == 0) {
+                return self::sendError("Ce expéditeur n'existe pas!", 404);
+            }
+
+            ##===== Verifions si l'expediteur est valide ou pas =========####
+            if ($expeditor[0]->status != 3) {
+                return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
+            }
+
+            $user = request()->user();
+
+            $EXPEDITEUR = $expediteur;
+            $DESTINATAIRE = $phone;
+            $MESSAGE = $message;
+            $msg_caracters_number = strlen($MESSAGE);
+
+            $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
+
+            $smsData   = array(
+                'from' => $EXPEDITEUR, //l'expediteur
+                'to' => '' . $DESTINATAIRE . '', //destination au format international sans "+" ni "00". Ex: 22890443679
+                'type' => 1, //type de message text et flash
+                'message' => $MESSAGE, //le contenu de votre sms
+                'dlr' => 's' // 1 pour un retour par contre 0
+            );
+
+            if (!Is_User_AN_ADMIN($user->id)) {
+                $NombreSms = 1; #PAR DEFAUT
+
+                ##GESTION DE LA TAILLE DU MESSAGE
+
+                $One_sms_caracter_limit = env("ONE_SMS_CARACTER_LIMIT");
+
+                #SI LE NOMBRE DE CARACTERE DEPASSE LA LIMIT D'UN SMS
+                if ($msg_caracters_number > $One_sms_caracter_limit) {
+                    #~~Cherchons le nombre de message correspondant aux caracteres en voyés par le USER
+                    $NombreSms = ($msg_caracters_number / $One_sms_caracter_limit);
+                }
+                $int_part =  floor($NombreSms); #PARTIE ENTIERE DU NOMBRE DE MESSAGE
+                $decimal_part =  $NombreSms - $int_part; #PARTIE DECIMALE DU NOMBRE DE MESSAGE
+                if ($decimal_part > 0) { ##SI LE RESTE EST SUPERIEUR A 0,ON ARRONDIE A 1
+                    #~~~enfin retenons le nombre de message correponds aux nombres de caractères du user
+                    $NombreSms = $NombreSms + 1;
+                }
+
+                ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
+
+                $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
+
+                if (!Is_User_Account_Enough($user->id, $sms_amount)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+                    return self::sendError("Echec d'envoie d'SMS! Votre solde est insuffisant. Veuillez le recharger", 505);
+                }
+
+
+                #####DECREDITATION DE SON SOLDE
+                #~~SEULEMENT POUR LES NON ADMINS
+                Decredite_User_Account(request()->user()->id, $sms_amount);
+            }
+            // return $phone;
+
+            ###ENVOIE DE L'SMS VIA L'API DU FOURNISSEUR
+            $response = Http::withHeaders([
+                'APIKEY' => $API_KEY,
+                'CLIENTID' => $CLIENT_ID
+            ])->post($url, $smsData);
+
+            $result = json_decode($response);
+            if (!$result->status === "ACT") { #LE MESSAGE N'A PAS ETE ENVOYE
+                return self::sendError("L'envoie a échoué", 505);
+            }
+
+            #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
+
+            $data = [
+                "messageId" => $result->messageId,
+                "from" => $result->from,
+                "to" => $result->to,
+                "message" => $result->message,
+                "type" => $result->type,
+                "route" => $result->route,
+                "sms_count" => $result->sms_count,
+                "amount" => $user->is_admin ? $result->amount : $sms_amount, #$result->amount s'il est un admin
+                "currency" => $result->currency,
+                "sms_num" => $user->is_admin ? null : $NombreSms, #null s'il est un admin
+            ];
+
+            $sms = Sms::create($data);
+            $sms->owner = request()->user()->id;
+            $sms->status = 1;
+            $sms->save();
         }
+        // return $phone;
         return self::sendResponse($formData, "Message envoyé au groupe " . $groupe->name . " avec succès");
     }
 
@@ -247,7 +340,7 @@ class SMS_HELPER extends BASE_HELPER
             ###il peut tout recuperer
             $sms =  Sms::all();
         } else {
-            $sms =  Sms::where(["owner" => request()->user()->id])->get();
+            $sms =  Sms::where(["owner" => $user->id])->get();
         }
         return self::sendResponse($sms, 'Tout les sms récupérés avec succès!!');
     }

@@ -18,6 +18,6 @@ class Groupe extends Model
     #MANY TO MANY RELATIONSHIP(UN CONTACT PEUT APPARTENIR A PLUISIEURS CONTACT)
     public function contacts(): BelongsToMany
     {
-        return $this->BelongsToMany(Contact::class, 'contacts_groupes', 'groupe_id', 'contact_id');
+        return $this->BelongsToMany(Contact::class, 'contacts_groupes', 'groupe_id', 'contact_id')->orderBy("id","desc");
     }
 }

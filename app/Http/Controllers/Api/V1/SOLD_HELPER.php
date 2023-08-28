@@ -55,7 +55,7 @@ class SOLD_HELPER extends BASE_HELPER
         $old_solde->visible = 0;
         $old_solde->save();
 
-        
+
         ##~~le nouveau solde
         $new_solde = new Solde();
         $new_solde->solde = $old_solde->solde + $formData["solde_amount"]; ##creditation du compte
@@ -99,7 +99,7 @@ class SOLD_HELPER extends BASE_HELPER
     static function allSoldes()
     {
 
-        $Soldes = Solde::with(["owner", "manager"])->where(["visible" => 1])->latest()->get();
+        $Soldes = Solde::with(["owner", "manager"])->latest()->get();
         return self::sendResponse($Soldes, 'Soldes récupérés avec succès!!');
     }
 }

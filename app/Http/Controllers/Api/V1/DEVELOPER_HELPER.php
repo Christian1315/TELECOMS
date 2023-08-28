@@ -81,15 +81,11 @@ class DEVELOPER_HELPER extends BASE_HELPER
         return self::sendResponse($Developer, 'La clé API a été générée avec succès!!');
     }
 
-    static function retrieveDeveloperKey($id, $innerCall = false)
+    static function retrieveDeveloperKey($id)
     {
         $Developer = DeveloperKey::with(["user"])->where('id', $id)->get();
         if ($Developer->count() == 0) {
             return self::sendError("Ce Developer n'existe pas!!", 404);
-        }
-        #$innerCall: Cette variable determine si la function **retrieveDeveloper** est appéle de l'intérieur
-        if ($innerCall) {
-            return $Developer;
         }
         return self::sendResponse($Developer, 'Developer récuperé avec succès!!');
     }

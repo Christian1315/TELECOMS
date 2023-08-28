@@ -31,8 +31,8 @@ class SmsController extends SMS_HELPER
         $phone = $request->phone;
         $expediteur = $request->expediteur;
 
-        #ENREGISTREMENT DANS LA DB VIA **sendSms** DE LA CLASS BASE_HELPER HERITEE PAR SMS_HELPER
-        return $this->sendSms($phone, $message, $expediteur);
+        #ENREGISTREMENT DANS LA DB VIA **_sendSms** DE LA CLASS BASE_HELPER HERITEE PAR SMS_HELPER
+        return $this->_sendSms($phone, $message, $expediteur);
     }
 
     #SEND AN GROUPE SMS

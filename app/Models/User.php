@@ -69,4 +69,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Solde::class, "owner")->with("manager")->where("visible", 1);
     }
+
+    function expeditors(): HasMany
+    {
+        return $this->hasMany(Expeditor::class, "owner");
+    }
 }

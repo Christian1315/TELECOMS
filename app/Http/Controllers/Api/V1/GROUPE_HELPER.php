@@ -78,14 +78,14 @@ class GROUPE_HELPER extends BASE_HELPER
             ###il peut tout recuperer
             $groupe = Groupe::with(["contacts"])->where(["id" => $id])->get();
         } else {
-            $groupe = Groupe::with(["contacts"])->where(["id" => $id, "visible" => 1])->get();
+            $groupe = Groupe::with(["contacts"])->where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
         }
 
         if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
             return self::sendError('Ce groupe n\'existe pas!', 404);
         };
         $groupe = $groupe[0];
-        
+
         return self::sendResponse($groupe, 'Groupe récupéré avec succès!!');
     }
 
@@ -96,7 +96,7 @@ class GROUPE_HELPER extends BASE_HELPER
             ###il peut tout recuperer
             $Groupes = Groupe::with(["contacts"])->latest()->get();
         } else {
-            $Groupes = Groupe::with(["contacts"])->where(["visible" => 1])->latest()->get();
+            $Groupes = Groupe::with(["contacts"])->where(["visible" => 1, "owner" => $user->id])->latest()->get();
         }
         return self::sendResponse($Groupes, 'Groupes récupérés avec succès!!');
     }
@@ -105,12 +105,8 @@ class GROUPE_HELPER extends BASE_HELPER
     {
         $formData = $request->all();
         $user = request()->user();
-        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
-            ###il peut tout recuperer
-            $groupe = Groupe::with(["contacts"])->where(["id" => $id])->get();
-        } else {
-            $groupe = Groupe::with(["contacts"])->where(["id" => $id, "visible" => 1])->latest()->get();
-        }
+
+        $groupe = Groupe::with(["contacts"])->where(["id" => $id, "visible" => 1, "owner" => $user->id])->latest()->get();
 
         if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
             return self::sendError('Ce groupe n\'existe pas!', 404);
@@ -148,12 +144,8 @@ class GROUPE_HELPER extends BASE_HELPER
     static function _deleteGroupe($id)
     {
         $user = request()->user();
-        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
-            ###il peut tout recuperer
-            $groupe = Groupe::where(["id" => $id])->get();
-        } else {
-            $groupe = Groupe::where(["id" => $id, "visible" => 1])->get();
-        }
+
+        $groupe = Groupe::where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
 
         if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
             return self::sendError('Ce groupe n\'existe pas!', 404);

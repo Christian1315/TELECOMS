@@ -16,6 +16,9 @@ class UserController extends USER_HELPER
             "Register",
             "AccountActivation"
         ]);
+        $this->middleware("CheckAdmin")->only([
+            "Users",
+        ]);
     }
 
     #INSCRIPTION DU USER

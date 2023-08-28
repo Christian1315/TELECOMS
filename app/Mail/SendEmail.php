@@ -22,6 +22,7 @@ class SendEmail extends Mailable
     public function __construct($details)
     {
         $this->details = $details;
+        return $this->details;
     }
 
     /**
@@ -30,14 +31,13 @@ class SendEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Inscription',
+            subject: $this->details["subject"],
             from: new Address('no-reply@evoting.digital', 'FRIK SMS'),
             replyTo: [
                 new Address('no-reply@evoting.digital', 'FRIK SMS'),
             ],
         );
     }
-
 
     /**
      * Get the message content definition.
