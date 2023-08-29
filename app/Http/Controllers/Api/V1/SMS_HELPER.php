@@ -207,14 +207,14 @@ class SMS_HELPER extends BASE_HELPER
         $date_end = $formData['date_end'];
 
         $user = request()->user();
-        $response =  Sms::where(["owner" => $user->id])->whereBetween('created_at', [$date_start, $date_end])->get();
+        $response =  Sms::with(["status"])->where(["owner" => $user->id])->whereBetween('created_at', [$date_start, $date_end])->get();
 
         return self::sendResponse($response, 'Rapport recupéré avec succès!!');
     }
 
     static function SendGroupeSms($formData)
     {
-        $groupe = Groupe::with('contacts')->where(["id" => $formData['groupe_id'], "owner" => request()->user()->id])->get();
+        $groupe = Groupe::with(['contacts'])->where(["id" => $formData['groupe_id'], "owner" => request()->user()->id])->get();
         if ($groupe->count() == 0) {
             return self::sendError("Ce groupe n'existe pas!!", 404);
         }
@@ -338,7 +338,7 @@ class SMS_HELPER extends BASE_HELPER
         $user = request()->user();
         if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
             ###il peut tout recuperer
-            $sms =  Sms::all();
+            $sms =  Sms::with(["status"])->get();
         } else {
             $sms =  Sms::where(["owner" => $user->id])->get();
         }
@@ -350,9 +350,9 @@ class SMS_HELPER extends BASE_HELPER
         $user = request()->user();
         if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
             ###il peut tout recuperer
-            $sms = Sms::where(["id" => $id])->get();
+            $sms = Sms::with(["status"])->where(["id" => $id])->get();
         } else {
-            $sms = Sms::where(["id" => $id, "owner" => request()->user()->id])->get();
+            $sms = Sms::with(["status"])->where(["id" => $id, "owner" => request()->user()->id])->get();
         }
         if ($sms->count() == 0) {
             return self::sendError("Ce sms n'existe pas!", 404);
