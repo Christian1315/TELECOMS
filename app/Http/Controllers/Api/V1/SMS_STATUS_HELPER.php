@@ -14,7 +14,7 @@ class SMS_STATUS_HELPER extends BASE_HELPER
 
     static function _retrieveSmsStatus($id)
     {
-        $Sms_status = SmsStatus::with("status")->where(['id', $id])->get();
+        $Sms_status = SmsStatus::with("status")->where(['id'=> $id])->get();
         if ($Sms_status->count() == 0) {
             return self::sendError("Ce status d'sms n'existe pas!", 404);
         }

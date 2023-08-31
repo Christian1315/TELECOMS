@@ -432,7 +432,7 @@ class USER_HELPER extends BASE_HELPER
         };
 
         ####VERIFIONS SI LE NOUVEAU PASSWORD CORRESPONDS ENCORE AU ANCIEN PASSWORD
-        if ($user[0]->password = $formData["new_password"]) {
+        if ($formData["old_password"] == $formData["new_password"]) {
             return self::sendError('Le nouveau mot de passe ne doit pas etre identique à votre ancien mot de passe', 404);
         }
 
