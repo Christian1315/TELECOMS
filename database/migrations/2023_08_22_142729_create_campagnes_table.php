@@ -14,20 +14,20 @@ return new class extends Migration
         Schema::create('campagnes', function (Blueprint $table) {
             $table->id();
             $table->text("name");
-            $table->foreignId("group")
-                ->nullable()
-                ->constrained("groupes", "id")
-                ->onUpdate("CASCADE")
-                ->onDelete("CASCADE");
-            $table->date("start_date");
+
+            $table->text("start_date");
             $table->text("end_date");
             $table->text("sms_send_frequency");
+
             $table->integer("num_time_by_day");
+
             $table->foreignId("expeditor")
                 ->nullable()
                 ->constrained("expeditors", "id")
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
+
+            $table->boolean("initiated")->default(false);
             $table->text("sms_type")->nullable();
 
             $table->foreignId("status")
@@ -35,6 +35,7 @@ return new class extends Migration
                 ->constrained("campagne_statuses", "id")
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
+
 
             $table->foreignId("owner")
                 ->nullable()

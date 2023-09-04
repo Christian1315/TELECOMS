@@ -65,13 +65,11 @@ function Login_To_Frik_SMS()
         "account" => "admin",
         "password" => "admin",
     ]);
-
     return $response;
 }
 
 function Send_SMS($phone, $message, $token)
 {
-
     $response = Http::withHeaders([
         'Authorization' => "Bearer " . $token,
     ])->post(env("SEND_SMS_API_URL") . "/api/v1/sms/send", [
@@ -79,7 +77,6 @@ function Send_SMS($phone, $message, $token)
         "message" => $message,
         "expediteur" => env("EXPEDITEUR"),
     ]);
-
     $response->getBody()->rewind();
 }
 

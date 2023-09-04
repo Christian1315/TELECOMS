@@ -11,11 +11,6 @@ use Illuminate\Support\Facades\Validator;
 class SMS_HELPER extends BASE_HELPER
 {
     ##======== REGISTER VALIDATION =======##
-    static function BASE_URL()
-    {
-        $BASE_URL = "https://edok-api.kingsmspro.org/api/v1/sms";
-        return $BASE_URL;
-    }
 
     static function sms_rules(): array
     {

@@ -170,7 +170,8 @@ Route::prefix('v1')->group(function () {
             Route::any('{id}/retrieve', 'CampagneRetrieve'); #RECUPERATION D'UNE CAMPAGNE
             Route::any('{id}/update', 'UpdateCampagne'); #UPDATE D'UNE CAMAPAGNE
             Route::any('{id}/delete', 'DeleteCampagne'); #DELETE D'UNE CAMPAGNE
-            Route::any('{id}/update_status', 'UpdateCampagneStatus'); #UPDATE DU STATUT D'UNE CAMPAGNE
+            Route::any('{id}/update_status', 'UpdateCampagneStatus'); #
+            Route::any('{id}/initiate', '_InitiateCampagne'); #
         });
     });
 

@@ -76,9 +76,9 @@ class GROUPE_HELPER extends BASE_HELPER
         $user = request()->user();
         if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
             ###il peut tout recuperer
-            $groupe = Groupe::with(["contacts"])->where(["id" => $id])->get();
+            $groupe = Groupe::with(["contacts", "campagnes", "owner"])->where(["id" => $id])->get();
         } else {
-            $groupe = Groupe::with(["contacts"])->where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
+            $groupe = Groupe::with(["contacts", "campagnes", "owner"])->where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
         }
 
         if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
@@ -94,9 +94,9 @@ class GROUPE_HELPER extends BASE_HELPER
         $user = request()->user();
         if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
             ###il peut tout recuperer
-            $Groupes = Groupe::with(["contacts"])->latest()->get();
+            $Groupes = Groupe::with(["contacts", "campagnes", "owner"])->latest()->get();
         } else {
-            $Groupes = Groupe::with(["contacts"])->where(["visible" => 1, "owner" => $user->id])->latest()->get();
+            $Groupes = Groupe::with(["contacts", "campagnes", "owner"])->where(["visible" => 1, "owner" => $user->id])->latest()->get();
         }
         return self::sendResponse($Groupes, 'Groupes récupérés avec succès!!');
     }
