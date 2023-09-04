@@ -19,8 +19,9 @@ return new class extends Migration
                 ->constrained("groupes", "id")
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
-            $table->date("date")->default(now());
+            $table->date("start_date");
             $table->text("end_date");
+            $table->text("sms_send_frequency");
             $table->integer("num_time_by_day");
             $table->foreignId("expeditor")
                 ->nullable()
