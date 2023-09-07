@@ -2,13 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\Api\V1\SMS_HELPER;
-use App\Models\Campagne;
-use App\Models\CampagneGroupe;
-use App\Models\Expeditor;
-use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
 
 class SendCampagneToContactGroupe extends Command
 {

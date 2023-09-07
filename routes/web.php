@@ -30,6 +30,15 @@ Route::get("user/{id?}", function ($id = null) {
 Route::get('pdf', [PdfController::class, 'getPostPdf']);
 
 Route::get('/sendMail', function () {
+    $details = [
+        "subject" => "A test",
+        "message" => "Hello bro",
+    ];
+    Mail::to("gogochristian009@gmail.com")->send(new SendEmail($details));
+    dd("MESSAGE ENVOYE AVEC SUCCèS");
+});
+
+Route::get('/mail-template', function () {
 
     return view("emails.new_mail");
 });
