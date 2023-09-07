@@ -68,20 +68,18 @@ class SOLD_HELPER extends BASE_HELPER
 
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 
-        $sms_login =  Login_To_Frik_SMS();
         $message = "Votre Solde a été crédité de " . $formData["solde_amount"] . " sur FRIK SMS par << " . $manager . " >>";
+        $phone = $old_solde->owner_phone->phone;
+        $email = $old_solde->owner_phone->email;
+        $expediteur = env("EXPEDITEUR");
 
-        if ($sms_login['status']) {
-            $token =  $sms_login['data']['token'];
-            $phone = $old_solde->owner_phone->phone;
-            $email = $old_solde->owner_phone->email;
-
-            Send_SMS(
-                $phone,
-                $message,
-                $token
-            );
-        }
+        SMS_HELPER::_sendSms(
+            $phone,
+            $message,
+            $expediteur,
+            false,
+            $user,
+        );
 
         #=====ENVOIE D'EMAIL =======~####
         Send_Email(

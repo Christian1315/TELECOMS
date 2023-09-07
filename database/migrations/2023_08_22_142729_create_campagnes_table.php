@@ -20,6 +20,9 @@ return new class extends Migration
             $table->text("sms_send_frequency");
 
             $table->integer("num_time_by_day");
+            $table->integer("num_time_rest")->nullable();
+            $table->text("previous_send_date")->nullable();
+
 
             $table->foreignId("expeditor")
                 ->nullable()
@@ -27,7 +30,6 @@ return new class extends Migration
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
 
-            $table->boolean("initiated")->default(false);
             $table->text("sms_type")->nullable();
 
             $table->foreignId("status")

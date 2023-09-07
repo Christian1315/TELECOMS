@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\Api\V1\SMS_HELPER;
 use App\Models\Campagne;
 use App\Models\CampagneGroupe;
 use App\Models\Expeditor;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -27,41 +29,14 @@ class SendCampagneToContactGroupe extends Command
     /**
      * Execute the console command.
      */
+
     public function handle()
     {
-        // $campagne = Campagne::find($this->argument("campagne_id"));
-        $campagnes = Campagne::all();
+        ##___LES CAMPAGNES QUI NE SONT PAS FINIES
+        $campagnes = Campagne::whereRaw('status != 4')->get();
 
         foreach ($campagnes as $campagne) {
-            # code...
-            // $start_date = $campagne->start_date;
-            // $end_date = $campagne->end_date;
-
-            // $start_time = strtotime($start_date);
-            // $end_time = strtotime($end_date);
-
-            $expeditor = Expeditor::find($campagne->expeditor);
-            $contacts = $campagne->groupes[0]->contacts;
-
-            #### ENVOIE D'SMS
-            $sms_login =  Login_To_Frik_SMS();
-            foreach ($contacts as $contact) {
-                if ($sms_login['status']) {
-                    $token =  $sms_login['data']['token'];
-
-                    Http::withHeaders([
-                        'Authorization' => "Bearer " . $token,
-                    ])->post(env("SEND_SMS_API_URL") . "/api/v1/sms/send", [
-                        "phone" => $contact->phone,
-                        "message" => $campagne->message,
-                        "expediteur" => $expeditor->name,
-                    ]);
-                }
-            }
-
-            ###___NOTONS QUE CETTE CAMPAGNE EST LANCEE
-            $campagne->initiated = 1;
-            $campagne->save();
+            Campagne_Initiation($campagne);
         }
     }
 }

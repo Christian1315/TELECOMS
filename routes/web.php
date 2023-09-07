@@ -23,14 +23,13 @@ Route::get('/', function () {
 Route::get('/documentation', function () {
     return view('documentation');
 });
-Route::get("user/{id?}",function($id=null){
-    return 'User '.$id;
+Route::get("user/{id?}", function ($id = null) {
+    return 'User ' . $id;
 });
 
-Route::get('pdf',[PdfController::class,'getPostPdf']);
+Route::get('pdf', [PdfController::class, 'getPostPdf']);
 
 Route::get('/sendMail', function () {
-    $user = [];
-    Mail::to("gogochristian009@gmail.com")->send(new SendEmail($user));
-    dd("MESSAGE ENVOYE AVEC SUCCèS");
+
+    return view("emails.new_mail");
 });

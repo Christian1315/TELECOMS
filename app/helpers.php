@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\V1\SMS_HELPER;
 use App\Mail\SendEmail;
+use App\Models\Expeditor;
 use App\Models\Right;
 use App\Models\Solde;
 use App\Models\User;
@@ -14,9 +16,9 @@ function userCount()
 
 function Custom_Timestamp()
 {
-    $date = new DateTimeImmutable();
-    $micro = (int)$date->format('Uu'); // Timestamp in microseconds
-    return $micro;
+    $date = now();
+    $timestamp = strtotime($date);
+    return $timestamp;
 }
 
 function Get_Username($user, $type)
@@ -68,18 +70,87 @@ function Login_To_Frik_SMS()
     return $response;
 }
 
-function Send_SMS($phone, $message, $token)
+function Campagne_Initiation($campagne)
 {
-    $response = Http::withHeaders([
-        'Authorization' => "Bearer " . $token,
-    ])->post(env("SEND_SMS_API_URL") . "/api/v1/sms/send", [
-        "phone" => $phone,
-        "message" => $message,
-        "expediteur" => env("EXPEDITEUR"),
-    ]);
-    $response->getBody()->rewind();
-}
+    $owner = User::find($campagne->owner);
 
+    $start_time = strtotime($campagne->start_date);
+    $end_time = strtotime($campagne->end_date);
+    $now = Custom_Timestamp();
+
+    ##_______VERIFIONS SI LA PERIODE DE LA CAMPAGNE EST PASSEE OU PAS_______
+    if ($start_time < $now && $now < $end_time) {
+
+        ##_____
+        $previous_send_date_time = strtotime($campagne->previous_send_date); ##Time du premier envoie
+        $sms_send_frequency_time = $campagne->sms_send_frequency * 3600; ##Frequence d'envoie en seconde
+        $next_send_time =  $previous_send_date_time + $sms_send_frequency_time; ##Time du prochain envoie
+
+        ##__verifions si **num_time_rest** permet de faire l'operation
+        $num_time_rest = $campagne->num_time_rest;
+
+        if ($previous_send_date_time != Null) {
+
+            if (Custom_Timestamp() == $next_send_time || Custom_Timestamp() > $next_send_time + 2) {
+                if ($num_time_rest > 0) {
+                    $expeditor = Expeditor::find($campagne->expeditor);
+                    $contacts = $campagne->groupes[0]->contacts;
+
+                    #### ENVOIE D'SMS
+                    foreach ($contacts as $contact) {
+                        SMS_HELPER::_sendSms(
+                            $contact->phone,
+                            $campagne->message,
+                            $expeditor->name,
+                            false,
+                            $owner,
+                        );
+                    }
+
+                    ###___DECREMENTONS LE **num_time_rest** (le nombre de fois restant pour cette campagne)
+                    $campagne->num_time_rest = $num_time_rest - 1;
+
+                    ###___NOTONS LA DATE DE CE ENVOIE D'SMS
+                    $campagne->previous_send_date = now();
+                    ##__
+                    $campagne->save();
+                }
+            }
+        } else {
+            ##__
+            if ($num_time_rest > 0) {
+                $expeditor = Expeditor::find($campagne->expeditor);
+                $contacts = $campagne->groupes[0]->contacts;
+
+                #### ENVOIE D'SMS
+                foreach ($contacts as $contact) {
+                    SMS_HELPER::_sendSms(
+                        $contact->phone,
+                        $campagne->message,
+                        $expeditor->name,
+                        false,
+                        $owner,
+                    );
+                }
+
+                ###___DECREMENTONS LE **num_time_rest** (le nombre de fois restant pour cette campagne)
+                $campagne->num_time_rest = $num_time_rest - 1;
+
+                ###___NOTONS QUE CETTE CAMPAGNE EST LANCEE
+                $campagne->status = 3;
+
+                ###___NOTONS LA DATE DE CE ENVOIE D'SMS
+                $campagne->previous_send_date = now();
+                ##__
+                $campagne->save();
+            }
+        }
+    } elseif ($now > $end_time) {
+        ###___NOTONS QUE CETTE CAMPAGNE EST TERMINEE
+        $campagne->status = 4;
+        $campagne->save();
+    }
+}
 function Send_Email($email, $subject, $message)
 {
     $data = [

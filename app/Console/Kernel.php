@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command("app:send-campagne-to-groupe")->hourly();
+        $schedule->command("app:send-campagne-to-groupe")->everyMinute();##PARCOURIR LES CAMPAGNES CHAQUE MINUITE
+        $schedule->command("app:reinitialize_campagne_after_a_day")->daily(); ##REINITIALISATION DES NOMBRE D'ENVOIE DES CAMPAGNES CHAQUE MINUIT
     }
 
     /**
@@ -20,7 +21,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

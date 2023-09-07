@@ -7,6 +7,8 @@ use App\Models\CampagneGroupe;
 use App\Models\CampagneStatus;
 use App\Models\Expeditor;
 use App\Models\Groupe;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -84,6 +86,8 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function createCampagne($formData)
     {
+       
+        ###_______
         $user = request()->user();
         $expeditor = Expeditor::where("id", $formData["expeditor"])->get();
 
@@ -107,7 +111,8 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
         $Campagne = Campagne::create($formData);
         $Campagne->status = 1;
-        $Campagne->owner = request()->user()->id;
+        $Campagne->num_time_rest = $Campagne->num_time_by_day;
+        $Campagne->owner = $user->id;
         $Campagne->save();
 
         ###_____AFFECTATION DE LA CAMPAGNE AU GROUPE 
@@ -165,40 +170,19 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         $campagne = $Campagne[0];
 
         ###____VERIFIONS SI CETTE CAMPAGNE A DEJA ETE INITIEE
-        if ($campagne->initiated = 1) {
+        if ($campagne->status == 3) {
             return self::sendError("Désolé! Cette campagne est déjà en cours", 505);
         }
 
-
-        $expeditor = Expeditor::find($campagne->expeditor);
-        $contacts = $campagne->groupes[0]->contacts;
-
-        #### ENVOIE D'SMS
-        $sms_login =  Login_To_Frik_SMS();
-        foreach ($contacts as $contact) {
-            if ($sms_login['status']) {
-                $token =  $sms_login['data']['token'];
-
-                Http::withHeaders([
-                    'Authorization' => "Bearer " . $token,
-                ])->post(env("SEND_SMS_API_URL") . "/api/v1/sms/send", [
-                    "phone" => $contact->phone,
-                    "message" => $campagne->message,
-                    "expediteur" => $expeditor->name,
-                ]);
-            }
-        }
-
-        ###___NOTONS QUE CETTE CAMPAGNE EST LANCEE
-        $campagne->initiated = 1;
-        $campagne->save();
+        Campagne_Initiation($campagne);
 
         return self::sendResponse($campagne, "Campagne initiée avec succès!");
     }
 
-    static function _updateCampagne($formData, $id)
+    static function _updateCampagne($request, $id)
     {
         $user = request()->user();
+        $formData = $request->all();
 
         $Campagne = Campagne::where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
 
@@ -206,6 +190,22 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             return self::sendError('Cette Campagne n\'existe pas!', 404);
         };
         $Campagne = $Campagne[0];
+
+
+        ###____VERIFIONS SI CETTE CAMPAGNE A DEJA ETE INITIEE
+        if ($Campagne->status == 3) {
+            return self::sendError("Désolé! Cette campagne est déjà en cours! Vous ne pouvez pas la modifier!", 505);
+        }
+
+        ###____S'IL Y CHANGEMENT DE STATUS
+        if ($request->get("status")) {
+            if (!is_numeric($request->get('status'))) {
+                return self::sendError("Le status doit être un entier", 505);
+            }
+            $Campagne->status = $request->get("status");
+            $Campagne->save();
+        }
+
 
         $Campagne->update($formData);
         return self::sendResponse($Campagne, "Campagne modifié avec succès!!");
@@ -221,37 +221,15 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             return self::sendError('Cette Campagne n\'existe pas!', 404);
         };
         $Campagne = $Campagne[0];
+
+        ###____VERIFIONS SI CETTE CAMPAGNE A DEJA ETE INITIEE
+        if ($Campagne->initiated = 1) {
+            return self::sendError("Désolé! Cette campagne est déjà en cours! Vous ne pouvez pas la supprimer!", 505);
+        }
         #SUPPRESSION DU Campagne;
         $Campagne->visible = 0;
         $Campagne->deleted_at = now();
         $Campagne->save();
         return self::sendResponse($Campagne, "Ce Campagne a été supprimé avec succès!!");
-    }
-
-    static function _updateCampagneStatus($request, $id)
-    {
-        $user = request()->user();
-        if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
-            ###il peut tout recuperer
-            $Campagne = Campagne::where(["id" => $id])->get();
-        } else {
-            $Campagne = Campagne::where(["id" => $id, "visible" => 1])->get();
-        }
-
-        if ($Campagne->count() == 0) { #QUAND **$Campagne** n'esxiste pas
-            return self::sendError('Cette Campagne n\'existe pas!', 404);
-        };
-        $Campagne = $Campagne[0];
-
-        $CampagneStatus = CampagneStatus::find($request->status);
-        if (!$CampagneStatus) { #QUAND **$Campagne status** n'existe pas
-            return self::sendError('Ce status Campagne n\'existe pas!', 404);
-        };
-
-        $Campagne->status = $request->get("status");
-        $Campagne->save();
-
-        // $data = $Campagne->update(["status" => $request->get("status")]); #UPDATE DU STATUS De L'Campagne;
-        return self::sendResponse($Campagne, "Le status de cette Campagne a été modifié avec succès!!");
     }
 }

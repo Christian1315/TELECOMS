@@ -74,4 +74,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Expeditor::class, "owner");
     }
+
+    function campagne() : HasMany {
+        return $this->hasMany(Campagne::class, "owner");
+    }
 }

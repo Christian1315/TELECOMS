@@ -9,68 +9,68 @@
 
     <style>
         * {
-            font-family: Inter !important;
+            font-family: Inter;
         }
 
         .header {
-            background: #730208 !important;
-            padding: 100px !important;
+            background: #730208;
+            padding: 100px;
         }
 
         .title {
-            font-size: 53px !important;
-            font-weight: 400 !important;
-            line-height: 64px !important;
-            letter-spacing: 0.125em !important;
+            font-size: 53px;
+            font-weight: 400;
+            line-height: 64px;
+            letter-spacing: 0.125em;
         }
 
         .bottom {
-            background: #73020866 !important;
-            padding-block: 10px !important;
+            background: #73020866;
+            padding-block: 10px;
             box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important
         }
 
         #content {
-            background: #fff !important;
+            background: #fff;
             box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
             margin-top: -100px !important;
-            border-radius: 10px 10px 0px 0px !important;
+            border-radius: 10px 10px 0px 0px;
         }
 
         #content .main {
-            padding: 30px !important;
+            padding: 30px;
             /* display: none!important; */
         }
 
         .confirm-btn {
-            background: #730208 !important;
-            padding: 20px !important;
-            border-radius: 5px !important;
+            background: #730208;
+            padding: 20px;
+            border-radius: 5px;
             box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
-            color: #fff !important;
-            font-size: 22px !important;
-            font-weight: 400 !important;
-            line-height: 27px !important;
-            letter-spacing: 0em !important;
+            color: #fff;
+            font-size: 22px;
+            font-weight: 400;
+            line-height: 27px;
+            letter-spacing: 0em;
             text-align: center !important;
-            margin-block: 50px !important;
+            margin-block: 50px;
         }
 
         p {
-            font-size: 22px !important;
-            font-weight: 400 !important;
-            line-height: 27px !important;
-            letter-spacing: 0em !important;
-            margin-block: 30px !important;
+            font-size: 22px;
+            font-weight: 400;
+            line-height: 27px;
+            letter-spacing: 0em;
+            margin-block: 30px;
         }
 
         a.link {
-            color: #730208 !important;
-            font-size: 18px !important;
-            font-weight: 600 !important;
-            line-height: 22px !important;
-            letter-spacing: 0em !important;
-            text-decoration: none !important;
+            color: #730208;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 22px;
+            letter-spacing: 0em;
+            text-decoration: none;
         }
 
         .text-center {
@@ -87,14 +87,14 @@
         }
 
         .bottom h3 {
-            font-size: 18px !important;
-            font-weight: 600 !important;
-            line-height: 22px !important;
-            letter-spacing: 0em !important;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 22px;
+            letter-spacing: 0em;
         }
 
         .text-dark {
-            color: #000 !important;
+            color: #000;
         }
     </style>
 </head>
@@ -109,9 +109,9 @@
             <div class="col-md-8" id="content">
                 <!-- main -->
                 <div class="main">
-                    <h1 class="text-center text-dark title">{{$details["subject"]}}</h1>
+                    <h1 class="text-center text-dark title">Shalom!</h1>
                     <p class="text-center">Nous sommes heureux de vous compter parmi les utilisateurs de frikSMS .</p>
-                    <p class=""> {{$details["message"]}}</p>
+                    <p class=""> Confirmer votre inscription en cliquant sur ce boutton</p>
                     <p class="text-center">
                         <a class="btn btn-lg confirm-btn">Visitez le site officiel</a>
                     </p>

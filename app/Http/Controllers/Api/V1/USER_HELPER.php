@@ -9,6 +9,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Api\V1\SMS_HELPER;
+
 
 class USER_HELPER extends BASE_HELPER
 {
@@ -103,8 +105,6 @@ class USER_HELPER extends BASE_HELPER
         return $validator;
     }
 
-
-
     ##======== ATTACH VALIDATION =======##
     static function ATTACH_rules(): array
     {
@@ -157,26 +157,28 @@ class USER_HELPER extends BASE_HELPER
 
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 
-        $sms_login =  Login_To_Frik_SMS();
-        $compte_msg = "Votre compte Master a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username . "   Password: " . $formData["password"];
+        $compte_msg = "Votre compte a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username . "   Password: " . $formData["password"];
         $compte_activation_msg = "Votre compte n'est pas encore actif. Veuillez l'activer en utilisant le code ci-dessous : " . $active_compte_code;
+        // $expediteur = env("EXPEDITEUR");
 
-        if ($sms_login['status']) {
-            $token =  $sms_login['data']['token'];
-            #===== ENVOIE D'SMS AU USER DU COMPTE POUR CREATION DE COMPTE =======~####
-            Send_SMS(
-                $user->phone,
-                $compte_msg,
-                $token
-            );
+        $expediteur = env("EXPEDITEUR");
 
-            #===== ENVOIE D'SMS AU USER DU COMPTE POUR ACTIVER LE COMPTE =======~####
-            Send_SMS(
-                $user->phone,
-                $compte_activation_msg,
-                $token
-            );
-        }
+        ##___CREATION DE COMPTE
+        SMS_HELPER::_sendSms(
+            $user->phone,
+            $compte_msg,
+            $expediteur,
+            true,
+            $user
+        );
+        ##___ACTIVATION DE COMPTE
+        SMS_HELPER::_sendSms(
+            $user->phone,
+            $compte_activation_msg,
+            $expediteur,
+            true,
+            $user
+        );
 
         #=====ENVOIE D'EMAIL =======~####
         Send_Email(
@@ -336,17 +338,16 @@ class USER_HELPER extends BASE_HELPER
 
         #===== ENVOIE D'SMS =======~####
 
-        $sms_login =  Login_To_Frik_SMS();
         $message = "Demande de réinitialisation éffectuée avec succès! sur FRIK SMS! Voici vos informations de réinitialisation de password ::" . $pass_code;
+        $expediteur = env("EXPEDITEUR");
 
-        if ($sms_login['status']) {
-            $token =  $sms_login['data']['token'];
-            Send_SMS(
-                $user->phone,
-                $message,
-                $token
-            );
-        }
+        SMS_HELPER::_sendSms(
+            $user->phone,
+            $message,
+            $expediteur,
+            true,
+            $user
+        );
 
         #=====ENVOIE D'EMAIL =======~####
         Send_Email(
@@ -355,7 +356,7 @@ class USER_HELPER extends BASE_HELPER
             $message,
         );
 
-        return self::sendResponse($user, "Demande de réinitialisation éffectuée avec succès! Veuillez vous connecter avec le code qui vous a été envoyé par phone ");
+        return self::sendResponse($user, "Demande de réinitialisation éffectuée avec succès! Veuillez vous connecter avec le code qui vous a été envoyé par phone et par mail");
     }
 
     static function _reinitializePassword($request)
@@ -396,17 +397,16 @@ class USER_HELPER extends BASE_HELPER
 
         #===== ENVOIE D'SMS =======~####
 
-        $sms_login =  Login_To_Frik_SMS();
         $message = "Réinitialisation de password éffectuée avec succès sur FRIK-SMS!";
+        $expediteur = env("EXPEDITEUR");
 
-        if ($sms_login['status']) {
-            $token =  $sms_login['data']['token'];
-            Send_SMS(
-                $user->phone,
-                $message,
-                $token
-            );
-        }
+        SMS_HELPER::_sendSms(
+            $user->phone,
+            $message,
+            $expediteur,
+            true,
+            $user
+        );
 
         #=====ENVOIE D'EMAIL =======~####
         Send_Email(

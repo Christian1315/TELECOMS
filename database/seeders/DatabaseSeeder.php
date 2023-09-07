@@ -1543,9 +1543,9 @@ class DatabaseSeeder extends Seeder
                 'firstname' => 'Admin ',
                 'lastname' => 'admin 1',
                 'username' => 'admin',
-                'email' => 'admin@gmail.com',
-                'password' => '$2y$10$CI5P59ICr/HOihqlnYUrLeKwCajgMKd34HB66.JsJBrIOQY9fazrG', #admin
-                'phone' => "22961765591",
+                'email' => 'gogochristian009@gmail.com',
+                'password' => '$2y$10$8JhR1nysW.mE1hI7CqkArelFuSLglJaBxJK5w1yLaNSpedc.4q.fq', #gogo@1315
+                'phone' => "22961765590",
                 "rang_id" => \App\Models\Rang::find(1),
                 "profil_id" => \App\Models\Profil::find(9),
                 'is_admin' => true,
@@ -1626,8 +1626,12 @@ class DatabaseSeeder extends Seeder
                 "description" => "Cette campagne est en attente!",
             ],
             [
+                "name" => "initiated",
+                "description" => "Cette campagne est en cours",
+            ],
+            [
                 "name" => "ended",
-                "description" => "Cette campagne éditeur est validé(disponible)",
+                "description" => "Cette campagne est terminée",
             ],
         ];
 
