@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\DeveloperKey;
 use App\Models\Expeditor;
 use App\Models\Sms;
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -124,9 +125,15 @@ class DEVELOPER_HELPER extends BASE_HELPER
     static function sendSms($request, $phone, $message)
     {
         ### VERIFIONS SI LA REQUETE CONTIENT la Clé API dans le header
-        $api_key = $request->header()["key"][0];
+        $api_key = $request->header()['api-key'][0];
+        $user_id = $request->header()['id'][0];
+
         if ($api_key == '') {
             return self::sendError("La clé API est réquise dans le header", 505);
+        }
+
+        if ($user_id == '') {
+            return self::sendError("Veuillez renseigner votre ID", 505);
         }
 
         ### VERIFIONS SI Clé API Existe
@@ -136,7 +143,7 @@ class DEVELOPER_HELPER extends BASE_HELPER
         }
 
         ### VERIFIONS SI Clé API EST VALIDE(voyons si elle appartient au user en question)
-        $dev = DeveloperKey::where(["key" => $api_key, "owner" => request()->user()->id])->get();
+        $dev = DeveloperKey::where(["key" => $api_key, "owner" => $user_id])->get();
         if ($dev->count() == 0) {
             return self::sendError("La clé API ne vous appartient pas", 505);
         }
@@ -148,7 +155,7 @@ class DEVELOPER_HELPER extends BASE_HELPER
         }
 
         ####==== VOYONS SI L'EXPEDITEUR APPARTIENT AU USER EN QUESTION =======###
-        $expeditor = Expeditor::where(["name" => $request->get("expediteur"), "owner" => request()->user()->id])->get();
+        $expeditor = Expeditor::where(["name" => $request->get("expediteur"), "owner" => $user_id])->get();
         if ($expeditor->count() == 0) {
             return self::sendError("Ce expéditeur ne vous appartient pas!", 404);
         }
@@ -157,63 +164,83 @@ class DEVELOPER_HELPER extends BASE_HELPER
         if ($expeditor[0]->status != 3) {
             return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
         }
-        $BASE_URL = env("BASE_URL");
-        $API_KEY = env("API_KEY");
-        $CLIENT_ID = env("CLIENT_ID");
-        $EXPEDITEUR = $request->get("expediteur");
 
-        $DESTINATAIRE = $phone;
-        $MESSAGE = $message;
+        $user = User::find($user_id);
+        ###====== ENVOIE D'SMS ======
 
-        $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
-
-        $smsData   = array(
-            'from' => $EXPEDITEUR, //l'expediteur
-            'to' => '' . $DESTINATAIRE . '', //destination au format international sans "+" ni "00". Ex: 22890443679
-            'type' => 1, //type de message text et flash
-            'message' => $MESSAGE, //le contenu de votre sms
-            'dlr' => 's' // 1 pour un retour par contre 0
+        return SMS_HELPER::_sendSms(
+            $phone,
+            $message,
+            $request->get("expediteur"),
+            false,
+            $user
         );
 
-        $response = Http::withHeaders([
-            'APIKEY' => $API_KEY,
-            'CLIENTID' => $CLIENT_ID
-        ])->post($url, $smsData);
+        // $BASE_URL = env("BASE_URL");
+        // $API_KEY = env("API_KEY");
+        // $CLIENT_ID = env("CLIENT_ID");
+        // $EXPEDITEUR = $request->get("expediteur");
 
-        $result = json_decode($response);
-        if (!$result->status === "ACT") { #LE MESSAGE N'A PAS ETE ENVOYE
-            return self::sendError("L'envoie a échoué", 505);
-        }
+        // $DESTINATAIRE = $phone;
+        // $MESSAGE = $message;
 
-        #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
+        // $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
 
-        $data = [
-            "messageId" => $result->messageId,
-            "from" => $result->from,
-            "to" => $result->to,
-            "message" => $result->message,
-            "type" => $result->type,
-            "route" => $result->route,
-            "sms_count" => $result->sms_count,
-            "amount" => $result->amount,
-            "currency" => $result->currency,
-            "status" => $result->status
-        ];
+        // $smsData   = array(
+        //     'from' => $EXPEDITEUR, //l'expediteur
+        //     'to' => '' . $DESTINATAIRE . '', //destination au format international sans "+" ni "00". Ex: 22890443679
+        //     'type' => 1, //type de message text et flash
+        //     'message' => $MESSAGE, //le contenu de votre sms
+        //     'dlr' => 's' // 1 pour un retour par contre 0
+        // );
 
-        $sms = Sms::create($data);
-        $sms->owner = request()->user()->id;
-        $sms->save();
+        // $response = Http::withHeaders([
+        //     'APIKEY' => $API_KEY,
+        //     'CLIENTID' => $CLIENT_ID
+        // ])->post($url, $smsData);
 
-        return self::sendResponse($result, 'Sms envoyé avec succès!!');
+        // $result = json_decode($response);
+        // if (!$result->status === "ACT") { #LE MESSAGE N'A PAS ETE ENVOYE
+        //     return self::sendError("L'envoie a échoué", 505);
+        // }
+
+        // #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
+
+        // $data = [
+        //     "messageId" => $result->messageId,
+        //     "from" => $result->from,
+        //     "to" => $result->to,
+        //     "message" => $result->message,
+        //     "type" => $result->type,
+        //     "route" => $result->route,
+        //     "sms_count" => $result->sms_count,
+        //     "amount" => $result->amount,
+        //     "currency" => $result->currency,
+        //     "status" => $result->status
+        // ];
+
+        // $sms = Sms::create($data);
+        // $sms->owner = request()->user()->id;
+        // $sms->save();
+
+        return self::sendResponse($user, 'Sms envoyé avec succès!!');
     }
 
     static function allSms($request)
     {
         ### VERIFIONS SI LA REQUETE CONTIENT la Clé API dans le header
-        $api_key = $request->header()["key"][0];
+        $api_key = $request->header()['api-key'][0];
+        $user_id = $request->header()['id'][0];
+
         if ($api_key == '') {
             return self::sendError("La clé API est réquise dans le header", 505);
         }
+
+        if ($user_id == '') {
+            return self::sendError("Veuillez renseigner votre ID", 505);
+        }
+
+        // $user = User::find($user_id);
 
         ### VERIFIONS SI Clé API Existe
         $dev = DeveloperKey::where(["key" => $api_key])->get();
@@ -222,22 +249,20 @@ class DEVELOPER_HELPER extends BASE_HELPER
         }
 
         ### VERIFIONS SI Clé API EST VALIDE(voyons si elle appartient au user en question)
-        $dev = DeveloperKey::where(["key" => $api_key, "owner" => request()->user()->id])->get();
+        $dev = DeveloperKey::where(["key" => $api_key, "owner" => $user_id])->get();
         if ($dev->count() == 0) {
             return self::sendError("La clé API ne vous appartient pas", 505);
         }
 
-        $sms =  Sms::where(["owner" => request()->user()->id])->orderBy("id", "desc")->get();
+        $sms =  Sms::where(["owner" => $user_id])->orderBy("id", "desc")->get();
         return self::sendResponse($sms, 'Tout les sms récupérés avec succès!!');
     }
 
     static function retrieveSms($request, $id)
     {
         ### VERIFIONS SI LA REQUETE CONTIENT la Clé API dans le header
-        $api_key = $request->header()["key"][0];
-        if ($api_key == '') {
-            return self::sendError("La clé API est réquise dans le header", 505);
-        }
+        $api_key = $request->header()['api-key'][0];
+        $user_id = $request->header()['id'][0];
 
         ### VERIFIONS SI Clé API Existe
         $dev = DeveloperKey::where(["key" => $api_key])->get();
@@ -246,12 +271,12 @@ class DEVELOPER_HELPER extends BASE_HELPER
         }
 
         ### VERIFIONS SI Clé API EST VALIDE(voyons si elle appartient au user en question)
-        $dev = DeveloperKey::where(["key" => $api_key, "owner" => request()->user()->id])->get();
+        $dev = DeveloperKey::where(["key" => $api_key, "owner" => $user_id])->get();
         if ($dev->count() == 0) {
             return self::sendError("La clé API ne vous appartient pas", 505);
         }
 
-        $sms = Sms::where(["id" => $id, "owner" => request()->user()->id])->get();
+        $sms = Sms::where(["id" => $id, "owner" => $user_id])->get();
         if ($sms->count() == 0) {
             return self::sendError("Ce sms n'existe pas!", 404);
         }

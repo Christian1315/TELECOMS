@@ -4,12 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Campagne;
 use App\Models\CampagneGroupe;
-use App\Models\CampagneStatus;
 use App\Models\Expeditor;
 use App\Models\Groupe;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 

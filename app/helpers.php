@@ -61,15 +61,6 @@ function Get_compte_active_Code($user, $type)
 
 ##======== CE HELPER PERMET D'ENVOYER DES SMS VIA PHONE ==========## 
 
-function Login_To_Frik_SMS()
-{
-    $response = Http::post(env("SEND_SMS_API_URL") . "/api/v1/login", [
-        "account" => "admin",
-        "password" => "admin",
-    ]);
-    return $response;
-}
-
 function Campagne_Initiation($campagne)
 {
     $owner = User::find($campagne->owner);
