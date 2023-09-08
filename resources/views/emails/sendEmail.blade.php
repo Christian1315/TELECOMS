@@ -2,7 +2,7 @@
 <html lang="en" style="box-sizing: border-box;font-family: Inter !important;">
 
 <head style="box-sizing: border-box;font-family: Inter !important;">
-    <meta charset="UTF-8" style="box-sizing: border-box;font-family: Inter !important;">
+    <meta charset="Unicode" style="box-sizing: border-box;font-family: Inter !important;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" style="box-sizing: border-box;font-family: Inter !important;">
 
     <title style="box-sizing: border-box;font-family: Inter !important;">FRIK-SMS</title>

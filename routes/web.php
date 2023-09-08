@@ -31,7 +31,7 @@ Route::get('pdf', [PdfController::class, 'getPostPdf']);
 
 Route::get('/sendMail', function () {
     $details = [
-        "subject" => "A test",
+        "subject" => "Activation de compte sur FRIK-SMS",
         "message" => "Hello bro",
     ];
     Mail::to("gogochristian009@gmail.com")->send(new SendEmail($details));
@@ -39,6 +39,5 @@ Route::get('/sendMail', function () {
 });
 
 Route::get('/mail-template', function () {
-
     return view("emails.new_mail");
 });

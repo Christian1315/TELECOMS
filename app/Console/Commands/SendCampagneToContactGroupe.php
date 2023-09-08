@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Campagne;
 use Illuminate\Console\Command;
 
 class SendCampagneToContactGroupe extends Command

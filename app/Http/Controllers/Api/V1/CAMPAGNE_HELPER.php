@@ -86,7 +86,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function createCampagne($formData)
     {
-       
+
         ###_______
         $user = request()->user();
         $expeditor = Expeditor::where("id", $formData["expeditor"])->get();
@@ -191,13 +191,12 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         };
         $Campagne = $Campagne[0];
 
-
         ###____VERIFIONS SI CETTE CAMPAGNE A DEJA ETE INITIEE
         if ($Campagne->status == 3) {
             return self::sendError("Désolé! Cette campagne est déjà en cours! Vous ne pouvez pas la modifier!", 505);
         }
 
-        ###____S'IL Y CHANGEMENT DE STATUS
+        ###____S'IL Y A CHANGEMENT DE STATUS
         if ($request->get("status")) {
             if (!is_numeric($request->get('status'))) {
                 return self::sendError("Le status doit être un entier", 505);
@@ -223,7 +222,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         $Campagne = $Campagne[0];
 
         ###____VERIFIONS SI CETTE CAMPAGNE A DEJA ETE INITIEE
-        if ($Campagne->initiated = 1) {
+        if ($Campagne->status == 3) {
             return self::sendError("Désolé! Cette campagne est déjà en cours! Vous ne pouvez pas la supprimer!", 505);
         }
         #SUPPRESSION DU Campagne;
@@ -231,5 +230,25 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         $Campagne->deleted_at = now();
         $Campagne->save();
         return self::sendResponse($Campagne, "Ce Campagne a été supprimé avec succès!!");
+    }
+
+    static function _stopCampagne($id)
+    {
+        $user = request()->user();
+        if ($user->is_admin) {
+            $Campagne = Campagne::where(["id" => $id])->get();
+        } else {
+            $Campagne = Campagne::where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
+        }
+
+        if ($Campagne->count() == 0) { #QUAND **$Campagne** n'esxiste pas
+            return self::sendError('Cette Campagne n\'existe pas!', 404);
+        };
+        $Campagne = $Campagne[0];
+
+        #STOPER UNE CAMPAGNE;
+        $Campagne->status = 4;
+        $Campagne->save();
+        return self::sendResponse($Campagne, "Ce Campagne a été supprimée avec succès!!");
     }
 }

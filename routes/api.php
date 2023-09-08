@@ -171,6 +171,7 @@ Route::prefix('v1')->group(function () {
             Route::any('{id}/update', 'UpdateCampagne'); #UPDATE D'UNE CAMAPAGNE
             Route::any('{id}/delete', 'DeleteCampagne'); #DELETE D'UNE CAMPAGNE
             Route::any('{id}/initiate', '_InitiateCampagne'); #
+            Route::any('{id}/stop', 'StopCampagne'); #
         });
     });
 

@@ -86,4 +86,14 @@ class CampagneController extends CAMPAGNE_HELPER
 
         return $this->_deleteCampagne($id);
     }
+
+    public function StopCampagne(Request $request, $id)
+    {
+        #VERIFICATION DE LA METHOD
+        if ($this->methodValidation($request->method(), "GET") == False) {
+            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR Campagne_HELPER
+            return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
+        };
+        return $this->_stopCampagne($id);
+    }
 }
