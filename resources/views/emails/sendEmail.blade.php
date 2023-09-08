@@ -1,139 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="box-sizing: border-box;font-family: Inter !important;">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <title>FRIK-SMS</title>
+<head style="box-sizing: border-box;font-family: Inter !important;">
+    <meta charset="UTF-8" style="box-sizing: border-box;font-family: Inter !important;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" style="box-sizing: border-box;font-family: Inter !important;">
 
-    <style>
-        * {
-            font-family: Inter !important;
-        }
+    <title style="box-sizing: border-box;font-family: Inter !important;">FRIK-SMS</title>
 
-        .header {
-            background: #730208 !important;
-            padding: 100px !important;
-        }
-
-        .title {
-            font-size: 53px !important;
-            font-weight: 400 !important;
-            line-height: 64px !important;
-            letter-spacing: 0.125em !important;
-        }
-
-        .bottom {
-            background: #73020866 !important;
-            padding-block: 10px !important;
-            box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important
-        }
-
-        #content {
-            background: #fff !important;
-            box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
-            margin-top: -100px !important;
-            border-radius: 10px 10px 0px 0px !important;
-        }
-
-        #content .main {
-            padding: 30px !important;
-            /* display: none!important; */
-        }
-
-        .confirm-btn {
-            background: #730208 !important;
-            padding: 20px !important;
-            border-radius: 5px !important;
-            box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
-            color: #fff !important;
-            font-size: 22px !important;
-            font-weight: 400 !important;
-            line-height: 27px !important;
-            letter-spacing: 0em !important;
-            text-align: center !important;
-            margin-block: 50px !important;
-        }
-
-        p {
-            font-size: 22px !important;
-            font-weight: 400 !important;
-            line-height: 27px !important;
-            letter-spacing: 0em !important;
-            margin-block: 30px !important;
-        }
-
-        a.link {
-            color: #730208 !important;
-            font-size: 18px !important;
-            font-weight: 600 !important;
-            line-height: 22px !important;
-            letter-spacing: 0em !important;
-            text-decoration: none !important;
-        }
-
-        .text-center {
-            text-align: center !important;
-        }
-
-        .coordial {
-            margin-block: 50px !important;
-        }
-
-        .container {
-            background-color: #E8E8E8 !important;
-            padding-top: 30px !important;
-        }
-
-        .bottom h3 {
-            font-size: 18px !important;
-            font-weight: 600 !important;
-            line-height: 22px !important;
-            letter-spacing: 0em !important;
-        }
-
-        .text-dark {
-            color: #000 !important;
-        }
-    </style>
 </head>
 
-<body>
-    <div class="container">
-        <div class="row header">
+<body style="box-sizing: border-box;margin: 0;font-family: Inter !important;font-size: var(--bs-body-font-size);font-weight: var(--bs-body-font-weight);line-height: var(--bs-body-line-height);color: var(--bs-body-color);text-align: var(--bs-body-text-align);background-color: var(--bs-body-bg);-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: transparent;">
+    <div class="container" style="box-sizing: border-box;--bs-gutter-x: 1.5rem;--bs-gutter-y: 0;width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);margin-right: auto;margin-left: auto;font-family: Inter !important;background-color: #E8E8E8 !important;padding-top: 30px !important;">
+        <div class="row header" style="box-sizing: border-box;--bs-gutter-x: 1.5rem;--bs-gutter-y: 0;display: flex;flex-wrap: wrap;margin-top: calc(-1 * var(--bs-gutter-y));margin-right: calc(-.5 * var(--bs-gutter-x));margin-left: calc(-.5 * var(--bs-gutter-x));font-family: Inter !important;background: #730208 !important;padding: 100px !important;">
         </div>
 
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8" id="content">
+        <div class="row" style="box-sizing: border-box;--bs-gutter-x: 1.5rem;--bs-gutter-y: 0;display: flex;flex-wrap: wrap;margin-top: calc(-1 * var(--bs-gutter-y));margin-right: calc(-.5 * var(--bs-gutter-x));margin-left: calc(-.5 * var(--bs-gutter-x));font-family: Inter !important;">
+            <div class="col-md-2" style="box-sizing: border-box;flex-shrink: 0;width: 16.66666667%;max-width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);margin-top: var(--bs-gutter-y);flex: 0 0 auto;font-family: Inter !important;"></div>
+            <div class="col-md-8" id="content" style="box-sizing: border-box;flex-shrink: 0;width: 66.66666667%;max-width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);margin-top: -300px !important;flex: 0 0 auto;font-family: Inter !important;background: #fff !important;box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;border-radius: 10px 10px 0px 0px !important;">
                 <!-- main -->
-                <div class="main">
-                    <h1 class="text-center text-dark title">{{$details["subject"]}}</h1>
-                    <p class="text-center">Nous sommes heureux de vous compter parmi les utilisateurs de frikSMS .</p>
-                    <p class=""> {{$details["message"]}}</p>
-                    <p class="text-center">
-                        <a class="btn btn-lg confirm-btn">Visitez le site officiel</a>
+                <div class="main" style="box-sizing: border-box;font-family: Inter !important;padding: 30px !important;">
+                    <h1 class="text-center text-dark title" style="box-sizing: border-box;margin-top: 0;margin-bottom: .5rem;font-weight: 400 !important;line-height: 64px !important;font-size: 53px !important;--bs-text-opacity: 1;font-family: Inter !important;text-align: center !important;color: #000 !important;letter-spacing: 0.125em !important;">{{$details["subject"]}}</h1>
+                    <p class="text-center" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;font-family: Inter !important;font-size: 22px !important;font-weight: 400 !important;line-height: 27px !important;letter-spacing: 0em !important;margin-block: 30px !important;text-align: center !important;">Nous sommes heureux de vous compter parmi les utilisateurs de frikSMS .</p>
+                    <p class="" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;font-family: Inter !important;font-size: 22px !important;font-weight: 400 !important;line-height: 27px !important;letter-spacing: 0em !important;margin-block: 30px !important;"> {{$details["message"]}}</p>
+                    <br>
+                    <p class="" style="text-align:center!important">
+                        <a href="#" style="font-size:20px!important;padding: 20px !important;color:#fff!important;text-align:center!important;background-color: #730208 !important;border-radius:5px;padding-top:2Opx!important;padding-bottom:2Opx!important;border-color:transparent;text-decoration:none!important">Visitez notre site officile</a>
                     </p>
-                    <p class="">Si le bouton ne marche pas , copiez ce lien dans votre navigateur</p>
+                    <br><br>
+                    <p class="" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;font-family: Inter !important;font-size: 22px !important;font-weight: 400 !important;line-height: 27px !important;letter-spacing: 0em !important;margin-block: 30px !important;">Si le bouton ne marche pas , copiez ce lien dans votre navigateur</p>
 
-                    <a href="https//:inscritpion.friksms.com" class="link">Https//:inscritpion.friksms.com</a>
+                    <a href="https//:inscritpion.friksms.com" class="link" style="box-sizing: border-box;color: #730208 !important;text-decoration: none !important;font-family: Inter !important;font-size: 18px !important;font-weight: 600 !important;line-height: 22px !important;letter-spacing: 0em !important;">Https//:inscritpion.friksms.com</a>
+                    <br><br>
+                    <p class="" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;font-family: Inter !important;font-size: 22px !important;font-weight: 400 !important;line-height: 27px !important;letter-spacing: 0em !important;margin-block: 30px !important;">Si vous avez une quelconque préoccupation , n’hésitez pas à répondre à cet email . Nous nous tiendrons à votre disposition</p>
 
-                    <p class="">Si vous avez une quelconque préoccupation , n’hésitez pas à répondre à cet email . Nous nous tiendrons à votre disposition</p>
-
-                    <p class="coordial">
-                        Cordialement, <br>
-                        L’équipe de <strong>FRIKSMS</strong>
+                    <p class="coordial" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;font-family: Inter !important;font-size: 22px !important;font-weight: 400 !important;line-height: 27px !important;letter-spacing: 0em !important;margin-block: 50px !important;">
+                        Cordialement, <br style="box-sizing: border-box;font-family: Inter !important;">
+                        L’équipe de <strong style="box-sizing: border-box;font-weight: bolder;font-family: Inter !important;">FRIKSMS</strong>
                     </p>
                 </div>
                 <!-- footer -->
-                <div class="row shadow-lg py-3 text-center bottom">
-                    <div class="col-md-12">
-                        <h3 class="text-dark">© Copyright 2023 - Développé par HSMC</h3>
+                <div class="row shadow-lg text-center bottom" style="box-sizing: border-box;--bs-gutter-x: 1.5rem;--bs-gutter-y: 0;display: flex;flex-wrap: wrap;margin-top: calc(-1 * var(--bs-gutter-y));margin-right: calc(-.5 * var(--bs-gutter-x));margin-left: calc(-.5 * var(--bs-gutter-x));font-family: Inter !important;box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;text-align: center !important;background: #73020866 !important;">
+                    <div class="col-md-12" style="padding:20px!important;box-sizing: border-box;flex-shrink: 0;width: 100%;max-width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);margin-block: 30px!important;flex: 0 0 auto;font-family: Inter !important;">
+                        <h3 class="text-dark" style="box-sizing: border-box;margin-top: 0;margin-bottom: .5rem;font-weight: 600 !important;line-height: 22px !important;font-size: 18px !important;--bs-text-opacity: 1;font-family: Inter !important;color: #000 !important;letter-spacing: 0em !important;">© Copyright 2023 - Développé par HSMC</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-md-2"></div>
+            <div class="col-md-2" style="box-sizing: border-box;flex-shrink: 0;width: 16.66666667%;max-width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);margin-top: var(--bs-gutter-y);flex: 0 0 auto;font-family: Inter !important;"></div>
         </div>
 
     </div>
