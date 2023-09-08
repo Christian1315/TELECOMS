@@ -161,7 +161,12 @@ class CAMPAGNE_HELPER extends BASE_HELPER
     static function initiateCampagne($id)
     {
         $user = request()->user();
-        $Campagne = Campagne::where(["id" => $id, "owner" => $user->id])->get();
+
+        if ($user->is_admin) {
+            $Campagne = Campagne::where(["id" => $id])->get();
+        } else {
+            $Campagne = Campagne::where(["id" => $id, "owner" => $user->id])->get();
+        }
 
         if ($Campagne->count() == 0) {
             return self::sendError("Cette campagne n'existe pas!", 404);
@@ -174,8 +179,9 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             return self::sendError("Désolé! Cette campagne est déjà en cours", 505);
         }
 
-        Campagne_Initiation($campagne);
-
+        $campagne->status = 3;
+        $campagne->save();
+        
         return self::sendResponse($campagne, "Campagne initiée avec succès!");
     }
 
