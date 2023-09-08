@@ -137,7 +137,7 @@ function Campagne_Initiation($campagne)
                 $campagne->num_time_rest = $num_time_rest - 1;
 
                 ###___NOTONS QUE CETTE CAMPAGNE EST LANCEE
-                $campagne->status = 3;
+                $campagne->status = 2;
 
                 ###___NOTONS LA DATE DE CE ENVOIE D'SMS
                 $campagne->previous_send_date = now();
@@ -147,7 +147,7 @@ function Campagne_Initiation($campagne)
         }
     } elseif ($now > $end_time) {
         ###___NOTONS QUE CETTE CAMPAGNE EST TERMINEE
-        $campagne->status = 4;
+        $campagne->status = 3;
         $campagne->save();
     }
 }

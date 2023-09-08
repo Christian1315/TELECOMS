@@ -1618,12 +1618,8 @@ class DatabaseSeeder extends Seeder
 
         $campagne_status = [
             [
-                "name" => "not_check",
-                "description" => "Le traitement de cette campagne est en cours!",
-            ],
-            [
-                "name" => "on_old",
-                "description" => "Cette campagne est en attente!",
+                "name" => "new",
+                "description" => "Cette campagne viens juste d'etre ajoutée!",
             ],
             [
                 "name" => "initiated",
@@ -1632,6 +1628,10 @@ class DatabaseSeeder extends Seeder
             [
                 "name" => "ended",
                 "description" => "Cette campagne est terminée",
+            ],
+            [
+                "name" => "stoped",
+                "description" => "Cette campagne est stoppée",
             ],
         ];
 

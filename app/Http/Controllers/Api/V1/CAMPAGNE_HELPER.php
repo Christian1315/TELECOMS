@@ -86,6 +86,10 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function createCampagne($formData)
     {
+        $campagnes = Campagne::whereRaw('status != 3')->whereRaw("status != 4")->get();
+
+        return $campagnes;
+
 
         ###_______
         $user = request()->user();
@@ -99,11 +103,11 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         }
 
         $groupes_ids = $formData["groupes"];
-        // $groupes_ids = explode(",", $groupes_ids);
+        $groupes_ids = explode(",", $groupes_ids);
 
         ###_____VERIFIONS SI CES GROUPES EXISTENT D'ABORD
         foreach ($groupes_ids as $id) {
-            $groupe = Groupe::where(["id" => $id, "owner" => $user->id])->get();
+            $groupe = Groupe::where(["id" => $id, "owner" => $user->id, "visible" => 1])->get();
             if ($groupe->count() == 0) {
                 return self::sendError("Le groupe d'id :" . $id . " n'existe pas!", 404);
             }
@@ -175,13 +179,13 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         $campagne = $Campagne[0];
 
         ###____VERIFIONS SI CETTE CAMPAGNE A DEJA ETE INITIEE
-        if ($campagne->status == 3) {
+        if ($campagne->status == 2) {
             return self::sendError("Désolé! Cette campagne est déjà en cours", 505);
         }
 
-        $campagne->status = 3;
+        $campagne->status = 2;
         $campagne->save();
-        
+
         return self::sendResponse($campagne, "Campagne initiée avec succès!");
     }
 
@@ -198,7 +202,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         $Campagne = $Campagne[0];
 
         ###____VERIFIONS SI CETTE CAMPAGNE A DEJA ETE INITIEE
-        if ($Campagne->status == 3) {
+        if ($Campagne->status == 2) {
             return self::sendError("Désolé! Cette campagne est déjà en cours! Vous ne pouvez pas la modifier!", 505);
         }
 
@@ -228,7 +232,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         $Campagne = $Campagne[0];
 
         ###____VERIFIONS SI CETTE CAMPAGNE A DEJA ETE INITIEE
-        if ($Campagne->status == 3) {
+        if ($Campagne->status == 2) {
             return self::sendError("Désolé! Cette campagne est déjà en cours! Vous ne pouvez pas la supprimer!", 505);
         }
         #SUPPRESSION DU Campagne;
@@ -255,6 +259,6 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         #STOPER UNE CAMPAGNE;
         $Campagne->status = 4;
         $Campagne->save();
-        return self::sendResponse($Campagne, "Ce Campagne a été supprimée avec succès!!");
+        return self::sendResponse($Campagne, "Ce Campagne a été stopée avec succès!!");
     }
 }
