@@ -179,7 +179,7 @@ Route::prefix('v1')->group(function () {
     Route::controller(DeveloperController::class)->group(function () {
         Route::prefix('developer')->group(function () {
             Route::prefix('key')->group(function () {
-                Route::any('generate', 'GenerateDeveloperKey');
+                // Route::any('generate', 'GenerateDeveloperKey');
                 Route::any('{id}/retrieve', 'RetrieveDeveloperKey');
                 Route::any('{id}/regenerate', 'RegenerateDeveloperKey');
                 // Route::any('{id}/delete', 'DeleteCampagne');

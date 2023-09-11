@@ -68,19 +68,19 @@ class DEVELOPER_HELPER extends BASE_HELPER
         return $validator;
     }
 
-    static function _createDeveloperKey()
-    {
-        ##VERIFIONS SI CE USER DISPOSE DEJA D'UNE CLE
-        $dev = DeveloperKey::where(["owner" => request()->user()->id])->get();
-        if ($dev->count() != 0) {
-            return self::sendError("Vous disposez déjà d'une clé API", 505);
-        }
-        $Developer = new DeveloperKey();
-        $Developer->key = Str::uuid();
-        $Developer->owner = request()->user()->id;
-        $Developer->save();
-        return self::sendResponse($Developer, 'La clé API a été générée avec succès!!');
-    }
+    // static function _createDeveloperKey()
+    // {
+    //     ##VERIFIONS SI CE USER DISPOSE DEJA D'UNE CLE
+    //     $dev = DeveloperKey::where(["owner" => request()->user()->id])->get();
+    //     if ($dev->count() != 0) {
+    //         return self::sendError("Vous disposez déjà d'une clé API", 505);
+    //     }
+    //     $Developer = new DeveloperKey();
+    //     $Developer->key = Str::uuid();
+    //     $Developer->owner = request()->user()->id;
+    //     $Developer->save();
+    //     return self::sendResponse($Developer, 'La clé API a été générée avec succès!!');
+    // }
 
     static function _retrieveDeveloperKey($userId)
     {

@@ -10,29 +10,21 @@ class DeveloperController extends DEVELOPER_HELPER
     public function __construct()
     {
         $this->middleware(['auth:api', 'scope:api-access'])->except([
-            "Send", "GetAllSms", "getSms","RetrieveDeveloperKey"
+            "Send", "GetAllSms", "getSms"
         ]);
     }
 
-    function GenerateDeveloperKey(Request $request)
-    {
-        #VERIFICATION DE LA METHOD
-        if ($this->methodValidation($request->method(), "POST") == False) {
-            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR Developer_HELPER
-            return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
-        };
+    // function GenerateDeveloperKey(Request $request)
+    // {
+    //     #VERIFICATION DE LA METHOD
+    //     if ($this->methodValidation($request->method(), "POST") == False) {
+    //         #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR Developer_HELPER
+    //         return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
+    //     };
 
-        // #VALIDATION DES DATAs DEPUIS LA CLASS BASE_HELPER HERITEE PAR Developer_HELPER
-        // $validator = $this->Developer_key_Validator($request->all());
-
-        // if ($validator->fails()) {
-        //     #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR Developer_HELPER
-        //     return $this->sendError($validator->errors(), 404);
-        // }
-
-        #ENREGISTREMENT DANS LA DB VIA **_createDeveloperKey** DE LA CLASS BASE_HELPER HERITEE PAR Developer_HELPER
-        return $this->_createDeveloperKey($request->all());
-    }
+    //     #ENREGISTREMENT DANS LA DB VIA **_createDeveloperKey** DE LA CLASS BASE_HELPER HERITEE PAR Developer_HELPER
+    //     return $this->_createDeveloperKey($request->all());
+    // }
 
 
     #GET A Developer

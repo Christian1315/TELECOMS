@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\V1\SMS_HELPER;
-
+use App\Models\DeveloperKey;
+use Illuminate\Support\Str;
 
 class USER_HELPER extends BASE_HELPER
 {
@@ -154,6 +155,11 @@ class USER_HELPER extends BASE_HELPER
         $solde->owner = $user->id;
         $solde->save();
 
+        ##CREATION DU DEVELOPPER API DU USER
+        $Developer = new DeveloperKey();
+        $Developer->key = Str::uuid();
+        $Developer->owner = $user->id;
+        $Developer->save();
 
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 
@@ -215,11 +221,11 @@ class USER_HELPER extends BASE_HELPER
 
             ###
             $token = $user->createToken('MyToken', ['api-access'])->accessToken;
-            $user['token'] = $token;
-
+            
             $user['rang'] = $user->rang;
             $user['profil'] = $user->profil;
             $user['solde'] = $user->sold;
+            $user['developer'] = $user->developer;
             $user['expeditors'] = $user->expeditors;
             $user['token'] = $token;
 

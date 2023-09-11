@@ -78,4 +78,8 @@ class User extends Authenticatable
     function campagne() : HasMany {
         return $this->hasMany(Campagne::class, "owner");
     }
+
+    function developer() : HasOne {
+        return $this->hasOne(DeveloperKey::class,"owner");
+    }
 }
