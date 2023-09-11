@@ -9,7 +9,9 @@ class DeveloperController extends DEVELOPER_HELPER
     #VERIFIONS SI LE USER EST AUTHENTIFIE
     public function __construct()
     {
-        $this->middleware(['auth:api', 'scope:api-access'])->except(["Send", "GetAllSms", "getSms"]);
+        $this->middleware(['auth:api', 'scope:api-access'])->except([
+            "Send", "GetAllSms", "getSms","RetrieveDeveloperKey"
+        ]);
     }
 
     function GenerateDeveloperKey(Request $request)
@@ -34,7 +36,7 @@ class DeveloperController extends DEVELOPER_HELPER
 
 
     #GET A Developer
-    function _RetrieveDeveloperKey(Request $request, $id)
+    function RetrieveDeveloperKey(Request $request, $id)
     {
         #VERIFICATION DE LA METHOD
         if ($this->methodValidation($request->method(), "GET") == False) {
@@ -43,7 +45,7 @@ class DeveloperController extends DEVELOPER_HELPER
         };
 
         #RECUPERATION D'UN Developer
-        return $this->_retrieveDeveloperKey($request, $id);
+        return $this->_retrieveDeveloperKey($id);
     }
 
     function DeleteDeveloperKey(Request $request, $id)

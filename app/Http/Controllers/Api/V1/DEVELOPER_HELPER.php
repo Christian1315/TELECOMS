@@ -82,9 +82,13 @@ class DEVELOPER_HELPER extends BASE_HELPER
         return self::sendResponse($Developer, 'La clé API a été générée avec succès!!');
     }
 
-    static function retrieveDeveloperKey($id)
+    static function _retrieveDeveloperKey($userId)
     {
-        $Developer = DeveloperKey::with(["user"])->where('id', $id)->get();
+        $user = User::find($userId);
+        if (!$user) {
+            return self::sendError("Cet utilisateur n'existe pas",505);
+        }
+        $Developer = DeveloperKey::with(["user"])->where(['owner'=>$userId])->get();
         if ($Developer->count() == 0) {
             return self::sendError("Ce Developer n'existe pas!!", 404);
         }
