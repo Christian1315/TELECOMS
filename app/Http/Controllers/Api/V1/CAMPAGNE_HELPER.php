@@ -82,11 +82,6 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function createCampagne($formData)
     {
-        $campagnes = Campagne::whereRaw('status != 3')->whereRaw("status != 4")->get();
-
-        return $campagnes;
-
-
         ###_______
         $user = request()->user();
         $expeditor = Expeditor::where("id", $formData["expeditor"])->get();

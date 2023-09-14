@@ -22,7 +22,7 @@
                 <div class="main" style="font-family: Inter;padding: 30px;">
                     <h1 class="text-center text-dark title" style="font-family: Inter;font-size: 33px;font-weight: 400;line-height: 64px;letter-spacing: 0.125em;color: #000;text-align: center !important;">{{$details["subject"]}}</h1>
                     <p class="text-center" style="font-family: Inter;font-size: 22px;font-weight: 400;line-height: 27px;letter-spacing: 0em;margin-block: 30px;text-align: center !important;">Nous sommes heureux de vous compter parmi les utilisateurs de frikSMS .</p>
-                    <p class="" style="font-family: Inter;font-size: 22px;font-weight: 400;line-height: 27px;letter-spacing: 0em;margin-block: 30px;"> {{$details["subject"]}}</p>
+                    <p class="" style="font-family: Inter;font-size: 22px;font-weight: 400;line-height: 27px;letter-spacing: 0em;margin-block: 30px;"> {{$details["message"]}}</p>
                     <p class="text-center" style="font-family: Inter;font-size: 22px;font-weight: 400;line-height: 27px;letter-spacing: 0em;margin-block: 30px;text-align: center !important;">
                         <a href="https://telecoms.digital" class="btn btn-md text-white confirm-btn" style="font-family: Inter;padding: 20px;border-radius: 5px;color: #fff;font-size: 22px;font-weight: 400;line-height: 27px;letter-spacing: 0em;margin-block: 50px!important;background: #730208!important;box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;text-align: center !important;text-decoration:none!important">Visitez le site</a>
                     </p>
@@ -38,8 +38,8 @@
                     </p>
                 </div>
                 <!-- footer -->
-                <div class="row shadow-lg py-3 text-center bottom" style="font-family: Inter;background: #73020866;padding-block: 10px!important;box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;text-align: center !important;">
-                    <div class="col-md-12" style="font-family: Inter;">
+                <div class="row shadow-lg py-3 text-center bottom" style="font-family: Inter;background: #73020866;box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;text-align: center !important;">
+                    <div class="col-md-12" style="font-family: Inter;padding-block: 10px!important">
                         <h3 class="text-dark" style="font-family: Inter;color: #000;font-size: 18px;font-weight: 600;line-height: 22px;letter-spacing: 0em;">© Copyright 2023 - Développé par HSMC</h3>
                     </div>
                 </div>

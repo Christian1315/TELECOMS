@@ -164,12 +164,25 @@ class USER_HELPER extends BASE_HELPER
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 
         $compte_msg = "Votre compte a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username . "   Password: " . $formData["password"];
-
         $account_activation_code = "https://telecoms.digital/auth/register/activate?code=" . $active_compte_code;
         $compte_activation_msg = "Votre compte n'est pas encore actif. Veuillez l'activer en utilisant le ci-dessous : " . $account_activation_code;
 
         $expediteur = env("EXPEDITEUR");
 
+        #=====ENVOIE D'EMAIL =======~####
+        Send_Email(
+            $user->email,
+            "Création de compte sur FRIK-SMS",
+            $compte_msg,
+        );
+
+        Send_Email(
+            $user->email,
+            "Activation de compte sur FRIK-SMS",
+            $compte_activation_msg,
+        );
+
+        ###____
         ##___CREATION DE COMPTE
         SMS_HELPER::_sendSms(
             $user->phone,
@@ -187,18 +200,6 @@ class USER_HELPER extends BASE_HELPER
             User::find(1)
         );
 
-        #=====ENVOIE D'EMAIL =======~####
-        Send_Email(
-            $user->email,
-            "Création de compte sur FRIK-SMS",
-            $compte_msg,
-        );
-
-        Send_Email(
-            $user->email,
-            "Activation de compte sur FRIK-SMS",
-            $compte_activation_msg,
-        );
         return self::sendResponse($user, 'User crée avec succès!!');
     }
 
