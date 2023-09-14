@@ -15,8 +15,8 @@
         </div>
 
         <div class="row" style="box-sizing: border-box;--bs-gutter-x: 1.5rem;--bs-gutter-y: 0;display: flex;flex-wrap: wrap;margin-top: calc(-1 * var(--bs-gutter-y));margin-right: calc(-.5 * var(--bs-gutter-x));margin-left: calc(-.5 * var(--bs-gutter-x));font-family: Inter !important;">
-            <div class="col-md-2" style="box-sizing: border-box;flex-shrink: 0;width: 16.66666667%;max-width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);margin-top: var(--bs-gutter-y);flex: 0 0 auto;font-family: Inter !important;"></div>
-            <div class="col-md-8" id="content" style="box-sizing: border-box;flex-shrink: 0;width: 66.66666667%;max-width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);margin-top: -300px !important;flex: 0 0 auto;font-family: Inter !important;background: #fff !important;box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;border-radius: 10px 10px 0px 0px !important;">
+            <div class="col-md-1" style="box-sizing: border-box;flex-shrink: 0;width: 16.66666667%;max-width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);margin-top: var(--bs-gutter-y);flex: 0 0 auto;font-family: Inter !important;"></div>
+            <div class="col-md-10" id="content" style="box-sizing: border-box;flex-shrink: 0;width: 66.66666667%;max-width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);flex: 0 0 auto;font-family: Inter !important;background: #fff !important;box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;border-radius: 10px 10px 0px 0px !important;">
                 <!-- main -->
                 <div class="main" style="box-sizing: border-box;font-family: Inter !important;padding: 30px !important;">
                     <h1 class="text-center text-dark title" style="box-sizing: border-box;margin-top: 0;margin-bottom: .5rem;font-weight: 400 !important;line-height: 64px !important;font-size: 53px !important;--bs-text-opacity: 1;font-family: Inter !important;text-align: center !important;color: #000 !important;letter-spacing: 0.125em !important;">{{$details["subject"]}}</h1>
@@ -24,7 +24,7 @@
                     <p class="" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;font-family: Inter !important;font-size: 22px !important;font-weight: 400 !important;line-height: 27px !important;letter-spacing: 0em !important;margin-block: 30px !important;"> {{$details["message"]}}</p>
                     <br>
                     <p class="" style="text-align:center!important">
-                        <a href="https://telecoms.digital" style="font-size:20px!important;padding: 20px !important;color:#fff!important;text-align:center!important;background-color: #730208 !important;border-radius:5px;padding-top:2Opx!important;padding-bottom:2Opx!important;border-color:transparent;text-decoration:none!important">Visitez notre site officile</a>
+                        <a href="https://telecoms.digital" style="font-size:20px!important;padding: 20px !important;color:#fff!important;text-align:center!important;background-color: #730208 !important;border-radius:5px;padding-top:1Opx!important;padding-bottom:1Opx!important;border-color:transparent;text-decoration:none!important">Visitez notre site</a>
                     </p>
                     <br><br>
                     <p class="" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;font-family: Inter !important;font-size: 22px !important;font-weight: 400 !important;line-height: 27px !important;letter-spacing: 0em !important;margin-block: 30px !important;">Si le bouton ne marche pas , copiez ce lien dans votre navigateur</p>
@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2" style="box-sizing: border-box;flex-shrink: 0;width: 16.66666667%;max-width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);margin-top: var(--bs-gutter-y);flex: 0 0 auto;font-family: Inter !important;"></div>
+            <div class="col-md-1" style="box-sizing: border-box;flex-shrink: 0;width: 16.66666667%;max-width: 100%;padding-right: calc(var(--bs-gutter-x) * .5);padding-left: calc(var(--bs-gutter-x) * .5);margin-top: var(--bs-gutter-y);flex: 0 0 auto;font-family: Inter !important;"></div>
         </div>
 
     </div>
