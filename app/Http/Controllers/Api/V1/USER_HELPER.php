@@ -453,7 +453,7 @@ class USER_HELPER extends BASE_HELPER
 
     static function rightAttach($formData)
     {
-        $user = User::where(['id' => $formData['user_id'], 'owner' => request()->user()->id])->get();
+        $user = User::where(['id' => $formData['user_id']])->get();
         if (count($user) == 0) {
             return self::sendError("Ce utilisateur n'existe pas!", 404);
         };

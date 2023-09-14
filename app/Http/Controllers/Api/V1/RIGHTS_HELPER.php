@@ -6,7 +6,6 @@ use App\Models\Action;
 use App\Models\Profil;
 use App\Models\Rang;
 use App\Models\Right;
-use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 class RIGHTS_HELPER extends BASE_HELPER
