@@ -62,7 +62,7 @@ class User extends Authenticatable
 
     function drts(): HasMany
     {
-        return $this->hasMany(Right::class, "user_id");
+        return $this->hasMany(Right::class, "user_id")->with(["action", "rang", "profil"]);
     }
 
     function sold(): HasOne
@@ -75,11 +75,13 @@ class User extends Authenticatable
         return $this->hasMany(Expeditor::class, "owner");
     }
 
-    function campagne() : HasMany {
+    function campagne(): HasMany
+    {
         return $this->hasMany(Campagne::class, "owner");
     }
 
-    function developer() : HasOne {
-        return $this->hasOne(DeveloperKey::class,"owner");
+    function developer(): HasOne
+    {
+        return $this->hasOne(DeveloperKey::class, "owner");
     }
 }
