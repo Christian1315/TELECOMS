@@ -58,7 +58,6 @@ function Get_compte_active_Code($user, $type)
     return $passcode;
 }
 
-
 ##======== CE HELPER PERMET D'ENVOYER DES SMS VIA PHONE ==========## 
 
 function Campagne_Initiation($campagne)
