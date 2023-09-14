@@ -24,12 +24,12 @@
                     <p class="" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;font-family: Inter !important;font-size: 22px !important;font-weight: 400 !important;line-height: 27px !important;letter-spacing: 0em !important;margin-block: 30px !important;"> {{$details["message"]}}</p>
                     <br>
                     <p class="" style="text-align:center!important">
-                        <a href="#" style="font-size:20px!important;padding: 20px !important;color:#fff!important;text-align:center!important;background-color: #730208 !important;border-radius:5px;padding-top:2Opx!important;padding-bottom:2Opx!important;border-color:transparent;text-decoration:none!important">Visitez notre site officile</a>
+                        <a href="https://telecoms.digital" style="font-size:20px!important;padding: 20px !important;color:#fff!important;text-align:center!important;background-color: #730208 !important;border-radius:5px;padding-top:2Opx!important;padding-bottom:2Opx!important;border-color:transparent;text-decoration:none!important">Visitez notre site officile</a>
                     </p>
                     <br><br>
                     <p class="" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;font-family: Inter !important;font-size: 22px !important;font-weight: 400 !important;line-height: 27px !important;letter-spacing: 0em !important;margin-block: 30px !important;">Si le bouton ne marche pas , copiez ce lien dans votre navigateur</p>
 
-                    <a href="https//:inscritpion.friksms.com" class="link" style="box-sizing: border-box;color: #730208 !important;text-decoration: none !important;font-family: Inter !important;font-size: 18px !important;font-weight: 600 !important;line-height: 22px !important;letter-spacing: 0em !important;">Https//:inscritpion.friksms.com</a>
+                    <a href="https://telecoms.digital" class="link" style="box-sizing: border-box;color: #730208 !important;text-decoration: none !important;font-family: Inter !important;font-size: 18px !important;font-weight: 600 !important;line-height: 22px !important;letter-spacing: 0em !important;">https://telecoms.digital</a>
                     <br><br>
                     <p class="" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;font-family: Inter !important;font-size: 22px !important;font-weight: 400 !important;line-height: 27px !important;letter-spacing: 0em !important;margin-block: 30px !important;">Si vous avez une quelconque préoccupation , n’hésitez pas à répondre à cet email . Nous nous tiendrons à votre disposition</p>
 

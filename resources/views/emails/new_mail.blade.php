@@ -113,11 +113,11 @@
                     <p class="text-center">Nous sommes heureux de vous compter parmi les utilisateurs de frikSMS .</p>
                     <p class=""> Confirmer votre inscription en cliquant sur ce boutton</p>
                     <p class="text-center">
-                        <a class="btn btn-lg confirm-btn">Visitez le site officiel</a>
+                        <a href="https://telecoms.digital" class="btn btn-lg confirm-btn">Visitez le site officiel</a>
                     </p>
                     <p class="">Si le bouton ne marche pas , copiez ce lien dans votre navigateur</p>
 
-                    <a href="https//:inscritpion.friksms.com" class="link">Https//:inscritpion.friksms.com</a>
+                    <a href="https://telecoms.digital" class="link">https://telecoms.digital</a>
 
                     <p class="">Si vous avez une quelconque préoccupation , n’hésitez pas à répondre à cet email . Nous nous tiendrons à votre disposition</p>
 

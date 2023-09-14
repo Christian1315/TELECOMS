@@ -7,7 +7,6 @@ use App\Models\Groupe;
 use App\Models\Sms;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
-use Lcobucci\JWT\Signer\None;
 
 class SMS_HELPER extends BASE_HELPER
 {
@@ -94,7 +93,7 @@ class SMS_HELPER extends BASE_HELPER
         return $validator;
     }
 
-    static function _sendSms($phone, $message, $expediteur, $inner_call = false, $user = null)
+    static function _sendSms($phone, $message, $expediteur, $out_call = false, $user = null)
     {
         $BASE_URL = env("BASE_URL");
         $API_KEY = env("API_KEY");
@@ -173,7 +172,7 @@ class SMS_HELPER extends BASE_HELPER
             'CLIENTID' => $CLIENT_ID
         ])->post($url, $smsData);
         $result = json_decode($response);
-        // return $result->messageId;
+
         if (!$result->status === "ACT") { #LE MESSAGE N'A PAS ETE ENVOYE
             return self::sendError("L'envoie a échoué", 505);
         }
@@ -197,7 +196,7 @@ class SMS_HELPER extends BASE_HELPER
         $sms->status = 1;
         $sms->save();
 
-        if (!$inner_call) {
+        if (!$out_call) {
             return self::sendResponse($sms, 'Sms envoyé avec succès!!');
         }
     }
