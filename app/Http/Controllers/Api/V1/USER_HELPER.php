@@ -327,13 +327,11 @@ class USER_HELPER extends BASE_HELPER
 
     static function _demandReinitializePassword($request)
     {
-
-        if (!$request->get("username")) {
-            return self::sendError("Le Champ username est réquis!", 404);
+        if (!$request->get("email")) {
+            return self::sendError("Le Champ email est réquis!", 404);
         }
-        $username = $request->get("username");
-
-        $user = User::where(['username' => $username])->get();
+        $email = $request->get("email");
+        $user = User::where(['email' => $email])->get();
 
         if (count($user) == 0) {
             return self::sendError("Ce compte n'existe pas!", 404);
