@@ -10,6 +10,7 @@ class ExpeditorController extends EXPEDITOR_HELPER
     public function __construct()
     {
         $this->middleware(['auth:api', 'scope:api-access']);
+        $this->middleware("CheckAdmin")->only("UpdateExpeditorStatus");
     }
 
     function AddExpeditor(Request $request)
