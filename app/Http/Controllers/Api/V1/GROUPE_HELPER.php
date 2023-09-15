@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 
 class GROUPE_HELPER extends BASE_HELPER
 {
-
     static function groupe_rules(): array
     {
         return [

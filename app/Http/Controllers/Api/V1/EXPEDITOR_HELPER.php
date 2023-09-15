@@ -117,9 +117,9 @@ class EXPEDITOR_HELPER extends BASE_HELPER
 
     static function _updateExpeditorStatus($request, $id)
     {
-        $user = request()->user();
+        // $user = request()->user();
 
-        $Expeditor = Expeditor::where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
+        $Expeditor = Expeditor::where(["id" => $id, "visible" => 1])->get();
 
         if ($Expeditor->count() == 0) { #QUAND **$Expeditor** n'existe pas
             return self::sendError('Ce Expeditor n\'existe pas!', 404);

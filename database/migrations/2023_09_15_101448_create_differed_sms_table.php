@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('differed_sms', function (Blueprint $table) {
             $table->id();
+            $table->string("send_date");
             $table->foreignId("owner")
                 ->nullable()
                 ->constrained("users", "id")
