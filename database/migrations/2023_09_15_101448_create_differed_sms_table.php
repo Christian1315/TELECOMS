@@ -20,9 +20,18 @@ return new class extends Migration
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
 
-            $table->foreignId("sms")
+            $table->longText("message");
+            $table->longText("expediteur");
+
+            $table->foreignId("group")
                 ->nullable()
-                ->constrained("sms", "id")
+                ->constrained("groupes", "id")
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+
+            $table->foreignId("contact")
+                ->nullable()
+                ->constrained("contacts", "id")
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
             $table->timestamps();

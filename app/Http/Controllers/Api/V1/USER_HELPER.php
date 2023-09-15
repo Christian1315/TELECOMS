@@ -232,7 +232,7 @@ class USER_HELPER extends BASE_HELPER
             $user['developer'] = $user->developer;
             $user['expeditors'] = $user->expeditors;
             $user['token'] = $token;
-            $user['COST_OF_ONE_SMS'] = env("COST_OF_ONE_SMS;COST_OF_ONE_SMS");
+            $user['COST_OF_ONE_SMS'] = env("COST_OF_ONE_SMS");
 
 
             #renvoie des droits du user 

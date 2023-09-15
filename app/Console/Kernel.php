@@ -12,8 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command("app:send-campagne-to-groupe")->everyMinute();##PARCOURIR LES CAMPAGNES CHAQUE MINUITE
+        $schedule->command("app:send-campagne-to-groupe")->everyMinute(); ##PARCOURIR LES CAMPAGNES CHAQUE MINUITE
         $schedule->command("app:reinitialize_campagne_after_a_day")->daily(); ##REINITIALISATION DES NOMBRE D'ENVOIE DES CAMPAGNES CHAQUE MINUIT
+        $schedule->command("app:diffus-message")->everyMinute(); ##LANCEMENT DE LA DIFFUSION DES MESSAGE A DIFFERER CHAQUE SECONDES
     }
 
     /**

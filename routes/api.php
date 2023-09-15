@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\SmsController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\DeveloperController;
+use App\Http\Controllers\Api\V1\DifferedSmsController;
 use App\Http\Controllers\Api\V1\ExpeditorController;
 use App\Http\Controllers\Api\V1\GroupeController;
 use App\Http\Controllers\Api\V1\RangController;
@@ -65,6 +66,14 @@ Route::prefix('v1')->group(function () {
             Route::any('all', 'GetAllSms'); #RECUPERATION DE TOUT LES SMS
             Route::any('reports', 'SmsRapports'); #RAPPORTS D'UN SMS
             Route::any('send-to-groupe', 'SmsGroupe'); #ENVOIE D'SMS GROUPE
+
+            ###========== SMS DIFFERES ROUTINGS ========###
+            Route::prefix('differed')->group(function () {
+                Route::controller(DifferedSmsController::class)->group(function () {
+                    Route::any('group', 'CreateDiferedSmsGroupe');
+                    Route::any('contact', 'CreateDiferedSmsContact');
+                });
+            });
         });
     });
 
