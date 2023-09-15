@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('differed_sms', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("owner")
+                ->nullable()
+                ->constrained("users", "id")
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+
+            $table->foreignId("sms")
+                ->nullable()
+                ->constrained("sms", "id")
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
             $table->timestamps();
         });
     }

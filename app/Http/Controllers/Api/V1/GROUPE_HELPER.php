@@ -6,7 +6,6 @@ use App\Models\Contact;
 use App\Models\ContactGroupe;
 use App\Models\Groupe;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class GROUPE_HELPER extends BASE_HELPER
 {
@@ -14,7 +13,7 @@ class GROUPE_HELPER extends BASE_HELPER
     static function groupe_rules(): array
     {
         return [
-            'name' => ['required', Rule::unique("groupes", "name")],
+            'name' => ['required'],
             'description' => ['required'],
         ];
     }
