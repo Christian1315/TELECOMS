@@ -45,4 +45,16 @@ class DifferedSmsController extends DIFERED_SMS_HELPER
 
         return $this->SendContactSms($request);
     }
+
+    function _AllSms(Request $request)
+    {
+        #VERIFICATION DE LA METHOD
+        if ($this->methodValidation($request->method(), "GET") == False) {
+            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR SMS_HELPER
+            return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
+        };
+
+
+        return $this->allsms($request);
+    }
 }

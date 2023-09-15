@@ -30,13 +30,13 @@ class DiffusMessage extends Command
      */
     public function handle()
     {
-        $differedSmss = DifferedSms::all();
+        $differedSmss = DifferedSms::where(["sended" => 0])->get();
 
         foreach ($differedSmss as $differedSms) {
             $send_time = strtotime($differedSms->send_date);
             $now = Custom_Timestamp();
 
-            if ($send_time == $now) {
+            if ($send_time == $now || $send_time > $now) {
                 $owner = User::find($differedSms->owner);
 
                 if ($differedSms->contact) { ##Il s'agit d'un contact
@@ -49,6 +49,9 @@ class DiffusMessage extends Command
                         true,
                         $owner
                     );
+
+                    $differedSms->sended = 1;
+                    $differedSms->save();
                 } else { ##IL s'agit d'un groupe
                     $_groupe = Groupe::find($differedSms->group);
                     $contacts = $_groupe->contacts;
@@ -62,6 +65,9 @@ class DiffusMessage extends Command
                             $owner
                         );
                     }
+
+                    $differedSms->sended = 1;
+                    $differedSms->save();
                 }
             }
         }

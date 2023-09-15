@@ -22,6 +22,7 @@ return new class extends Migration
 
             $table->longText("message");
             $table->longText("expediteur");
+            $table->boolean("sended")->default(true);
 
             $table->foreignId("group")
                 ->nullable()

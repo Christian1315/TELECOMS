@@ -144,4 +144,12 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
 
         return self::sendResponse($formData, "Message différé crée avec succès!");
     }
+
+    static function allsms()
+    {
+        $user = request()->user();
+        $sms = DifferedSms::where(["owner" => $user->id])->orderBy("id", "desc")->get();
+
+        return self::sendResponse($sms, "Messages differés récupérés avec succès!!");
+    }
 }

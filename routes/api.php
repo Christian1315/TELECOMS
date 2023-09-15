@@ -72,6 +72,7 @@ Route::prefix('v1')->group(function () {
                 Route::controller(DifferedSmsController::class)->group(function () {
                     Route::any('group', 'CreateDiferedSmsGroupe');
                     Route::any('contact', 'CreateDiferedSmsContact');
+                    Route::any('all', '_AllSms');
                 });
             });
         });
