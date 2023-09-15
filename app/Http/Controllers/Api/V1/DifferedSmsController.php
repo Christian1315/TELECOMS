@@ -54,7 +54,6 @@ class DifferedSmsController extends DIFERED_SMS_HELPER
             return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
         };
 
-
         return $this->allsms($request);
     }
 }
