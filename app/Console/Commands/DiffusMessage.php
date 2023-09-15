@@ -36,8 +36,9 @@ class DiffusMessage extends Command
             $send_time = strtotime($differedSms->send_date);
             $now = Custom_Timestamp();
 
-            if ($send_time == $now || $send_time > $now) {
+            if ($send_time == $now || $now > $send_time) {
                 $owner = User::find($differedSms->owner);
+                return $differedSmss;
 
                 if ($differedSms->contact) { ##Il s'agit d'un contact
                     $_contact = Contact::find($differedSms->contact);
