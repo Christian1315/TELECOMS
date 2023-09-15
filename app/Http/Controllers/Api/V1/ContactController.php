@@ -39,16 +39,19 @@ class ContactController extends CONTACT_HELPER
         if (!$request->file('contacts')) {
             return $this->sendError("Veuillez charger le fichier excel!", 404);
         }
-        $data = Excel::import(new ContactsImport, $request->file('contacts'));
+        $formdata = $request->file('contacts');
+
+        $data = Excel::import(new ContactsImport, $formdata);
 
         $contacts = Contact::all();
-        // return $contacts;
+
         foreach ($contacts as $contact) {
             $contact_duplicates = Contact::where([
                 "lastname" => $contact->lastname,
                 "firstname" => $contact->firstname,
                 "phone" => $contact->phone,
                 "detail" => $contact->detail,
+                "owner" => request()->user()->id,
             ])->get();
 
             if ($contact_duplicates->count() > 1) {

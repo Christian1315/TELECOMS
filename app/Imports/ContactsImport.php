@@ -17,12 +17,17 @@ class ContactsImport implements ToModel, WithHeadingRow, WithChunkReading
      */
     public function model(array $contact)
     {
-        return Contact::create([
+        $contact = Contact::create([
             'firstname'    => $contact['firstname'],
             'lastname'     => $contact['lastname'],
             'phone'    => $contact['phone'],
             'detail'    => $contact['detail'],
         ]);
+
+        $contact->owner = request()->user()->id;
+        $contact->save();
+
+        return $contact;
     }
 
     public function chunkSize(): int
