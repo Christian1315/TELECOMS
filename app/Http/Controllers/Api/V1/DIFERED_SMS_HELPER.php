@@ -6,7 +6,7 @@ use App\Models\Contact;
 use App\Models\DifferedSms;
 use App\Models\Expeditor;
 use App\Models\Groupe;
-
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 class DIFERED_SMS_HELPER extends BASE_HELPER

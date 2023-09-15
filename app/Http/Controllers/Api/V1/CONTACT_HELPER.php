@@ -6,7 +6,6 @@ use App\Models\Contact;
 use App\Models\ContactGroupe;
 use App\Models\Groupe;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class CONTACT_HELPER extends BASE_HELPER
 {
@@ -16,7 +15,7 @@ class CONTACT_HELPER extends BASE_HELPER
         return [
             'firstname' => ['required'],
             'lastname' => ['required'],
-            'phone' => ['required', 'numeric', Rule::unique("contacts")],
+            'phone' => ['required', 'numeric'],
             'detail' => ['required', 'max:200'],
         ];
     }
