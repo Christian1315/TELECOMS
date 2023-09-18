@@ -34,6 +34,8 @@ class Reinitialize_Campagne_After_A_Day extends Command
             $campagne->num_time_rest = $num_time_by_day;
             ##ON REACTUALISE LA DATE D'ENVOIE PRECEDENTE à null
             $campagne->previous_send_date = Null;
+            ##ON REACTUALISE LE STATUS
+            $campagne->status = 2; ##initié à nouveau
             $campagne->save();
         }
     }

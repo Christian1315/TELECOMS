@@ -132,7 +132,6 @@ class SMS_HELPER extends BASE_HELPER
             'dlr' => 's' // 1 pour un retour par contre 0
         );
 
-
         if (!Is_User_AN_ADMIN($userId)) {
             $NombreSms = 1; #PAR DEFAUT
 
@@ -173,7 +172,7 @@ class SMS_HELPER extends BASE_HELPER
         ])->post($url, $smsData);
         $result = json_decode($response);
 
-        if (!$result->status === "ACT") { #LE MESSAGE N'A PAS ETE ENVOYE
+        if ($result->status != "ACT") { #LE MESSAGE N'A PAS ETE ENVOYE
             return self::sendError("L'envoie a échoué", 505);
         }
 

@@ -79,9 +79,9 @@ function Campagne_Initiation($campagne)
         ##__verifions si **num_time_rest** permet de faire l'operation
         $num_time_rest = $campagne->num_time_rest;
 
-        if ($previous_send_date_time != Null) {
+        if ($campagne->previous_send_date != Null) { ###Après le premier envoie
 
-            if (Custom_Timestamp() == $next_send_time || Custom_Timestamp() > $next_send_time + 2) {
+            if (Custom_Timestamp() == $next_send_time || Custom_Timestamp() > $next_send_time) {
                 if ($num_time_rest > 0) {
                     $expeditor = Expeditor::find($campagne->expeditor);
                     $contacts = $campagne->groupes[0]->contacts;
@@ -108,7 +108,7 @@ function Campagne_Initiation($campagne)
             }
         } else {
             ##__
-            if ($num_time_rest > 0) {
+            if ($num_time_rest > 0) { ###LE PREMIER ENVOIE
                 $expeditor = Expeditor::find($campagne->expeditor);
                 $contacts = $campagne->groupes[0]->contacts;
 
