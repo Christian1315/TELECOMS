@@ -42,6 +42,7 @@ Route::prefix('v1')->group(function () {
         Route::any('active_account', 'AccountActivation');
         Route::any('password/update', 'UpdatePassword');
         Route::any('users/{id}', 'RetrieveUser');
+        Route::any('user/update', 'UpdateUser');
 
         Route::any('password/demand_reinitialize', 'DemandReinitializePassword');
         Route::any('password/reinitialize', 'ReinitializePassword');

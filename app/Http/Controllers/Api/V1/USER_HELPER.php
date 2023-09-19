@@ -454,6 +454,36 @@ class USER_HELPER extends BASE_HELPER
         return self::sendError("Votre mot de passe est incorrect", 505);
     }
 
+    static function _updateUser($request)
+    {
+        $user = request()->user();
+        $user = User::find($user->id);
+        if (!$user) {
+            return self::sendError("Ce compte ne vous appartient pas!", 404);
+        };
+
+        // $formData = $request->all();
+        if ($request->get("firstname")) {
+            $user->firstname = $request->get("firstname");
+        } 
+        if ($request->get("lastname")) {
+            $user->lastname = $request->get("lastname");
+        } 
+        if ($request->get("username")) {
+            $user->username = $request->get("username");
+        } 
+        if ($request->get("phone")) {
+            $user->phone = $request->get("phone");
+        } 
+        if ($request->get("email")) {
+            $user->email = $request->get("email");
+        } 
+
+        $user->save();
+        return self::sendResponse($user, "Utilisateur modifié avec succès!!");
+    }
+
+
     static function rightAttach($formData)
     {
         $user = User::where(['id' => $formData['user_id']])->get();
