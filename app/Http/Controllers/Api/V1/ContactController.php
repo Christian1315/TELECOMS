@@ -106,6 +106,22 @@ class ContactController extends CONTACT_HELPER
         return $this->addContactToGroupe($request->all());
     }
 
+    public function RetrieveContactFromGroupe(Request $request)
+    {
+        #VERIFICATION DE LA METHOD
+        if ($this->methodValidation($request->method(), "POST") == False) {
+            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR CONTACT_HELPER
+            return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
+        };
+
+        #VALIDATION DES DATAs
+        $validation = $this->Attachement_Validator($request->all());
+        if ($validation->fails()) {
+            return $this->sendError($validation->errors(), 404);
+        }
+        return $this->_retrieveContactFromGroupe($request->all());
+    }
+
     public function UpdateContact(Request $request, $id)
     {
         #VERIFICATION DE LA METHOD

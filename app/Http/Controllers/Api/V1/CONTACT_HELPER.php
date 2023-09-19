@@ -142,6 +142,33 @@ class CONTACT_HELPER extends BASE_HELPER
         return self::sendResponse($data, 'Contact ajouté au groupe avec succès!!');
     }
 
+    static function _retrieveContactFromGroupe($formData)
+    {
+        $user = request()->user();
+        $contact = Contact::where(["id" => $formData['contact_id'], "visible" => 1, "owner" => $user->id])->get();
+        $groupe = Groupe::where(["id" => $formData['groupe_id'], "visible" => 1, "owner" => $user->id])->get();
+
+        if ($contact->count() == 0) {
+            return self::sendError("Ce contact n'existe pas!", 404);
+        }
+
+        if ($groupe->count() == 0) {
+            return self::sendError("Ce groupe n'existe pas!", 404);
+        }
+
+        $contact = $contact[0];
+        $groupe = $groupe[0];
+
+        ####VERIFIONS SI CE ATTACHEMENT EXISTE DEJA
+        $contactGroupe = ContactGroupe::where(["contact_id" => $contact->id, "groupe_id" => $groupe->id])->get();
+        if ($contactGroupe->count() == 0) { #### SI L'ATTACHEMENT N'EXISTE PAS
+            return self::sendError("Ce contact n'etait pas affecté à ce groupe", 505);
+        }
+        $contactGroupe = $contactGroupe[0];
+        $contactGroupe->delete(); ## SUPPRESSION DE CETTE RELATION
+        return self::sendResponse($contact, 'Contact rétiré du groupe avec succès !!');
+    }
+
     static function _updateContact($formData, $id)
     {
         $user = request()->user();

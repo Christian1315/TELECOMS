@@ -88,6 +88,7 @@ Route::prefix('v1')->group(function () {
             Route::any('{id}/delete', 'DeleteContact'); #SUPPRESSION DE CONTACT
             Route::any('{id}/update', 'UpdateContact'); #MODIFICATION DE CONTACT
             Route::any('add-to-groupe', 'AttachContactToGroupe'); #AJOUTER UN CONTACT A UN GROUPE
+            Route::any('retrieve-from-groupe', 'RetrieveContactFromGroupe'); #RETIRER UN CONTACT A UN GROUPE
         });
     });
 
