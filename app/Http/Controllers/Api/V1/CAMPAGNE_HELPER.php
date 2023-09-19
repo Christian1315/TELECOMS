@@ -94,7 +94,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         }
 
         $groupes_ids = $formData["groupes"];
-        $groupes_ids = explode(",", $groupes_ids);
+        // $groupes_ids = explode(",", $groupes_ids);
 
         ###_____VERIFIONS SI CES GROUPES EXISTENT D'ABORD
         foreach ($groupes_ids as $id) {
