@@ -65,7 +65,8 @@ function Campagne_Initiation($campagne)
 
     $start_time = strtotime($campagne->start_date);
     $end_time = strtotime($campagne->end_date);
-    $now = Custom_Timestamp();
+    $now = Custom_Timestamp() + 3600; ##ON AJOUTE 1heure au timestamp pour que cela corresponde au timestamp du server
+    // return $start_time . " " . $now . " " . $end_time;
 
     ##_______VERIFIONS SI LA PERIODE DE LA CAMPAGNE EST PASSEE OU PAS_______
     if ($start_time < $now && $now < $end_time) {
@@ -148,7 +149,6 @@ function Send_Email($email, $subject, $message)
     ];
     Mail::to($email)->send(new SendEmail($data));
 }
-
 
 ##======== CE HELPER PERMET DE VERIFIER SI LE USER DISPOSE D'UN COMPTE SUFFISANT OU PAS ==========## 
 function Is_User_Account_Enough($userId, $sms_amount)

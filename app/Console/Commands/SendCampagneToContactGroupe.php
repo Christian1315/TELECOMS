@@ -28,7 +28,7 @@ class SendCampagneToContactGroupe extends Command
     public function handle()
     {
         ##___LES CAMPAGNES QUI NE SONT NI FINIES NI STOPEE
-        $campagnes = Campagne::whereRaw('status != 3')->whereRaw("status != 4")->get();
+        $campagnes = Campagne::where(["visible" => 1])->whereRaw('status != 3')->whereRaw("status != 4")->get();
 
         foreach ($campagnes as $campagne) {
             Campagne_Initiation($campagne);
