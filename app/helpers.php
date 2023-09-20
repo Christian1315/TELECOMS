@@ -151,22 +151,50 @@ function Send_Email($email, $subject, $message)
 }
 
 ##======== CE HELPER PERMET DE VERIFIER SI LE USER DISPOSE D'UN COMPTE SUFFISANT OU PAS ==========## 
-function Is_User_Account_Enough($userId, $sms_amount)
+function Is_User_Account_Enough($userId, $NombreSms)
 {
+    $BASE_URL = env("BASE_URL");
+    $API_KEY = env("API_KEY");
+    $CLIENT_ID = env("CLIENT_ID");
+    $EXPEDITEUR = env("EXPEDITEUR");
+    $DESTINATAIRE = request()->user()->phone;
+    $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
+
+    $smsData   = array(
+        'from' => $EXPEDITEUR, //l'expediteur
+        'to' => '' . $DESTINATAIRE . '', //destination au format international sans "+" ni "00". Ex: 22890443679
+        'type' => 1, //type de message text et flash
+        'message' => "Vous ne disposez pas de solde! Vos messages,compagnes et sms différés ne seront pas envoyés", //le contenu de votre sms
+        'dlr' => 's' // 1 pour un retour par contre 0
+    );
+
+    ####___________
     $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get();
     if (count($solde) == 0) {
+        ###NOTIFICATION PAR SMS
+        Http::withHeaders([
+            'APIKEY' => $API_KEY,
+            'CLIENTID' => $CLIENT_ID
+        ])->post($url, $smsData);
+
         return false; ##IL NE DISPOSE MEME PAS DE COMPTE
     }
-
+    ###Il DISPOSE D'UN COMPTE
     $solde = $solde[0];
-    if ($solde->solde > $sms_amount) {
+    if ($solde->solde > $NombreSms) {
         return true; #Son solde est suffisant! il peut envoyer d'sms
     }
+    ###NOTIFICATION PAR SMS
+    Http::withHeaders([
+        'APIKEY' => $API_KEY,
+        'CLIENTID' => $CLIENT_ID
+    ])->post($url, $smsData);
+
     return false; #Son solde est insuffisant, il ne peut pas envoyer d'SMS
 }
 
 ##======== CE HELPER PERMET DE DECREDITER LE SOLDE D'USER ==========## 
-function Decredite_User_Account($userId, $sms_amount)
+function Decredite_User_Account($userId, $NombreSms)
 {
     $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get();
 
@@ -177,7 +205,7 @@ function Decredite_User_Account($userId, $sms_amount)
 
     ##~~le nouveau solde
     $new_solde = new Solde();
-    $new_solde->solde = $old_solde->solde - $sms_amount; ##creditation du compte
+    $new_solde->solde = $old_solde->solde - $NombreSms; ##creditation du compte
     $new_solde->owner = $old_solde->owner;
     $new_solde->decredited_at = now();
     $new_solde->save();

@@ -269,14 +269,12 @@ class USER_HELPER extends BASE_HELPER
 
         $user = $user[0];
         ###VERIFIONS SI LE COMPTE EST ACTIF DEJA
-        // return $user->compte_actif;
         if ($user->compte_actif) {
             return self::sendError("Ce compte est déjà actif!", 505);
         }
 
         $user->compte_actif = 1;
         $user->save();
-
         return self::sendResponse($user, 'Votre compte à été activé avec succès!!');
     }
 

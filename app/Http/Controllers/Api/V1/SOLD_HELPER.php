@@ -92,7 +92,6 @@ class SOLD_HELPER extends BASE_HELPER
 
     static function retrieveSolde($id)
     {
-
         $Solde = Solde::with(["owner", "manager"])->where(["id" => $id, "visible" => 1])->get();
 
         if ($Solde->count() == 0) { #QUAND **$Solde** n'existe pas
@@ -105,7 +104,6 @@ class SOLD_HELPER extends BASE_HELPER
 
     static function allSoldes()
     {
-
         $Soldes = Solde::with(["owner", "manager"])->latest()->get();
         return self::sendResponse($Soldes, 'Soldes récupérés avec succès!!');
     }

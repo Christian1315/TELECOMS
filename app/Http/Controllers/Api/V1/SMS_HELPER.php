@@ -136,7 +136,6 @@ class SMS_HELPER extends BASE_HELPER
             $NombreSms = 1; #PAR DEFAUT
 
             ##GESTION DE LA TAILLE DU MESSAGE
-
             $One_sms_caracter_limit = env("ONE_SMS_CARACTER_LIMIT");
 
             #SI LE NOMBRE DE CARACTERE DEPASSE LA LIMIT D'UN SMS
@@ -153,16 +152,15 @@ class SMS_HELPER extends BASE_HELPER
 
             ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
 
-            $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
+            // $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
 
-            if (!Is_User_Account_Enough($userId, $sms_amount)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+            if (!Is_User_Account_Enough($userId, $NombreSms)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
                 return self::sendError("Echec d'envoie d'SMS! Votre solde est insuffisant. Veuillez le recharger", 505);
             }
 
 
             #####DECREDITATION DE SON SOLDE
-            #~~SEULEMENT POUR LES NON ADMINS
-            Decredite_User_Account(request()->user()->id, $sms_amount);
+            Decredite_User_Account(request()->user()->id, $NombreSms);
         }
 
         ###ENVOIE DE L'SMS VIA L'API DU FOURNISSEUR
