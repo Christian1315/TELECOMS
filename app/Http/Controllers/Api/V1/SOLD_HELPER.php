@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Solde;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 class SOLD_HELPER extends BASE_HELPER
@@ -43,6 +44,38 @@ class SOLD_HELPER extends BASE_HELPER
         $user = request()->user();
         $formData = $request->all();
 
+        $user_to_credite = User::find($formData["user_id"]);
+        if (!$user_to_credite) {
+            return self::sendError("Ce utilisateur n'existe pas! Vous ne pouvez donc pas créditer son solde!", 404);
+        }
+
+        ##SI UN ADMIN VEUT CREDITER SON PROPRE COMPTE
+        if ($formData["user_id"] == $user->id) {
+            return self::sendError("Vous n'êtes pas autorisé.e à créditer votre solde!", 505);
+        }
+
+        ##SI LE SOLDE A CREDITER EST CELUI D'UN ADMIN
+        if ($user_to_credite->is_admin) {
+            ##Il faut que ça soit seul le compte PPJJOEL qui puisse crediter le solde d'un autre admin
+            if (!Is_THIS_ADMIN_PPJJOEL()) {
+                return self::sendError("Vous n'êtes pas autorisé à créditer ce solde!", 505);
+            }
+        }
+
+        ###EMPECHER LE COMPTE PPJJOEL A CREDITER LE COMPTE D'UN SIMPLE USER
+        if (!$user_to_credite->is_admin) {
+            if (Is_THIS_ADMIN_PPJJOEL()) {
+                return self::sendError("Le compte PPJJOEL n'est pas autorisé.e à créditer le solde d'un simple User!", 505);
+            }
+        }
+
+        ###VERIFIONS SI L'ADMIN *admin* DISPOSE D'UN SOLDE SUFFISANT POUR CREDITER LE SOLD D'UN SIMPLE USER
+        if (!Is_THIS_ADMIN_PPJJOEL()) {
+            if (!Is_User_Account_Enough($user->id, $formData["solde_amount"])) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+                return self::sendError("Echec de Créditation du solde du user " . $formData["user_id"] . ". Votre solde est insuffisant! Veuillez contactez l'Admin PPJJOEL pour le recharger!", 505);
+            }
+        }
+
         ##RECUPERATION DU SOLD EN QUESTION
         $solde = Solde::where(["owner" => $formData["user_id"], "visible" => 1])->get();
         if ($solde->count() == 0) {
@@ -65,6 +98,11 @@ class SOLD_HELPER extends BASE_HELPER
         $new_solde->save();
 
         $manager = $new_solde->manager_with_name->firstname;
+
+        ####DECREDITATION DU SOLDE DE L'ADMIN S'IL C'EST L'ADMIN 1 QUI CREDITE LE SOLDE D'UN USER
+        if (!Is_THIS_ADMIN_PPJJOEL()) {
+            Decredite_User_Account($user->id, $formData["solde_amount"]);
+        }
 
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 

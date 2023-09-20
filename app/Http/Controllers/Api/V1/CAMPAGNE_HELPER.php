@@ -6,12 +6,7 @@ use App\Models\Campagne;
 use App\Models\CampagneGroupe;
 use App\Models\Expeditor;
 use App\Models\Groupe;
-use App\Models\User;
-use DateTime;
-use DateTimeZone;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class CAMPAGNE_HELPER extends BASE_HELPER
 {
@@ -19,7 +14,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
     static function Campagne_rules(): array
     {
         return [
-            "name" => ['required', Rule::unique("campagnes")],
+            "name" => ['required'],
             "groupes" => ['required'],
             "message" => ['required'],
 
@@ -101,11 +96,35 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         // $groupes_ids = explode(",", $groupes_ids);
 
         ###_____VERIFIONS SI CES GROUPES EXISTENT D'ABORD
+
+        $Campagne_contacts_count = 0;
+
         foreach ($groupes_ids as $id) {
-            $groupe = Groupe::where(["id" => $id, "owner" => $user->id, "visible" => 1])->get();
-            if ($groupe->count() == 0) {
+            $groupe = Groupe::where(["owner" => $user->id, "visible" => 1])->find($id);
+            if (!$groupe) {
                 return self::sendError("Le groupe d'id :" . $id . " n'existe pas!", 404);
             }
+        }
+        ###RECUPERATION DU NOMBRE DE CONTACTS ASSOCIES A CETTE CAMPAGNE
+        foreach ($groupes_ids as $id) {
+            $groupe = Groupe::where(["owner" => $user->id, "visible" => 1])->find($id);
+            $Campagne_contacts_count = $Campagne_contacts_count + count($groupe->contacts);
+        }
+
+        ####VERIFIONS S'IL DISPOSE D'UN SOLDE SUFFISANT POUR L'ENVOIE DE CETTE CAMPAGNE
+        $NombreSms_by_contact = SMS_NUMBER($formData["message"]); ##NOMBRE D'SMS PAR CONTACT
+        $total_sms_num = $Campagne_contacts_count * $NombreSms_by_contact; ##NOMBRE TOTAL D'SMS POUR TOUT LES CONTACTS DE CETTE CAMPAGNE
+
+        $total_sms_num_by_day = $total_sms_num * $formData["num_time_by_day"]; ##NOMBRE TOTAL D'SMS PAR JOUR POUR TOUT LES CONTACTS DE CETTE CAMPAGNE
+
+        $joursNum = CAMPAGNE_PERIOD($formData["start_date"], $formData["end_date"]); ##NOMBRE DE JOURS CONTENU DANS LA PERIODE DE LA CAMPAGNE
+
+        $TOTAL_SMS_NUM_FOR_THE_CAMPAGNE = $total_sms_num_by_day * $joursNum;
+
+        if (!Is_User_AN_ADMIN($user->id)) {
+            if (!Is_User_Account_Enough($user->id, $TOTAL_SMS_NUM_FOR_THE_CAMPAGNE)) {
+                return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer cette campagne! Veuillez augmenter votre solde!", 505);
+            };
         }
 
         $Campagne = Campagne::create($formData);
@@ -125,7 +144,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             }
         }
 
-        return self::sendResponse($Campagne, 'Campagne enregistré avec succès!!');
+        return self::sendResponse($Campagne, 'Campagne enregistrée avec succès!!');
     }
 
     static function retrieveCampagne($id)

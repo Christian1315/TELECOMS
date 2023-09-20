@@ -107,6 +107,16 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
             return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
         }
 
+        ####VERIFIONS S'IL DISPOSE D'UN SOLDE SUFFISANT POUR L'ENVOIE DE CE MESSAGE DIFFERE
+        $NombreSms_by_contact = SMS_NUMBER($formData["message"]); ##NOMBRE D'SMS PAR CONTACT
+        $total_sms_num = $contacts->count() * $NombreSms_by_contact; ##NOMBRE TOTAL D'SMS POUR TOUT LES CONTACTS DE CE GROUPE
+
+        if (!Is_User_AN_ADMIN($user->id)) {
+            if (!Is_User_Account_Enough($user->id, $total_sms_num)) {
+                return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer ce envoie differe! Veuillez augmenter votre solde!", 505);
+            };
+        }
+
         $diff_sms = DifferedSms::create($formData);
         $diff_sms->owner = $user->id;
         $diff_sms->save();
@@ -117,7 +127,6 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
     static function SendContactSms($request)
     {
         $formData = $request->all();
-
         $user = request()->user();
         $contact = Contact::where(["id" => $formData['contact'], "owner" => $user->id])->get();
         if ($contact->count() == 0) {
@@ -133,6 +142,14 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
         ##===== Verifions si l'expediteur est valide ou pas =========####
         if ($expeditor[0]->status != 3) {
             return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
+        }
+
+        ####VERIFIONS S'IL DISPOSE D'UN SOLDE SUFFISANT POUR L'ENVOIE DE CE MESSAGE DIFFERE
+        $NombreSms = SMS_NUMBER($formData["message"]); ##NOMBRE D'SMS PAR CONTACT
+        if (!Is_User_AN_ADMIN($user->id)) {
+            if (!Is_User_Account_Enough($user->id, $NombreSms)) {
+                return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer ce envoie differe! Veuillez augmenter votre solde!", 505);
+            };
         }
 
         $contact = $contact[0];

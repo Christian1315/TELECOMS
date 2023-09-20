@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Solde;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -1040,7 +1043,6 @@ class DatabaseSeeder extends Seeder
                 "description" => "Un simple utilisateur du compte",
             ],
         ];
-
         foreach ($rangs as $rang) {
             \App\Models\Rang::factory()->create($rang);
         }
@@ -1497,6 +1499,21 @@ class DatabaseSeeder extends Seeder
         foreach ($users as $user) {
             \App\Models\User::factory()->create($user);
         }
+
+        #=========== CREER DE SOLDE POUR LE COMPTE *admin* PAR DEFAUT ============#
+
+        $sold = new Solde();
+        $sold->owner = 1;
+        $sold->manager = 2;
+        $sold->save();
+
+        // $sold = [
+        //     [
+        //         "owner" => 1,
+        //         "manager" => 2,
+        //     ]
+        // ];
+        // \App\Models\Solde::factory()->create($sold);
 
         #=========== CREER DES STATUS D'EXPEDITEUR PAR DEFAUT ============#
 

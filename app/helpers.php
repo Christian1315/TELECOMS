@@ -150,47 +150,62 @@ function Send_Email($email, $subject, $message)
     Mail::to($email)->send(new SendEmail($data));
 }
 
+function SMS_NUMBER($message)
+{
+    $NombreSms = 1; #PAR DEFAUT
+    $msg_caracters_number = strlen($message);
+
+    ##GESTION DE LA TAILLE DU MESSAGE
+    $One_sms_caracter_limit = env("ONE_SMS_CARACTER_LIMIT");
+
+    #SI LE NOMBRE DE CARACTERE DEPASSE LA LIMIT D'UN SMS
+    if ($msg_caracters_number > $One_sms_caracter_limit) {
+        #~~Cherchons le nombre de message correspondant aux caracteres en voyés par le USER
+        $NombreSms = $msg_caracters_number / $One_sms_caracter_limit;
+    }
+    $int_part =  floor($NombreSms); #PARTIE ENTIERE DU NOMBRE DE MESSAGE
+    $decimal_part =  $NombreSms - $int_part; #PARTIE DECIMALE DU NOMBRE DE MESSAGE
+    if ($decimal_part > 0) { ##SI LE RESTE EST SUPERIEUR A 0,ON ARRONDIE A 1
+        #~~~enfin retenons le nombre de message correponds aux nombres de caractères du user
+        $NombreSms = $int_part + 1;
+    }
+
+    return $NombreSms;
+}
+
 ##======== CE HELPER PERMET DE VERIFIER SI LE USER DISPOSE D'UN COMPTE SUFFISANT OU PAS ==========## 
 function Is_User_Account_Enough($userId, $NombreSms)
 {
-    $BASE_URL = env("BASE_URL");
-    $API_KEY = env("API_KEY");
-    $CLIENT_ID = env("CLIENT_ID");
-    $EXPEDITEUR = env("EXPEDITEUR");
-    $DESTINATAIRE = request()->user()->phone;
-    $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
-
-    $smsData   = array(
-        'from' => $EXPEDITEUR, //l'expediteur
-        'to' => '' . $DESTINATAIRE . '', //destination au format international sans "+" ni "00". Ex: 22890443679
-        'type' => 1, //type de message text et flash
-        'message' => "Vous ne disposez pas de solde! Vos messages,compagnes et sms différés ne seront pas envoyés", //le contenu de votre sms
-        'dlr' => 's' // 1 pour un retour par contre 0
-    );
-
     ####___________
     $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get();
     if (count($solde) == 0) {
-        ###NOTIFICATION PAR SMS
-        Http::withHeaders([
-            'APIKEY' => $API_KEY,
-            'CLIENTID' => $CLIENT_ID
-        ])->post($url, $smsData);
-
         return false; ##IL NE DISPOSE MEME PAS DE COMPTE
     }
     ###Il DISPOSE D'UN COMPTE
     $solde = $solde[0];
-    if ($solde->solde > $NombreSms) {
+    if ($solde->solde >= $NombreSms) {
         return true; #Son solde est suffisant! il peut envoyer d'sms
     }
-    ###NOTIFICATION PAR SMS
-    Http::withHeaders([
-        'APIKEY' => $API_KEY,
-        'CLIENTID' => $CLIENT_ID
-    ])->post($url, $smsData);
 
     return false; #Son solde est insuffisant, il ne peut pas envoyer d'SMS
+}
+
+function CAMPAGNE_PERIOD($start_date, $end_date)
+{
+    $date1 = strtotime($start_date);
+    $date2 = strtotime($end_date);
+
+    $nbJoursTimestamp = $date2 - $date1;
+    $nbJours = $nbJoursTimestamp / 86400;
+
+    $int_part =  floor($nbJours); #PARTIE ENTIERE
+    $decimal_part =  $nbJours - $int_part; #PARTIE DECIMALE
+    if ($decimal_part > 0) { ##SI LE RESTE EST SUPERIEUR A 0,ON ARRONDIE A 1
+        #~~~enfin retenons le nombre de jours correponds à la période de la campagne
+        $nbJours = $int_part + 1;
+    }
+
+    return $nbJours;
 }
 
 ##======== CE HELPER PERMET DE DECREDITER LE SOLDE D'USER ==========## 
@@ -219,6 +234,15 @@ function Is_User_AN_ADMIN($userId)
         return false;
     }
     return true; #il est un Admin
+}
+
+function Is_THIS_ADMIN_PPJJOEL()
+{ #
+    $user = request()->user();
+    if ($user->id == 2) {
+        return true; #il est PPJJOEL
+    }
+    return false; #il n'est pas PPJJOEL
 }
 
 ##======== CE HELPER PERMET DE RECUPERER LES DROITS D'UN UTILISATEUR ==========## 

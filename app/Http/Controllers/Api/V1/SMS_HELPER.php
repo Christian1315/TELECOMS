@@ -104,6 +104,12 @@ class SMS_HELPER extends BASE_HELPER
             return self::sendError("Ce expéditeur n'existe pas!", 404);
         }
 
+        ####==== TRAITEMENT DE L'EXPEDITEUR =======###
+        $expeditor = Expeditor::where(["owner" => request()->user()->id])->get();
+        if ($expeditor->count() == 0) {
+            return self::sendError("Ce expéditeur ne vous appartient pas!", 404);
+        }
+
         ##===== Verifions si l'expediteur est valide ou pas =========####
         if ($expeditor[0]->status != 3) {
             return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
@@ -120,7 +126,6 @@ class SMS_HELPER extends BASE_HELPER
         $EXPEDITEUR = $expediteur;
         $DESTINATAIRE = $phone;
         $MESSAGE = $message;
-        $msg_caracters_number = strlen($MESSAGE);
 
         $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
 
@@ -132,32 +137,14 @@ class SMS_HELPER extends BASE_HELPER
             'dlr' => 's' // 1 pour un retour par contre 0
         );
 
+        $NombreSms = SMS_NUMBER($MESSAGE); ##NOMBRE D'SMS PAR MESSAGE
+
         if (!Is_User_AN_ADMIN($userId)) {
-            $NombreSms = 1; #PAR DEFAUT
-
-            ##GESTION DE LA TAILLE DU MESSAGE
-            $One_sms_caracter_limit = env("ONE_SMS_CARACTER_LIMIT");
-
-            #SI LE NOMBRE DE CARACTERE DEPASSE LA LIMIT D'UN SMS
-            if ($msg_caracters_number > $One_sms_caracter_limit) {
-                #~~Cherchons le nombre de message correspondant aux caracteres en voyés par le USER
-                $NombreSms = ($msg_caracters_number / $One_sms_caracter_limit);
-            }
-            $int_part =  floor($NombreSms); #PARTIE ENTIERE DU NOMBRE DE MESSAGE
-            $decimal_part =  $NombreSms - $int_part; #PARTIE DECIMALE DU NOMBRE DE MESSAGE
-            if ($decimal_part > 0) { ##SI LE RESTE EST SUPERIEUR A 0,ON ARRONDIE A 1
-                #~~~enfin retenons le nombre de message correponds aux nombres de caractères du user
-                $NombreSms = $NombreSms + 1;
-            }
 
             ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
-
-            // $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
-
             if (!Is_User_Account_Enough($userId, $NombreSms)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
                 return self::sendError("Echec d'envoie d'SMS! Votre solde est insuffisant. Veuillez le recharger", 505);
             }
-
 
             #####DECREDITATION DE SON SOLDE
             Decredite_User_Account(request()->user()->id, $NombreSms);
@@ -169,11 +156,12 @@ class SMS_HELPER extends BASE_HELPER
             'CLIENTID' => $CLIENT_ID
         ])->post($url, $smsData);
         $result = json_decode($response);
-
+        // return $result;
         if ($result->status != "ACT") { #LE MESSAGE N'A PAS ETE ENVOYE
             return self::sendError("L'envoie a échoué", 505);
         }
 
+        $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
         #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
         $data = [
             "messageId" => $result->messageId,
