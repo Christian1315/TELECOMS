@@ -13,6 +13,29 @@ class SmsController extends SMS_HELPER
     }
 
     #SEND AN SMS UNITAIRE
+    function SendViaOceanic(Request $request)
+    {
+        #VERIFICATION DE LA METHOD
+        if ($this->methodValidation($request->method(), "POST") == False) {
+            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR SMS_HELPER
+            return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
+        };
+
+        #VALIDATION DES DATAs
+        $validation = $this->Sms_Validator($request->all());
+        if ($validation->fails()) {
+            return $this->sendError($validation->errors(), 404);
+        }
+
+        $message = $request->message;
+        $phone = $request->phone;
+        $expediteur = $request->expediteur;
+
+        #ENREGISTREMENT DANS LA DB VIA **_sendSms** DE LA CLASS BASE_HELPER HERITEE PAR SMS_HELPER
+        return $this->SEND_BY_OCEANIC_HTTP($expediteur,$phone,$message);
+    }
+
+    #SEND AN SMS UNITAIRE
     function Send(Request $request)
     {
         #VERIFICATION DE LA METHOD
