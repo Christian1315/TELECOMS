@@ -184,32 +184,32 @@ class USER_HELPER extends BASE_HELPER
             $compte_activation_msg,
         );
 
-        ###____
-        try {
-            ##___CREATION DE COMPTE
-            SMS_HELPER::_sendSms(
-                $user->phone,
-                $compte_msg,
-                $expediteur,
-                true,
-                User::find(1)
-            );
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+        // ###____
+        // try {
+        //     ##___CREATION DE COMPTE
+        //     SMS_HELPER::_sendSms(
+        //         $user->phone,
+        //         $compte_msg,
+        //         $expediteur,
+        //         true,
+        //         User::find(1)
+        //     );
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        // }
 
-        try {
-            ##___ACTIVATION DE COMPTE
-            SMS_HELPER::_sendSms(
-                $user->phone,
-                $compte_activation_msg,
-                $expediteur,
-                true,
-                User::find(1)
-            );
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+        // try {
+        //     ##___ACTIVATION DE COMPTE
+        //     SMS_HELPER::_sendSms(
+        //         $user->phone,
+        //         $compte_activation_msg,
+        //         $expediteur,
+        //         true,
+        //         User::find(1)
+        //     );
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        // }
 
         return self::sendResponse($user, 'User crée avec succès!!');
     }

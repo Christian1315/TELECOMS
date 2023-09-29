@@ -203,7 +203,10 @@ class SMS_HELPER extends BASE_HELPER
         // $result = json_decode($response);
 
         if ($response == "ERR: NO USER FOUND") { ###ECHEC D'ENVOIS D'SMS
-            return False;
+            if ($out_call) {
+                return False;
+            }
+            return self::sendError("Echec d'envoie du message!", 505);
         }
 
         ##RECUPERATION DU MESSAGE ID
