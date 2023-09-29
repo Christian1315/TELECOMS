@@ -151,7 +151,6 @@ class SMS_HELPER extends BASE_HELPER
         }
 
         $userId =  $user->id;
-
         if ($expeditor[0]->owner != $userId) {
             return self::sendError("Désolé! Ce expéditeur ne vous appartient pas!", 505);
         }

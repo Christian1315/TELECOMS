@@ -38,10 +38,11 @@
 
         #content .main {
             padding: 30px;
+            /* margin-top: -100px; */
         }
 
         .confirm-btn {
-            background: #730208!important;
+            background: #730208 !important;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;

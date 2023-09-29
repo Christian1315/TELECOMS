@@ -136,7 +136,7 @@ class USER_HELPER extends BASE_HELPER
     static function createUser($formData)
     {
         $user = User::create($formData); #ENREGISTREMENT DU USER DANS LA DB
-        $username = Get_Username($user, "MAST");
+        $username = Get_Username($user, "CLIENT");
         $user->username = $username;
         $user->rang_id = 2;
         $user->profil_id = 6;
@@ -463,19 +463,19 @@ class USER_HELPER extends BASE_HELPER
         // $formData = $request->all();
         if ($request->get("firstname")) {
             $user->firstname = $request->get("firstname");
-        } 
+        }
         if ($request->get("lastname")) {
             $user->lastname = $request->get("lastname");
-        } 
+        }
         if ($request->get("username")) {
             $user->username = $request->get("username");
-        } 
+        }
         if ($request->get("phone")) {
             $user->phone = $request->get("phone");
-        } 
+        }
         if ($request->get("email")) {
             $user->email = $request->get("email");
-        } 
+        }
 
         $user->save();
         return self::sendResponse($user, "Utilisateur modifié avec succès!!");
