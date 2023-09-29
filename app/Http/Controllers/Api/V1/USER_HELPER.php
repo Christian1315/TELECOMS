@@ -138,7 +138,7 @@ class USER_HELPER extends BASE_HELPER
         $user = User::create($formData); #ENREGISTREMENT DU USER DANS LA DB
         $username = Get_Username($user, "CLIENT");
         $user->username = $username;
-        $user->rang_id = 2;
+        $user->rang_id = 3;
         $user->profil_id = 6;
 
         if (request()->user()) { #Si le user(admin) est connecté et essaie de créer un compte pour autruit
@@ -185,22 +185,31 @@ class USER_HELPER extends BASE_HELPER
         );
 
         ###____
-        ##___CREATION DE COMPTE
-        SMS_HELPER::_sendSms(
-            $user->phone,
-            $compte_msg,
-            $expediteur,
-            true,
-            User::find(1)
-        );
-        ##___ACTIVATION DE COMPTE
-        SMS_HELPER::_sendSms(
-            $user->phone,
-            $compte_activation_msg,
-            $expediteur,
-            true,
-            User::find(1)
-        );
+        try {
+            ##___CREATION DE COMPTE
+            SMS_HELPER::_sendSms(
+                $user->phone,
+                $compte_msg,
+                $expediteur,
+                true,
+                User::find(1)
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        try {
+            ##___ACTIVATION DE COMPTE
+            SMS_HELPER::_sendSms(
+                $user->phone,
+                $compte_activation_msg,
+                $expediteur,
+                true,
+                User::find(1)
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
         return self::sendResponse($user, 'User crée avec succès!!');
     }
