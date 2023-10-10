@@ -6,8 +6,8 @@ use App\Models\Expeditor;
 use App\Models\Right;
 use App\Models\Solde;
 use App\Models\User;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Mail;
+use App\Notifications\MailNotification;
+use Illuminate\Support\Facades\Notification;
 
 function userCount()
 {
@@ -148,6 +148,15 @@ function Send_Email($email, $subject, $message)
         "message" => $message,
     ];
     Mail::to($email)->send(new SendEmail($data));
+}
+
+function Send_Notification($receiver, $subject, $message)
+{
+    $data = [
+        "subject" => $subject,
+        "message" => $message,
+    ];
+    Notification::send($receiver, new MailNotification($data));
 }
 
 function SMS_NUMBER($message)

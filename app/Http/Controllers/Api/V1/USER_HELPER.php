@@ -172,18 +172,21 @@ class USER_HELPER extends BASE_HELPER
         $expediteur = env("EXPEDITEUR");
 
         #=====ENVOIE D'EMAIL =======~####
-        Send_Email(
-            $user->email,
-            "Création de compte sur FRIK-SMS",
-            $compte_msg,
-        );
+        try {
+            Send_Notification(
+                $user,
+                "CREATION DE COMPTE SUR FRIK-SMS",
+                $compte_msg,
+            );
 
-        Send_Email(
-            $user->email,
-            "Activation de compte sur FRIK-SMS",
-            $compte_activation_msg,
-        );
-
+            Send_Notification(
+                $user,
+                "ACTIVATION DE COMPTE SUR FRIK-SMS",
+                $compte_activation_msg,
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         // ###____
         // try {
         //     ##___CREATION DE COMPTE

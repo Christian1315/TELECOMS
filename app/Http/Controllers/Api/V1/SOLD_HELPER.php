@@ -95,6 +95,7 @@ class SOLD_HELPER extends BASE_HELPER
         $new_solde->manager = $user->id;
         $new_solde->owner = $old_solde->owner;
         $new_solde->credited_at = now();
+
         $new_solde->save();
 
         $manager = $new_solde->manager_with_name->firstname;
@@ -120,11 +121,15 @@ class SOLD_HELPER extends BASE_HELPER
         );
 
         #=====ENVOIE D'EMAIL =======~####
-        Send_Email(
-            $email,
-            "Solde crédité sur FRIK-SMS",
-            $message,
-        );
+        try {
+            Send_Notification(
+                User::find($old_solde->owner),
+                "SOLDE CREDITE SUR FRIK-SMS",
+                $message
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         return self::sendResponse($new_solde, "Solde crédité de " . $formData["solde_amount"] . " avec succès!!");
     }
 
