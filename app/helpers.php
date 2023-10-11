@@ -156,6 +156,7 @@ function Send_Notification($receiver, $subject, $message)
         "subject" => $subject,
         "message" => $message,
     ];
+
     Notification::send($receiver, new MailNotification($data));
 }
 

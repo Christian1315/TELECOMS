@@ -361,20 +361,32 @@ class USER_HELPER extends BASE_HELPER
         $message = "Demande de réinitialisation éffectuée avec succès! sur FRIK SMS! Voici vos informations de réinitialisation de password ::" . $pass_code;
         $expediteur = env("EXPEDITEUR");
 
-        SMS_HELPER::_sendSms(
-            $user->phone,
-            $message,
-            $expediteur,
-            true,
-            $user
-        );
 
         #=====ENVOIE D'EMAIL =======~####
-        Send_Email(
-            $user->email,
-            "Demande de réinitialisation de compte sur FRIK-SMS",
-            $message,
-        );
+        try {
+
+            SMS_HELPER::_sendSms(
+                $user->phone,
+                $message,
+                $expediteur,
+                true,
+                $user
+            );
+
+            Send_Notification(
+                $user,
+                "DEMANDE DE REEINITIALISATION EFFECTUEE SUR FRIK-SMS",
+                $message,
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        // Send_Email(
+        //     $user->email,
+        //     "Demande de réinitialisation de compte sur FRIK-SMS",
+        //     $message,
+        // );
 
         return self::sendResponse($user, "Demande de réinitialisation éffectuée avec succès! Veuillez vous connecter avec le code qui vous a été envoyé par phone et par mail");
     }
@@ -420,20 +432,32 @@ class USER_HELPER extends BASE_HELPER
         $message = "Réinitialisation de password éffectuée avec succès sur FRIK-SMS!";
         $expediteur = env("EXPEDITEUR");
 
-        SMS_HELPER::_sendSms(
-            $user->phone,
-            $message,
-            $expediteur,
-            true,
-            $user
-        );
+
 
         #=====ENVOIE D'EMAIL =======~####
-        Send_Email(
-            $user->email,
-            "Demande de réinitialisation de compte sur FRIK-SMS",
-            $message,
-        );
+        try {
+
+            SMS_HELPER::_sendSms(
+                $user->phone,
+                $message,
+                $expediteur,
+                true,
+                $user
+            );
+
+            Send_Notification(
+                $user,
+                "REEINITIALISATION EFFECTUEE SUR FRIK-SMS",
+                $message,
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        // Send_Email(
+        //     $user->email,
+        //     "Demande de réinitialisation de compte sur FRIK-SMS",
+        //     $message,
+        // );
 
         return self::sendResponse($user, "Réinitialisation éffectuée avec succès!");
     }
