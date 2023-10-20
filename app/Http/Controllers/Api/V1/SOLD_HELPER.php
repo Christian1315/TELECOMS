@@ -106,22 +106,21 @@ class SOLD_HELPER extends BASE_HELPER
         }
 
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
-
         $message = "Votre Solde a été crédité de " . $formData["solde_amount"] . " sur FRIK SMS par << " . $manager . " >>";
         $phone = $old_solde->owner_phone->phone;
         $email = $old_solde->owner_phone->email;
         $expediteur = env("EXPEDITEUR");
 
-        SMS_HELPER::_sendSms(
-            $phone,
-            $message,
-            $expediteur,
-            false,
-            $user,
-        );
-
-        #=====ENVOIE D'EMAIL =======~####
         try {
+            
+            SMS_HELPER::_sendSms(
+                $phone,
+                $message,
+                $expediteur,
+                false,
+                $user,
+            );
+
             Send_Notification(
                 User::find($old_solde->owner),
                 "SOLDE CREDITE SUR FRIK-SMS",
@@ -130,6 +129,7 @@ class SOLD_HELPER extends BASE_HELPER
         } catch (\Throwable $th) {
             //throw $th;
         }
+
         return self::sendResponse($new_solde, "Solde crédité de " . $formData["solde_amount"] . " avec succès!!");
     }
 

@@ -166,14 +166,6 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
     static function allCampagnes()
     {
-        // $campagne = Campagne::find(1);
-
-        // $start_time = strtotime($campagne->start_date);
-        // $end_time = strtotime($campagne->end_date);
-        // $now = Custom_Timestamp() + 3600; ##ON AJOUTE 1heure au timestamp pour que cela corresponde au timestamp du server
-        // return $start_time . " " . $now . " " . $end_time;
-
-
         $user = request()->user();
         if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
             ###il peut tout recuperer

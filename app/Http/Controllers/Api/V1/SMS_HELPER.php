@@ -128,7 +128,11 @@ class SMS_HELPER extends BASE_HELPER
         $password = env("OCEANIC_PASSWORD");
         $url = env("OCEANIC_BASE_URL") . "?user=" . $user . "&password=" . $password . "&from=" . $from . "&to=" . $to . "&text=" . $message;
 
-        $response = Http::get($url);
+        try {
+            $response = Http::get($url);
+        } catch (\Throwable $th) {
+            $response = false;
+        }
 
         return $response;
     }
@@ -201,6 +205,13 @@ class SMS_HELPER extends BASE_HELPER
         //     'CLIENTID' => $CLIENT_ID
         // ])->post($url, $smsData);
         // $result = json_decode($response);
+
+        if ($response == false) {
+            if ($out_call) {
+                return False;
+            }
+            return self::sendError("Echec d'envoie du message!", 505);
+        }
 
         if ($response == "ERR: NO USER FOUND") { ###ECHEC D'ENVOIS D'SMS
             if ($out_call) {
