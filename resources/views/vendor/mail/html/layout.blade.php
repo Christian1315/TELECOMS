@@ -40,9 +40,9 @@
                             <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
                                 <tr style="background-color: #730208;">
                                     <div class="header">
-                                        <!-- <a href="" style="display: inline-block;background-color:#fff;padding:10px;border-radius:5px;"> -->
+                                        <a href="" style="display: inline-block;background-color:#fff;padding:10px;border-radius:5px;">
                                             <img src="https://res.cloudinary.com/duk6hzmju/image/upload/v1693236534/logo_refiuj.jpg" class="logo" style="background-color:#fff;padding:10px;border-radius:5px;" alt="FRIK SMS">
-                                        <!-- </a> -->
+                                        </a>
                                     </div>
                                 </tr>
                                 <!-- Body content -->
