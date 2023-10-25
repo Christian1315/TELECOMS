@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\Expeditor;
 use App\Models\Groupe;
 use App\Models\Sms;
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
@@ -248,6 +249,54 @@ class SMS_HELPER extends BASE_HELPER
         if (!$out_call) {
             return self::sendResponse($sms, 'Sms envoyé avec succès!!');
         }
+    }
+
+    static function send_sms_from_other_plateforme($phone, $message, $expediteur)
+    {
+       $user = User::find(1);
+        $EXPEDITEUR = $expediteur;
+        $DESTINATAIRE = $phone;
+        $MESSAGE = $message;
+
+        ###ENVOIE DE L'SMS VIA L'API DU FOURNISSEUR
+        $response = self::SEND_BY_OCEANIC_HTTP(
+            $EXPEDITEUR,
+            $DESTINATAIRE,
+            $MESSAGE
+        );
+
+        if ($response == false) {
+            return False;
+        }
+
+        if ($response == "ERR: NO USER FOUND") { ###ECHEC D'ENVOIS D'SMS
+            return False;
+        }
+
+        ##RECUPERATION DU MESSAGE ID
+        $data = explode("ID: ", $response);
+        $data2 = explode(" To: ", $data[1]);
+        $messageId = $data2[0];
+
+        $NombreSms = SMS_NUMBER($MESSAGE); ##NOMBRE D'SMS PAR MESSAGE
+        $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
+        #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
+        $data = [
+            "messageId" => $messageId,
+            "from" => $EXPEDITEUR,
+            "to" => $DESTINATAIRE,
+            "message" => $MESSAGE,
+            "sms_count" => $NombreSms,
+            "amount" => $sms_amount,
+            "sms_num" => $NombreSms,
+        ];
+
+        $sms = Sms::create($data);
+        $sms->owner = $user->id;
+        $sms->status = 1;
+        $sms->save();
+
+        return true;
     }
 
     static function smsReports($formData)

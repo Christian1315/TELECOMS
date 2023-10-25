@@ -63,6 +63,7 @@ Route::prefix('v1')->group(function () {
     Route::controller(SmsController::class)->group(function () {
         Route::prefix('sms')->group(function () {
             Route::any('send', 'Send'); #ENVOIE D'SMS UNITAIRE
+            Route::any('send_sms_from_other_plateforme', '_Send_Sms_From_Other_Plateforme'); #ENVOIE FROM OTHER PLATEFORME
             Route::any('send-ocean-sms', 'SendViaOceanic'); #ENVOIE D'SMS UNITAIRE
             Route::any('{id}/retrieve', 'getSms'); #RECUPERATION D'UN SMS
             Route::any('all', 'GetAllSms'); #RECUPERATION DE TOUT LES SMS
