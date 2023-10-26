@@ -72,7 +72,7 @@
 
                     <!-- ################ TOUTES LES ROUTES RELATIVES AUX USERS ############### -->
                     <div class="bg-dark text-center mb-5">
-                        <h1 class="text-white">COMMENT FONCTIONNE FRIK_SMS POUR LES DÉVELOPPEUR!,?
+                        <h1 class="text-white">COMMENT FONCTIONNE FRIK_SMS POUR LES DÉVELOPPEURS !?
                         </h1>
                     </div>
                     <div class="row" id="documenation">
