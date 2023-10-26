@@ -139,7 +139,7 @@ class USER_HELPER extends BASE_HELPER
         $username = Get_Username($user, "TCCLT");
         $user->username = $username;
         $user->rang_id = 3;
-        $user->profil_id = 6;
+        $user->profil_id = 8;
 
         if (request()->user()) { #Si le user(admin) est connecté et essaie de créer un compte pour autruit
             $user->owner = request()->user()->id;
