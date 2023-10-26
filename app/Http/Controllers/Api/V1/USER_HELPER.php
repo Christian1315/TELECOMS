@@ -166,7 +166,7 @@ class USER_HELPER extends BASE_HELPER
         // $compte_msg = "Votre compte a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username . "   Password: " . $formData["password"];
         $compte_msg = "Votre compte a été crée avec succès sur FRIK-SMS";
 
-        $account_activation_code = "https://telecoms.digital/auth/register/activate?code=" . $active_compte_code;
+        $account_activation_code = "http://manager.telecoms.digital/auth/register/activate?code=" . $active_compte_code . "  Code d'activation:: " . $active_compte_code;
         $compte_activation_msg = "Votre compte n'est pas encore actif. Veuillez l'activer en utilisant le code ci-dessous : " . $account_activation_code;
 
         $expediteur = env("EXPEDITEUR");
