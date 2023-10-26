@@ -229,7 +229,7 @@
         <div class="container-fluid bg-light shadow-lg py-3 footer fixed-bottom d-none d-md-block d-md-lg">
             <div class="row">
                 <div class="col-md-12">
-                    <p class="text-dark text-center">© Copyright 2023 - Développé par HSMC</p>
+                    <p class="text-dark text-center">© Copyright 2023 - Développé par FRIK SMS</p>
                 </div>
             </div>
         </div>

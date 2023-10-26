@@ -201,12 +201,6 @@ class SMS_HELPER extends BASE_HELPER
             $MESSAGE
         );
 
-        // $response = self::send_sms_via_ocean_post(
-        //     $EXPEDITEUR,
-        //     $DESTINATAIRE,
-        //     $MESSAGE
-        // );
-
         // $response = Http::withHeaders([
         //     'APIKEY' => $API_KEY,
         //     'CLIENTID' => $CLIENT_ID
