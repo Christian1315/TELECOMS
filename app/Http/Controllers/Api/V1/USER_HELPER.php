@@ -136,7 +136,7 @@ class USER_HELPER extends BASE_HELPER
     static function createUser($formData)
     {
         $user = User::create($formData); #ENREGISTREMENT DU USER DANS LA DB
-        $username = Get_Username($user, "CLT");
+        $username = Get_Username($user, "TCCLT");
         $user->username = $username;
         $user->rang_id = 3;
         $user->profil_id = 6;
