@@ -393,7 +393,6 @@ class USER_HELPER extends BASE_HELPER
 
     static function _reinitializePassword($request)
     {
-
         $pass_code = $request->get("pass_code");
 
         if (!$pass_code) {
@@ -516,7 +515,6 @@ class USER_HELPER extends BASE_HELPER
         $user->save();
         return self::sendResponse($user, "Utilisateur modifié avec succès!!");
     }
-
 
     static function rightAttach($formData)
     {

@@ -103,11 +103,9 @@ class DEVELOPER_HELPER extends BASE_HELPER
     static function _deleteDeveloperKey($id)
     {
         $Developer = DeveloperKey::find($id);
-
         if (!$Developer) { #QUAND **$Developer** n'existe pas
             return self::sendError('Ce Developer n\'existe pas!', 404);
         };
-
         $Developer->delete(); #SUPPRESSION De Developer;
         return self::sendResponse($Developer, "Ce Expediteur a été supprimé avec succès!!");
     }

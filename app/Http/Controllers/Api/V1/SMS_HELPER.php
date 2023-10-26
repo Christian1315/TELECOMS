@@ -94,7 +94,7 @@ class SMS_HELPER extends BASE_HELPER
         return $validator;
     }
 
-    function send_sms_via_ocean_post($expediteur, $phone, $message)
+    static function send_sms_via_ocean_post($expediteur, $phone, $message)
     {
         $url = env("OCEANIC_BASE_URL");
         $postdata = array(
@@ -106,20 +106,19 @@ class SMS_HELPER extends BASE_HELPER
             'api' => env("OCEANIC_API"),
         );
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
-        $reponse = curl_exec($curl);
-        curl_close($curl);
-
-        if ($reponse == "ERR: NO USER FOUND") {
-            return self::sendError("Echec d'envoie", 505);
-        } else {
-            return self::sendResponse($reponse, "Message envoyé avec succès!");
+        try {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+            $response = curl_exec($curl);
+            curl_close($curl);
+        } catch (\Throwable $th) {
+            $response = false;
         }
+        return $response;
     }
 
     public static function SEND_BY_OCEANIC_HTTP($from, $to, $message)
@@ -169,8 +168,9 @@ class SMS_HELPER extends BASE_HELPER
 
         $EXPEDITEUR = $expediteur;
         $DESTINATAIRE = $phone;
-        $MESSAGE = $message;
+        $MESSAGE = urlencode($message);
 
+        // return $MESSAGE;
         // $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
 
         // $smsData   = array(
@@ -201,6 +201,12 @@ class SMS_HELPER extends BASE_HELPER
             $MESSAGE
         );
 
+        // $response = self::send_sms_via_ocean_post(
+        //     $EXPEDITEUR,
+        //     $DESTINATAIRE,
+        //     $MESSAGE
+        // );
+
         // $response = Http::withHeaders([
         //     'APIKEY' => $API_KEY,
         //     'CLIENTID' => $CLIENT_ID
@@ -209,16 +215,30 @@ class SMS_HELPER extends BASE_HELPER
 
         if ($response == false) {
             if ($out_call) {
-                return False;
+                return false;
             }
-            return self::sendError("Echec d'envoie du message!", 505);
+            return self::sendError("1 Echec d'envoie du message!", 505);
         }
 
         if ($response == "ERR: NO USER FOUND") { ###ECHEC D'ENVOIS D'SMS
             if ($out_call) {
-                return False;
+                return false;
             }
-            return self::sendError("Echec d'envoie du message!", 505);
+            return self::sendError("2 Echec d'envoie du message!", 505);
+        }
+
+        if ($response === "ERR: MESSAGE NOT SENT To: $phone") { ###ECHEC D'ENVOIS D'SMS
+            if ($out_call) {
+                return false;
+            }
+            return self::sendError("3 Echec d'envoie du message!", 505);
+        }
+
+        if (!strpos($response, "ID: ")) {
+            if ($out_call) {
+                return false;
+            }
+            return self::sendError("4 Echec d'envoie du message!", 505);
         }
 
         ##RECUPERATION DU MESSAGE ID
@@ -253,7 +273,7 @@ class SMS_HELPER extends BASE_HELPER
 
     static function send_sms_from_other_plateforme($phone, $message, $expediteur)
     {
-       $user = User::find(1);
+        $user = User::find(1);
         $EXPEDITEUR = $expediteur;
         $DESTINATAIRE = $phone;
         $MESSAGE = $message;
@@ -262,8 +282,10 @@ class SMS_HELPER extends BASE_HELPER
         $response = self::SEND_BY_OCEANIC_HTTP(
             $EXPEDITEUR,
             $DESTINATAIRE,
-            $MESSAGE
+            urlencode($MESSAGE)
         );
+
+        // return urlencode($MESSAGE);
 
         if ($response == false) {
             return False;
@@ -271,6 +293,14 @@ class SMS_HELPER extends BASE_HELPER
 
         if ($response == "ERR: NO USER FOUND") { ###ECHEC D'ENVOIS D'SMS
             return False;
+        }
+
+        if ($response === "ERR: MESSAGE NOT SENT To: $phone") { ###ECHEC D'ENVOIS D'SMS
+            return false;
+        }
+
+        if (!strpos($response, "ID: ")) {
+            return "false";
         }
 
         ##RECUPERATION DU MESSAGE ID
