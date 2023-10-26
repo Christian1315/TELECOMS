@@ -47,7 +47,7 @@
     <div class="container content">
         <div class="row">
             <div class="col-md-12 text-center">
-                <h1 class="title">Soyez les bienvenu sur l'API du HSMC</h1>
+                <h1 class="title">Soyez les bienvenu sur l'API du FRIK SMS</h1>
                 <p class="text-dark">Pour commencer,veuillez jetter un oeil sur la documentation pour avoir une vision plus claire de l'implementation des différentes routes!</p>
                 <img src="logo.jpeg" class="shadow-lg rounded" alt="" srcset=""> <br> <br>
                 <a href="/documentation" class="btn documentation">Voir la documentation</a>
