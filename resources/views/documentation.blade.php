@@ -109,22 +109,6 @@
                                 </div>
                             </div>
 
-                            <!-- ETAPE 2 -->
-                            <div class="row mt-5">
-                                <div class="col-md-12">
-                                    <div class="text-center">
-                                        <button disabled class="btn documentation ">##============ Etape 2: Générer une clé API ==========##</button>
-                                    </div>
-                                    <p class="text-dark text-center">
-                                    <p class="">1 - Connectez-vous à votre compte</p>
-                                    <br>
-                                    <p class="">2 - Rendez-vous dans le panel des Développeurs puis gérérez une clé API!</p>
-
-                                    <img src="../../sms/dev_key_generate.png" width="700px" srcset="">
-                                    </p>
-                                </div>
-                            </div>
-
                             <!-- ETAPE 3 -->
                             <div class="row mt-5">
                                 <div class="col-md-12">
@@ -150,7 +134,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h5 class="mt-5"> <strong class="bg-dark p-1 text-white ">EXEMPLE ::</strong></h5>
+                                    <h5 class="mt-5"> <strong class="bg-dark p-1 text-white ">URL ::</strong> <a href="https://api.telecoms.digital/api/v1/developer/sms/send" target="_blank" rel="noopener noreferrer">https://api.telecoms.digital/api/v1/developer/sms/send</a> </h5>
+
                                     <h5 class="mt-5"> <strong class="bg-dark p-1 text-white ">DATA ::</strong></h5>
                                     <p class="">
                                     <ul>
@@ -176,6 +161,64 @@
                                     </ul>
                                     </p>
                                     <h5 class="mt-5"> <strong class="bg-dark p-1 text-white ">EXEMPLE DE REQUEST::</strong> fetch.POST(url,option=header,json=data)</h5>
+                                </div>
+                            </div>
+
+                            <!-- ETAPE 4 -->
+                            <div class="row mt-5">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <button disabled class="btn documentation ">##============ Etape 4: GESTION DES SMS ==========##</button>
+                                    </div>
+                                    <p class="text-dark text-center">
+                                    <p class="">1 - Récupération de tout vos sms </p>
+                                    <small>Précisez dans le header de votre requête, votre <strong>Clé API</strong> et votre votre <strong>ID d'utilisateur</strong></small>
+                                    <br><br>
+                                    <img src="../../sms/get_all_sms.png" width="700px" srcset="">
+
+                                    <br><br>
+                                    <h5 class="mt-5"> <strong class="bg-dark p-1 text-white ">URL ::</strong> <a href="https://api.telecoms.digital/api/v1/developer/sms/all" target="_blank" rel="noopener noreferrer">https://api.telecoms.digital/api/v1/developer/sms/all</a> </h5>
+                                    <p class="">
+                                    <ul>
+                                        <li>header =
+                                            <ul>
+                                                <li>{</li>
+                                                "api-key": "J0eXAiOiJKV1QiLCJhbGci", <br>
+                                                "id": 189, <br>
+                                                <li>}</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    </p>
+                                    <h5 class="mt-5"> <strong class="bg-dark p-1 text-white ">EXEMPLE DE REQUEST::</strong> fetch.GET(url,option=header)</h5>
+                                    </p>
+
+                                    <p class="text-dark text-center">
+                                    <p class="">2 - Récupération d'sms via son id </p>
+                                    <small>Précisez dans le header de votre requête, votre <strong>Clé API</strong> et votre votre <strong>ID d'utilisateur</strong></small>
+                                    <br><br>
+                                    <img src="../../sms/get_sms.png" width="700px" srcset="">
+
+                                    <br><br>
+                                    <h5 class="mt-5"> <strong class="bg-dark p-1 text-white ">URL ::</strong> <a href="https://api.telecoms.digital/api/v1/developer/sms/{id_sms}/retrieve" target="_blank" rel="noopener noreferrer">https://api.telecoms.digital/api/v1/developer/sms/{id_sms}/retrieve</a> </h5>
+                                    <p class="">
+                                    <ul>
+                                        <li>header =
+                                            <ul>
+                                                <li>{</li>
+                                                "api-key": "J0eXAiOiJKV1QiLCJhbGci", <br>
+                                                "id": 189, <br>
+                                                <li>}</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    </p>
+                                    <h5 class="mt-5"> <strong class="bg-dark p-1 text-white ">EXEMPLE DE REQUEST::</strong> fetch.GET(url,option=header)</h5>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
                                 </div>
                             </div>
                         </div>
