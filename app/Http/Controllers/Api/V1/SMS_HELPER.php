@@ -167,7 +167,7 @@ class SMS_HELPER extends BASE_HELPER
         $DESTINATAIRE = $phone;
         $MESSAGE = urlencode($message);
 
-        // return $MESSAGE;!
+        // return $MESSAGE;
 
         // $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
 
@@ -204,7 +204,7 @@ class SMS_HELPER extends BASE_HELPER
         // ])->post($url, $smsData);
         // $result = json_decode($response);
 
-        return $response;
+        // return $response;
         if ($response == false) {
             if ($out_call) {
                 return false;
