@@ -123,7 +123,7 @@ class SMS_HELPER extends BASE_HELPER
 
     public static function SEND_BY_OCEANIC_HTTP($from, $to, $message)
     {
-        ###ENVOIE DE L'SMS VIA L'API DU FOURNISSEUR
+        ###__ ENVOIE DE L'SMS VIA L'API DU FOURNISSEUR
         $user = env("OCEANIC_USER");
         $password = env("OCEANIC_PASSWORD");
         $url = env("OCEANIC_BASE_URL") . "?user=" . $user . "&password=" . $password . "&from=" . $from . "&to=" . $to . "&text=" . $message;
@@ -133,7 +133,6 @@ class SMS_HELPER extends BASE_HELPER
         } catch (\Throwable $th) {
             $response = false;
         }
-
         return $response;
     }
 
@@ -164,13 +163,12 @@ class SMS_HELPER extends BASE_HELPER
             return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
         }
 
-        // $user_is_admin = $user->is_admin;
-
         $EXPEDITEUR = $expediteur;
         $DESTINATAIRE = $phone;
         $MESSAGE = urlencode($message);
 
-        // return $MESSAGE;
+        // return $MESSAGE;!
+
         // $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
 
         // $smsData   = array(
@@ -184,7 +182,6 @@ class SMS_HELPER extends BASE_HELPER
         $NombreSms = SMS_NUMBER($MESSAGE); ##NOMBRE D'SMS PAR MESSAGE
 
         if (!Is_User_AN_ADMIN($userId)) {
-
             ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
             if (!Is_User_Account_Enough($userId, $NombreSms)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
                 return self::sendError("Echec d'envoie d'SMS! Votre solde est insuffisant. Veuillez le recharger", 505);
@@ -207,6 +204,7 @@ class SMS_HELPER extends BASE_HELPER
         // ])->post($url, $smsData);
         // $result = json_decode($response);
 
+        return $response;
         if ($response == false) {
             if ($out_call) {
                 return false;
@@ -279,8 +277,6 @@ class SMS_HELPER extends BASE_HELPER
             urlencode($MESSAGE)
         );
 
-        // return urlencode($MESSAGE);
-
         if ($response == false) {
             return False;
         }
@@ -315,8 +311,9 @@ class SMS_HELPER extends BASE_HELPER
             "sms_num" => $NombreSms,
         ];
 
+        ###___
         $sms = Sms::create($data);
-        $sms->owner = $user->id;
+        $sms->owner = $user ? $user->id : null;
         $sms->status = 1;
         $sms->save();
 

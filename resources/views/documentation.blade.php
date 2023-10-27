@@ -117,7 +117,7 @@
                                     </div>
                                     <p class="text-dark text-center">
                                     <p class="">1 - Récupérer votre ID d’utilisateur dans le panel Développeurs & votre Clé API </p>
-                                    <img src="../../sms/dev_key_generate.png" width="700px" srcset="">
+                                    <img src="../../sms/dev_id.png" width="700px" srcset="">
 
                                     <br><br>
                                     <p class="">2 - Faites une requête POST via cet URL <a href="https://api.telecoms.digital/api/v1/developer/sms/send" target="_blank" rel="noopener noreferrer">https://api.telecoms.digital/api/v1/developer/sms/send</a>,puis ensuite préciser dans le headers de la requête votre ID d’utilisateur et votre Clé API: </p>
