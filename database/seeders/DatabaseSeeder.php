@@ -1605,7 +1605,7 @@ class DatabaseSeeder extends Seeder
         $sms_model_senders = [
             [
                 "name" => "kingsmspro",
-                "description" => "Ce model d'envoie d'sms est celui fourni par Océnic sms!",
+                "description" => "Ce model d'envoie d'sms est celui fourni par KING SMS PRO!",
                 "active" => 1,
             ],
             [

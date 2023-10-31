@@ -203,8 +203,10 @@ class SMS_HELPER extends BASE_HELPER
             Decredite_User_Account(request()->user()->id, $NombreSms);
         }
 
-        ###ENVOIE DE L'SMS VIA L'API DE KING SMS
+        ###___ENVOIE D'SMS
         if (GET_ACTIVE_FORMULE() == "kingsmspro") {
+
+            ###ENVOIE DE L'SMS VIA L'API DE KING SMS
             $response = self::SEND_BY_KING_SMS_PRO(
                 $EXPEDITEUR,
                 $DESTINATAIRE,
@@ -224,7 +226,7 @@ class SMS_HELPER extends BASE_HELPER
                 if ($out_call) {
                     return false;
                 }
-                return self::sendError("Echec d'envoie du message! L'expediteur n'a pas soucis!", 505);
+                return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
             }
 
             if ($response->messageId) {
@@ -232,10 +234,9 @@ class SMS_HELPER extends BASE_HELPER
             } else {
                 $messageId = null;
             }
-        }
+        } elseif (GET_ACTIVE_FORMULE() == "oceanic") {
+            ###ENVOIE DE L'SMS VIA L'API DE OCEANIC
 
-        ###ENVOIE DE L'SMS VIA L'API DE OCEANIC
-        if (GET_ACTIVE_FORMULE() == "oceanic") {
             $response = self::SEND_BY_OCEANIC_HTTP(
                 $EXPEDITEUR,
                 $DESTINATAIRE,
@@ -274,8 +275,15 @@ class SMS_HELPER extends BASE_HELPER
             $data = explode("ID: ", $response);
             $data2 = explode(" To: ", $data[1]);
             $messageId = $data2[0];
+        } else {
+            if ($out_call) {
+                return false;
+            }
+            return self::sendError("Aucune formule d'envoie n'est active!", 505);
         }
 
+
+        ###____
         $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
 
         #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB

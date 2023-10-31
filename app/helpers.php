@@ -274,5 +274,8 @@ function All_Rights()
 function GET_ACTIVE_FORMULE()
 {
     $formule = SmsModel::where(["active" => 1])->first();
+    if (!$formule) {
+        return null;
+    }
     return $formule->name;
 }
