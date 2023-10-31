@@ -136,12 +136,38 @@ class SMS_HELPER extends BASE_HELPER
         return $response;
     }
 
+    public static function SEND_BY_KING_SMS_PRO($EXPEDITEUR, $DESTINATAIRE, $MESSAGE)
+    {
+        $BASE_URL = env("BASE_URL");
+        $API_KEY = env("API_KEY");
+        $CLIENT_ID = env("CLIENT_ID");
+
+        $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
+
+        $smsData   = array(
+            'from' => $EXPEDITEUR, //l'expediteur
+            'to' => '' . $DESTINATAIRE . '', //destination au format international sans "+" ni "00". Ex: 22890443679
+            'type' => 1, //type de message text et flash
+            'message' => $MESSAGE, //le contenu de votre sms
+            'dlr' => 's' // 1 pour un retour par contre 0
+        );
+
+        try {
+            $response = Http::withHeaders([
+                'APIKEY' => $API_KEY,
+                'CLIENTID' => $CLIENT_ID
+            ])->post($url, $smsData);
+
+            $response = json_decode($response);
+        } catch (\Throwable $th) {
+            $response = false;
+        }
+
+        return $response;
+    }
+
     static function _sendSms($phone, $message, $expediteur, $out_call = false, $user = null)
     {
-        // $BASE_URL = env("BASE_URL");
-        // $API_KEY = env("API_KEY");
-        // $CLIENT_ID = env("CLIENT_ID");
-
         ####==== TRAITEMENT DE L'EXPEDITEUR =======###
         $expeditor = Expeditor::where(["name" => $expediteur])->get();
         if ($expeditor->count() == 0) {
@@ -165,22 +191,9 @@ class SMS_HELPER extends BASE_HELPER
 
         $EXPEDITEUR = $expediteur;
         $DESTINATAIRE = $phone;
-        $MESSAGE = urlencode($message);
-
-        // return $MESSAGE;
-
-        // $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
-
-        // $smsData   = array(
-        //     'from' => $EXPEDITEUR, //l'expediteur
-        //     'to' => '' . $DESTINATAIRE . '', //destination au format international sans "+" ni "00". Ex: 22890443679
-        //     'type' => 1, //type de message text et flash
-        //     'message' => $MESSAGE, //le contenu de votre sms
-        //     'dlr' => 's' // 1 pour un retour par contre 0
-        // );
+        $MESSAGE = $message;
 
         $NombreSms = SMS_NUMBER($MESSAGE); ##NOMBRE D'SMS PAR MESSAGE
-
         if (!Is_User_AN_ADMIN($userId)) {
             ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
             if (!Is_User_Account_Enough($userId, $NombreSms)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
@@ -190,55 +203,81 @@ class SMS_HELPER extends BASE_HELPER
             Decredite_User_Account(request()->user()->id, $NombreSms);
         }
 
-        ###ENVOIE DE L'SMS VIA L'API DU FOURNISSEUR
+        ###ENVOIE DE L'SMS VIA L'API DE KING SMS
+        if (GET_ACTIVE_FORMULE() == "kingsmspro") {
+            $response = self::SEND_BY_KING_SMS_PRO(
+                $EXPEDITEUR,
+                $DESTINATAIRE,
+                $MESSAGE
+            );
 
-        $response = self::SEND_BY_OCEANIC_HTTP(
-            $EXPEDITEUR,
-            $DESTINATAIRE,
-            $MESSAGE
-        );
-
-        // $response = Http::withHeaders([
-        //     'APIKEY' => $API_KEY,
-        //     'CLIENTID' => $CLIENT_ID
-        // ])->post($url, $smsData);
-        // $result = json_decode($response);
-
-        // return $response;
-        if ($response == false) {
-            if ($out_call) {
-                return false;
+            ###___quand l'expediteur n'est pas crée sur KING SMS PRO
+            if ($response == "sender unauthorized") {
+                if ($out_call) {
+                    return false;
+                }
+                return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
             }
-            return self::sendError("1 Echec d'envoie du message!", 505);
+
+            ###___Le type de $response->from permet de savoir si l'expediteur est validé sur KING SMS PRO
+            if (gettype($response->from) == "array") {
+                if ($out_call) {
+                    return false;
+                }
+                return self::sendError("Echec d'envoie du message! L'expediteur n'a pas soucis!", 505);
+            }
+
+            if ($response->messageId) {
+                $messageId = $response->messageId;
+            } else {
+                $messageId = null;
+            }
         }
 
-        if ($response == "ERR: NO USER FOUND") { ###ECHEC D'ENVOIS D'SMS
-            if ($out_call) {
-                return false;
-            }
-            return self::sendError("2 Echec d'envoie du message!", 505);
-        }
+        ###ENVOIE DE L'SMS VIA L'API DE OCEANIC
+        if (GET_ACTIVE_FORMULE() == "oceanic") {
+            $response = self::SEND_BY_OCEANIC_HTTP(
+                $EXPEDITEUR,
+                $DESTINATAIRE,
+                urlencode($MESSAGE)
+            );
 
-        if ($response === "ERR: MESSAGE NOT SENT To: $phone") { ###ECHEC D'ENVOIS D'SMS
-            if ($out_call) {
-                return false;
+            if ($response == false) {
+                if ($out_call) {
+                    return false;
+                }
+                return self::sendError("1 Echec d'envoie du message!", 505);
             }
-            return self::sendError("3 Echec d'envoie du message!", 505);
-        }
 
-        if (!strpos($response, "ID: ")) {
-            if ($out_call) {
-                return false;
+            if ($response == "ERR: NO USER FOUND") { ###ECHEC D'ENVOIS D'SMS
+                if ($out_call) {
+                    return false;
+                }
+                return self::sendError("2 Echec d'envoie du message!", 505);
             }
-            return self::sendError("4 Echec d'envoie du message!", 505);
-        }
 
-        ##RECUPERATION DU MESSAGE ID
-        $data = explode("ID: ", $response);
-        $data2 = explode(" To: ", $data[1]);
-        $messageId = $data2[0];
+            if ($response === "ERR: MESSAGE NOT SENT To: $phone") { ###ECHEC D'ENVOIS D'SMS
+                if ($out_call) {
+                    return false;
+                }
+                return self::sendError("3 Echec d'envoie du message!", 505);
+            }
+
+            if (!strpos($response, "ID: ")) {
+                if ($out_call) {
+                    return false;
+                }
+                return self::sendError("4 Echec d'envoie du message!", 505);
+            }
+
+            ##RECUPERATION DU MESSAGE ID
+            $data = explode("ID: ", $response);
+            $data2 = explode(" To: ", $data[1]);
+            $messageId = $data2[0];
+        }
 
         $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
+
         #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
         $data = [
             "messageId" => $messageId,
@@ -266,40 +305,39 @@ class SMS_HELPER extends BASE_HELPER
     static function send_sms_from_other_plateforme($phone, $message, $expediteur)
     {
         $user = User::find(1);
+
         $EXPEDITEUR = $expediteur;
         $DESTINATAIRE = $phone;
         $MESSAGE = $message;
 
-        ###ENVOIE DE L'SMS VIA L'API DU FOURNISSEUR
-        $response = self::SEND_BY_OCEANIC_HTTP(
+        $response = self::SEND_BY_KING_SMS_PRO(
             $EXPEDITEUR,
             $DESTINATAIRE,
-            urlencode($MESSAGE)
+            $MESSAGE
         );
 
         if ($response == false) {
-            return False;
-        }
-
-        if ($response == "ERR: NO USER FOUND") { ###ECHEC D'ENVOIS D'SMS
-            return False;
-        }
-
-        if ($response === "ERR: MESSAGE NOT SENT To: $phone") { ###ECHEC D'ENVOIS D'SMS
             return false;
         }
 
-        if (!strpos($response, "ID: ")) {
-            return "false";
+        if ($response == "sender unauthorized") {
+            return False;
         }
 
-        ##RECUPERATION DU MESSAGE ID
-        $data = explode("ID: ", $response);
-        $data2 = explode(" To: ", $data[1]);
-        $messageId = $data2[0];
+        ###___Le type de $response->from permet de savoir si l'expediteur est validé sur KING SMS PRO
+        if (gettype($response->from) == "array") {
+            return false;
+        };
+
+        if ($response->messageId) {
+            $messageId = $response->messageId;
+        } else {
+            $messageId = null;
+        };
 
         $NombreSms = SMS_NUMBER($MESSAGE); ##NOMBRE D'SMS PAR MESSAGE
         $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
+
         #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
         $data = [
             "messageId" => $messageId,
@@ -316,7 +354,6 @@ class SMS_HELPER extends BASE_HELPER
         $sms->owner = $user ? $user->id : null;
         $sms->status = 1;
         $sms->save();
-
         return true;
     }
 

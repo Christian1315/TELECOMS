@@ -58,7 +58,7 @@ class SmsController extends SMS_HELPER
         return $this->_sendSms($phone, $message, $expediteur);
     }
 
-    #SEND AN SMS UNITAIRE
+    #SEND AN SMS UNITAIRE VIA OTHER PLATEFORME
     function _Send_Sms_From_Other_Plateforme(Request $request)
     {
         #VERIFICATION DE LA METHOD

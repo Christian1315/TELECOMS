@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\SMS_HELPER;
 use App\Mail\SendEmail;
 use App\Models\Expeditor;
 use App\Models\Right;
+use App\Models\SmsModel;
 use App\Models\Solde;
 use App\Models\User;
 use App\Notifications\MailNotification;
@@ -267,4 +268,11 @@ function All_Rights()
 { #
     $allrights = Right::with(["action", "profil", "rang"])->get();
     return $allrights;
+}
+
+##======== CE HELPER PERMET DE RECUPERER LA FORMULE D'ENVOIE D'SMS ==========## 
+function GET_ACTIVE_FORMULE()
+{
+    $formule = SmsModel::where(["active" => 1])->first();
+    return $formule->name;
 }

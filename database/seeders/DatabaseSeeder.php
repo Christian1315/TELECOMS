@@ -1600,5 +1600,23 @@ class DatabaseSeeder extends Seeder
         foreach ($sms_status as $sms_statu) {
             \App\Models\SmsStatus::factory()->create($sms_statu);
         }
+
+        #=========== CREER DES MODEL D'SMS PAR DEFAUT ============#
+        $sms_model_senders = [
+            [
+                "name" => "kingsmspro",
+                "description" => "Ce model d'envoie d'sms est celui fourni par Océnic sms!",
+                "active" => 1,
+            ],
+            [
+                "name" => "oceanic",
+                "description" => "Ce model d'envoie d'sms est celui fourni par Océnic sms!",
+                "active" => 0,
+            ]
+        ];
+
+        foreach ($sms_model_senders as $sms_model_sender) {
+            \App\Models\SmsModel::factory()->create($sms_model_sender);
+        }
     }
 }

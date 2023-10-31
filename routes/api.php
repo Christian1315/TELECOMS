@@ -15,9 +15,9 @@ use App\Http\Controllers\Api\V1\RangController;
 use App\Http\Controllers\Api\V1\RightController;
 use App\Http\Controllers\Api\V1\ExpeditorStatusController;
 use App\Http\Controllers\Api\V1\ProfilController;
+use App\Http\Controllers\Api\V1\SmsModelController;
 use App\Http\Controllers\Api\V1\SmsStatusController;
 use App\Http\Controllers\Api\V1\SoldeController;
-use App\Models\Solde;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -76,6 +76,15 @@ Route::prefix('v1')->group(function () {
                     Route::any('group', 'CreateDiferedSmsGroupe');
                     Route::any('contact', 'CreateDiferedSmsContact');
                     Route::any('all', '_AllSms');
+                });
+            });
+
+            ###___MODULES D'ENVOIE D'SMS _____####
+            Route::prefix("formule")->group(function () {
+                Route::controller(SmsModelController::class)->group(function () {
+                    Route::any('all', 'SmsModel');
+                    Route::any('{id}/retrieve', '_retrieveSmsModel');
+                    Route::any('{id}/activate', 'ActivateSmsModel');
                 });
             });
         });
@@ -173,6 +182,14 @@ Route::prefix('v1')->group(function () {
         Route::prefix('campagne/status')->group(function () {
             Route::any('all', 'CampagneStatus'); #RECUPERATION DE TOUT LES STATUS DE CAMPAGNE
             Route::any('{id}/retrieve', 'RetrieveCampagneStatus'); #RECUPERATION D'UN STATUS DE CAMPAGNE
+        });
+    });
+
+    ###========== SMS MODEL ROUTINGS ========###
+    Route::controller(SmsModelController::class)->group(function () {
+        Route::prefix('sms-model/status')->group(function () {
+            Route::any('all', 'SmsModel'); #RECUPERATION DE TOUT LES MODELS D'SMS
+            Route::any('{id}/retrieve', 'RetrieveSmsModel'); #RECUPERATION D'UN MODEL D'SMS
         });
     });
 
