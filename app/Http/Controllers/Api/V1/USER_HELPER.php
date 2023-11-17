@@ -169,6 +169,7 @@ class USER_HELPER extends BASE_HELPER
         $account_activation_code = "http://manager.telecoms.digital/auth/register/activate?code=" . $active_compte_code . "  Code d'activation:: " . $active_compte_code;
         $compte_activation_msg = "Votre compte n'est pas encore actif. Veuillez l'activer en utilisant le code ci-dessous : " . $account_activation_code;
 
+        $messageJubile = $compte_msg . "  " . $compte_activation_msg;
         $expediteur = env("EXPEDITEUR");
 
         #=====ENVOIE D'EMAIL =======~####
@@ -176,7 +177,7 @@ class USER_HELPER extends BASE_HELPER
             Send_Notification(
                 $user,
                 "CREATION DE COMPTE SUR FRIK-SMS",
-                $compte_msg,
+                $messageJubile,
             );
 
             Send_Notification(
