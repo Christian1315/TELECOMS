@@ -180,8 +180,10 @@ class SMS_HELPER extends BASE_HELPER
         }
 
         $userId =  $user->id;
-        if ($expeditor[0]->owner != $userId) {
-            return self::sendError("Désolé! Ce expéditeur ne vous appartient pas!", 505);
+        if (!Is_User_AN_ADMIN($userId)) {
+            if ($expeditor[0]->owner != $userId) {
+                return self::sendError("Désolé! Ce expéditeur ne vous appartient pas!", 505);
+            }
         }
 
         ##===== Verifions si l'expediteur est valide ou pas =========####

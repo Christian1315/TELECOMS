@@ -1468,6 +1468,7 @@ class DatabaseSeeder extends Seeder
             \App\Models\Right::factory()->create($right);
         }
 
+        ###____
         $users = [
             [
                 'firstname' => 'Admin ',
