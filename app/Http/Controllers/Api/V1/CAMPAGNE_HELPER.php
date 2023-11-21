@@ -100,14 +100,18 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         $Campagne_contacts_count = 0;
 
         foreach ($groupes_ids as $id) {
-            $groupe = Groupe::where(["owner" => $user->id, "visible" => 1])->find($id);
+            if (Is_User_AN_ADMIN($user->id)) {
+                $groupe = Groupe::where(["visible" => 1])->find($id);
+            } else {
+                $groupe = Groupe::where(["owner" => $user->id, "visible" => 1])->find($id);
+            }
             if (!$groupe) {
                 return self::sendError("Le groupe d'id :" . $id . " n'existe pas!", 404);
             }
         }
         ###RECUPERATION DU NOMBRE DE CONTACTS ASSOCIES A CETTE CAMPAGNE
         foreach ($groupes_ids as $id) {
-            $groupe = Groupe::where(["owner" => $user->id, "visible" => 1])->find($id);
+            $groupe = Groupe::where(["visible" => 1])->find($id);
             $Campagne_contacts_count = $Campagne_contacts_count + count($groupe->contacts);
         }
 
@@ -138,7 +142,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             $this_campagne_groupe = CampagneGroupe::where(["campagne_id" => $Campagne->id, "groupe_id" => $id])->get();
             #On verifie d'abord si ce attachement existait déjà 
             if ($this_campagne_groupe->count() == 0) {
-                $groupe = Groupe::where(["id" => $id, "owner" => $user->id, "visible" => 1])->get();
+                $groupe = Groupe::where(["id" => $id,"visible" => 1])->get();
                 $groupe = $groupe[0];
                 $groupe->campagnes()->attach($Campagne);
             }
