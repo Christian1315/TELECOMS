@@ -202,6 +202,8 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         }
 
         $campagne->status = 2;
+        ###___RAMENONS LE **start_date** à LA DATE ACTUELLE
+        $campagne->start_date = now();
         $campagne->save();
 
         return self::sendResponse($campagne, "Campagne initiée avec succès!");
