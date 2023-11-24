@@ -142,7 +142,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             $this_campagne_groupe = CampagneGroupe::where(["campagne_id" => $Campagne->id, "groupe_id" => $id])->get();
             #On verifie d'abord si ce attachement existait déjà 
             if ($this_campagne_groupe->count() == 0) {
-                $groupe = Groupe::where(["id" => $id,"visible" => 1])->get();
+                $groupe = Groupe::where(["id" => $id, "visible" => 1])->get();
                 $groupe = $groupe[0];
                 $groupe->campagnes()->attach($Campagne);
             }
@@ -199,6 +199,11 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         ###____VERIFIONS SI CETTE CAMPAGNE A DEJA ETE INITIEE
         if ($campagne->status == 2) {
             return self::sendError("Désolé! Cette campagne est déjà en cours", 505);
+        }
+
+        ###____VERIFIONS SI CETTE CAMPAGNE A DEJA TERMINEE
+        if ($campagne->status == 3) {
+            return self::sendError("Désolé! Cette campagne est déjà terminée! Vous ne pouvez l'initier!", 505);
         }
 
         $campagne->status = 2;
