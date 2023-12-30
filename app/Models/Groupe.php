@@ -23,7 +23,7 @@ class Groupe extends Model
 
     function campagnes(): BelongsToMany
     {
-        return $this->belongsToMany(Campagne::class, "campagnes_groupes", "campagne_id", "groupe_id");
+        return $this->belongsToMany(Campagne::class, "campagnes_groupes", "campagne_id", "groupe_id_new");
     }
 
     function owner(): BelongsTo

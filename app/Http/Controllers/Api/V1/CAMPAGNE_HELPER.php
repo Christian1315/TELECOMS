@@ -93,7 +93,7 @@ class CAMPAGNE_HELPER extends BASE_HELPER
         }
 
         $groupes_ids = $formData["groupes"];
-        // $groupes_ids = explode(",", $groupes_ids);
+        $groupes_ids = explode(",", $groupes_ids);
 
         ###_____VERIFIONS SI CES GROUPES EXISTENT D'ABORD
 
@@ -139,12 +139,18 @@ class CAMPAGNE_HELPER extends BASE_HELPER
 
         ###_____AFFECTATION DE LA CAMPAGNE AU GROUPE 
         foreach ($groupes_ids as $id) {
-            $this_campagne_groupe = CampagneGroupe::where(["campagne_id" => $Campagne->id, "groupe_id" => $id])->get();
+            $this_campagne_groupe = CampagneGroupe::where(["campagne_id" => $Campagne->id, "groupe_id_new" => $id])->get();
             #On verifie d'abord si ce attachement existait déjà 
             if ($this_campagne_groupe->count() == 0) {
-                $groupe = Groupe::where(["id" => $id, "visible" => 1])->get();
-                $groupe = $groupe[0];
-                $groupe->campagnes()->attach($Campagne);
+                $groupe = Groupe::where(["visible" => 1])->find($id);
+                // return $Campagne;
+
+                CampagneGroupe::create([
+                    "campagne_id"=>$Campagne->id,
+                    "groupe_id_new"=>$groupe->id,
+                ]);
+                
+                // $groupe->campagnes()->attach($Campagne);
             }
         }
 
