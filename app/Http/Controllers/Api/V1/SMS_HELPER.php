@@ -205,6 +205,7 @@ class SMS_HELPER extends BASE_HELPER
             Decredite_User_Account(request()->user()->id, $NombreSms);
         }
 
+        
         ###___ENVOIE D'SMS
         if (GET_ACTIVE_FORMULE() == "kingsmspro") {
 
@@ -214,6 +215,14 @@ class SMS_HELPER extends BASE_HELPER
                 $DESTINATAIRE,
                 $MESSAGE
             );
+
+            ###___quand le compte de KING SMS PRO est insuffisant
+            if (!$response) {
+                if ($out_call) {
+                    return false;
+                }
+                return self::sendError("Echec d'envoie du message! Le compte du fournisseur n'est pas rechargé!", 505);
+            }
 
             ###___quand l'expediteur n'est pas crée sur KING SMS PRO
             if ($response == "sender unauthorized") {

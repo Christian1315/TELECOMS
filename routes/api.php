@@ -60,6 +60,7 @@ Route::prefix('v1')->group(function () {
         });
     });
     ###========== SMS ROUTINGS ========###
+    
     Route::controller(SmsController::class)->group(function () {
         Route::prefix('sms')->group(function () {
             Route::any('send', 'Send'); #ENVOIE D'SMS UNITAIRE
