@@ -37,7 +37,7 @@ class Campagne extends Model
 
     function groupes(): BelongsToMany
     {
-        return $this->belongsToMany(Groupe::class, "campagnes_groupes", "groupe_id_new", "campagne_id")->with("contacts");
+        return $this->belongsToMany(Groupe::class, "campagnes_groupes", "campagne_id", "groupe_id_new")->with("contacts");
     }
 
     function owner(): BelongsTo

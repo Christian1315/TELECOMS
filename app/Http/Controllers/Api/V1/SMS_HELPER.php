@@ -205,7 +205,7 @@ class SMS_HELPER extends BASE_HELPER
             Decredite_User_Account(request()->user()->id, $NombreSms);
         }
 
-        
+
         ###___ENVOIE D'SMS
         if (GET_ACTIVE_FORMULE() == "kingsmspro") {
 
@@ -389,6 +389,7 @@ class SMS_HELPER extends BASE_HELPER
 
     static function SendGroupeSms($formData)
     {
+        $user = request()->user();
         $groupe = Groupe::with(['contacts'])->where(["id" => $formData['groupe_id'], "owner" => request()->user()->id])->get();
         if ($groupe->count() == 0) {
             return self::sendError("Ce groupe n'existe pas!!", 404);
@@ -400,9 +401,27 @@ class SMS_HELPER extends BASE_HELPER
         if ($contacts->count() == 0) {
             return self::sendError("Ce groupe ne contient aucun contact!!", 404);
         }
+
+        ####==== TRAITEMENT DE L'EXPEDITEUR =======###
+        $expeditor = Expeditor::where(["name" => $formData["expediteur"]])->get();
+        if ($expeditor->count() == 0) {
+            return self::sendError("Ce expéditeur n'existe pas!", 404);
+        }
+
+
+        if ($expeditor[0]->owner != $user->id) {
+            return self::sendError("Ce expediteur ne vous appartient pas!!", 404);
+        }
+
+        ##===== Verifions si l'expediteur est valide ou pas =========####
+        if ($expeditor[0]->status != 3) {
+            return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
+        }
+
+
+
         $message = $formData['message'];
         $expediteur = $formData['expediteur'];
-
 
         foreach ($contacts as $contact) {
             self::_sendSms(

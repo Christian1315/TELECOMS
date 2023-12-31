@@ -34,7 +34,7 @@ class DiffusMessage extends Command
 
         foreach ($differedSmss as $differedSms) {
             $send_time = strtotime($differedSms->send_date);
-            $now = Custom_Timestamp();
+            $now = Custom_Timestamp() + 3600;
 
             if ($send_time == $now || $now > $send_time) {
                 $owner = User::find($differedSms->owner);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Campagne;
 use App\Models\Contact;
 use App\Models\DifferedSms;
 use App\Models\Expeditor;
@@ -117,6 +118,7 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
             };
         }
 
+
         $diff_sms = DifferedSms::create($formData);
         $diff_sms->owner = $user->id;
         $diff_sms->save();
@@ -151,6 +153,10 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
                 return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer ce envoie differe! Veuillez augmenter votre solde!", 505);
             };
         }
+
+        $expeditor = Expeditor::find(1);
+        $Campagne = Campagne::find(1).
+        $contacts = $Campagne->groupes[0]->contacts;
 
         $contact = $contact[0];
         $contact =  $contact->phone;
