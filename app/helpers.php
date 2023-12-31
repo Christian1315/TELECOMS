@@ -66,7 +66,7 @@ function Campagne_Initiation($campagne)
 
     $start_time = strtotime($campagne->start_date);
     $end_time = strtotime($campagne->end_date);
-    $now = Custom_Timestamp() + 3600; ##ON AJOUTE 1heure au timestamp pour que cela corresponde au timestamp actuel
+    $now = Custom_Timestamp(); ##ON AJOUTE 1heure(en local) au timestamp pour que cela corresponde au timestamp actuel
     // return $start_time . " " . $now . " " . $end_time;
 
     ##_______VERIFIONS SI LA PERIODE DE LA CAMPAGNE EST PASSEE OU PAS_______
