@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Campagne;
 use App\Models\Contact;
 use App\Models\DifferedSms;
 use App\Models\Expeditor;
@@ -154,9 +153,14 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
             };
         }
 
-        $expeditor = Expeditor::find(1);
-        $Campagne = Campagne::find(1).
-        $contacts = $Campagne->groupes[0]->contacts;
+        
+        
+        // $send_time = strtotime($formData["send_date"]);
+        // $send_time = $formData["send_date"];
+
+        // $now = now();
+
+        // return $send_time."  &&&&&   ".$now;
 
         $contact = $contact[0];
         $contact =  $contact->phone;
