@@ -202,7 +202,7 @@ class SMS_HELPER extends BASE_HELPER
                 return self::sendError("Echec d'envoie d'SMS! Votre solde est insuffisant. Veuillez le recharger", 505);
             }
             #####DECREDITATION DE SON SOLDE
-            Decredite_User_Account(request()->user()->id, $NombreSms);
+            Decredite_User_Account($userId, $NombreSms);
         }
 
 
