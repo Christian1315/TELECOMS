@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Validator;
 class RIGHTS_HELPER extends BASE_HELPER
 {
     ##======== RIGHT VALIDATION =======##
-
     static function right_rules(): array
     {
         return [

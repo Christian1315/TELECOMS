@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\V1\SMS_HELPER;
 use App\Models\DeveloperKey;
+use App\Models\UserRight;
 use Illuminate\Support\Str;
 
 class USER_HELPER extends BASE_HELPER
@@ -249,7 +250,9 @@ class USER_HELPER extends BASE_HELPER
 
 
             #renvoie des droits du user 
-            $attached_rights = $user->drts; #drts represente les droits associés au user par relation #Les droits attachés
+            // $attached_rights = $user->drts; #drts represente les droits associés au user par relation #Les droits attachés
+            $attached_rights = $user->affected_rights; #affected_rights represente les droits associés au user par relation #Les droits attachés
+
             // return $attached_rights;
 
             if ($attached_rights->count() == 0) { #si aucun droit ne lui est attaché
@@ -517,9 +520,58 @@ class USER_HELPER extends BASE_HELPER
         return self::sendResponse($user, "Utilisateur modifié avec succès!!");
     }
 
+    // static function rightAttach($formData)
+    // {
+    //     $user = User::where(['id' => $formData['user_id']])->get();
+    //     if (count($user) == 0) {
+    //         return self::sendError("Ce utilisateur n'existe pas!", 404);
+    //     };
+
+    //     $right = Right::where('id', $formData['right_id'])->get();
+    //     if (count($right) == 0) {
+    //         return self::sendError("Ce right n'existe pas!", 404);
+    //     };
+
+    //     $user = User::find($formData['user_id']);
+    //     $right = Right::find($formData['right_id']);
+
+    //     $right->user_id = $user->id;
+    //     $right->save();
+
+    //     return self::sendResponse([], "User attaché au right avec succès!!");
+    // }
+
+    // static function rightDesAttach($formData)
+    // {
+    //     $user = User::where(['id' => $formData['user_id']])->get();
+    //     if (count($user) == 0) {
+    //         return self::sendError("Ce utilisateur n'existe pas!", 404);
+    //     };
+
+    //     $right = Right::where('id', $formData['right_id'])->get();
+    //     if (count($right) == 0) {
+    //         return self::sendError("Ce right n'existe pas!", 404);
+    //     };
+
+    //     $user = User::find($formData['user_id']);
+    //     $right = Right::find($formData['right_id']);
+
+    //     $right->user_id = null;
+    //     $right->save();
+
+    //     return self::sendResponse([], "User Dettaché du right avec succès!!");
+    // }
+
+
+    
     static function rightAttach($formData)
     {
-        $user = User::where(['id' => $formData['user_id']])->get();
+        $current_user = request()->user();
+        if ($current_user->is_admin) {
+            $user = User::where(['id' => $formData['user_id']])->get();
+        } else {
+            $user = User::where(['id' => $formData['user_id'], 'owner' => $current_user->id])->get();
+        }
         if (count($user) == 0) {
             return self::sendError("Ce utilisateur n'existe pas!", 404);
         };
@@ -529,18 +581,37 @@ class USER_HELPER extends BASE_HELPER
             return self::sendError("Ce right n'existe pas!", 404);
         };
 
-        $user = User::find($formData['user_id']);
-        $right = Right::find($formData['right_id']);
+        // $user = User::find($formData['user_id']);
+        // $right = Right::find($formData['right_id']);
 
-        $right->user_id = $user->id;
-        $right->save();
+        $is_this_attach_existe = UserRight::where(["user_id" => $formData['user_id'], "right_id" => $formData['right_id']])->first();
+
+        if ($is_this_attach_existe) {
+            return self::sendError("Ce user dispose déjà de ce droit!", 505);
+        }
+        ##__
+
+        $user_right = new UserRight();
+        $user_right->user_id = $formData['user_id'];
+        $user_right->right_id = $formData['right_id'];
+        $user_right->save();
+
+        // $right->user_id = $user->id;
+        // $right->save();
 
         return self::sendResponse([], "User attaché au right avec succès!!");
     }
 
     static function rightDesAttach($formData)
     {
-        $user = User::where(['id' => $formData['user_id']])->get();
+        $current_user = request()->user();
+
+        // return $current_user->affected_rights;
+        if ($current_user->is_admin) {
+            $user = User::where(['id' => $formData['user_id']])->get();
+        } else {
+            $user = User::where(['id' => $formData['user_id'], 'owner' => $current_user->id])->get();
+        }
         if (count($user) == 0) {
             return self::sendError("Ce utilisateur n'existe pas!", 404);
         };
@@ -550,12 +621,13 @@ class USER_HELPER extends BASE_HELPER
             return self::sendError("Ce right n'existe pas!", 404);
         };
 
-        $user = User::find($formData['user_id']);
-        $right = Right::find($formData['right_id']);
+        ###___retrait du droit qui lui a été affecté par defaut
+        $user_right = UserRight::where(["user_id" => $formData['user_id'], "right_id" => $formData['user_id']])->first();
+        if (!$user_right) {
+            return self::sendError("Ce user ne dispose pas de ce droit!", 505);
+        }
 
-        $right->user_id = null;
-        $right->save();
-
+        $user_right->delete();
         return self::sendResponse([], "User Dettaché du right avec succès!!");
     }
 }
