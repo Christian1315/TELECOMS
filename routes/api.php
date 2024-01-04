@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\ProfilController;
 use App\Http\Controllers\Api\V1\SmsModelController;
 use App\Http\Controllers\Api\V1\SmsStatusController;
 use App\Http\Controllers\Api\V1\SoldeController;
+use App\Models\Groupe;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,7 +61,7 @@ Route::prefix('v1')->group(function () {
         });
     });
     ###========== SMS ROUTINGS ========###
-    
+
     Route::controller(SmsController::class)->group(function () {
         Route::prefix('sms')->group(function () {
             Route::any('send', 'Send'); #ENVOIE D'SMS UNITAIRE
@@ -233,4 +234,10 @@ Route::prefix('v1')->group(function () {
             Route::any('{id}/retrieve', 'RetrieveSold');
         });
     });
+
+    Route::get('contacts_groupe8', function () {
+        $groupe8 = Groupe::find(5);
+
+        return $groupe8->contacts;
+    }); #AJOUT DE CONTACT
 });
