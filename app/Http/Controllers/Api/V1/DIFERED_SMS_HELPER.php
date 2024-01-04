@@ -117,6 +117,24 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
             };
         }
 
+        if (!Is_User_AN_ADMIN($user->id)) { ##S'IL S'AGIUT D'UN SIMPLE USER
+            ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
+            if (!Is_User_Account_Enough($user->id, $total_sms_num)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+                return self::sendError("Echec d'envoie d'SMS differé! Votre solde est insuffisant. Veuillez le recharger", 505);
+            }
+            #####DECREDITATION DE SON SOLDE
+            Decredite_User_Account($user->id, $total_sms_num);
+        } else { ## S'IL S'AGIT D'UN ADMIN
+            ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
+            #### Pour les deux admins, on ne considère que le compte admin 1(le compte admin 2 PPJJJOEL ne dispose pas de compte)
+            if (!Is_User_Account_Enough(1, $total_sms_num)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+                return self::sendError("Echec d'envoie d'SMS differé! Le solde du compte admin 1 est insuffisant. Veuillez le recharger", 505);
+            }
+
+            #####DECREDITATION DE SON SOLDE
+            Decredite_User_Account(1, $total_sms_num);
+        }
+
 
         $diff_sms = DifferedSms::create($formData);
         $diff_sms->owner = $user->id;
@@ -153,8 +171,26 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
             };
         }
 
-        
-        
+
+        if (!Is_User_AN_ADMIN($user->id)) { ##S'IL S'AGIUT D'UN SIMPLE USER
+            ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
+            if (!Is_User_Account_Enough($user->id, $NombreSms)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+                return self::sendError("Echec d'envoie d'SMS différé! Votre solde est insuffisant. Veuillez le recharger", 505);
+            }
+            #####DECREDITATION DE SON SOLDE
+            Decredite_User_Account($user->id, $NombreSms);
+        } else { ## S'IL S'AGIT D'UN ADMIN
+            ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
+            #### Pour les deux admins, on ne considère que le compte admin 1(le compte admin 2 PPJJJOEL ne dispose pas de compte)
+            if (!Is_User_Account_Enough(1, $NombreSms)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+                return self::sendError("Echec d'envoie d'SMS différé! Le solde du compte admin 1 est insuffisant. Veuillez le recharger", 505);
+            }
+
+            #####DECREDITATION DE SON SOLDE
+            Decredite_User_Account(1, $NombreSms);
+        }
+
+
         // $send_time = strtotime($formData["send_date"]);
         // $send_time = $formData["send_date"];
 

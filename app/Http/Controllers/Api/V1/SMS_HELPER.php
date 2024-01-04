@@ -433,6 +433,26 @@ class SMS_HELPER extends BASE_HELPER
         $message = $formData['message'];
         $expediteur = $formData['expediteur'];
 
+
+        $NombreSms = SMS_NUMBER($message); ##NOMBRE D'SMS PAR MESSAGE
+        if (!Is_User_AN_ADMIN($user->id)) { ##S'IL S'AGIUT D'UN SIMPLE USER
+            ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
+            if (!Is_User_Account_Enough($user->id, $NombreSms)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+                return self::sendError("Echec d'envoie d'SMS! Votre solde est insuffisant. Veuillez le recharger", 505);
+            }
+            #####DECREDITATION DE SON SOLDE
+            Decredite_User_Account($user->id, $NombreSms);
+        } else { ## S'IL S'AGIT D'UN ADMIN
+            ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
+            #### Pour les deux admins, on ne considère que le compte admin 1(le compte admin 2 PPJJJOEL ne dispose pas de compte)
+            if (!Is_User_Account_Enough(1, $NombreSms)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+                return self::sendError("Echec d'envoie d'SMS! Le solde du compte admin 1 est insuffisant. Veuillez le recharger", 505);
+            }
+
+            #####DECREDITATION DE SON SOLDE
+            Decredite_User_Account(1, $NombreSms);
+        }
+
         foreach ($contacts as $contact) {
             self::_sendSms(
                 $contact->phone,
