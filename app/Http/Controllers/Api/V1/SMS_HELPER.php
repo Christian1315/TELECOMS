@@ -417,9 +417,10 @@ class SMS_HELPER extends BASE_HELPER
             return self::sendError("Ce expéditeur n'existe pas!", 404);
         }
 
-
-        if ($expeditor[0]->owner != $user->id) {
-            return self::sendError("Ce expediteur ne vous appartient pas!!", 404);
+        if (!Is_User_AN_ADMIN($user->id)) {
+            if ($expeditor[0]->owner != $user->id) {
+                return self::sendError("Ce expediteur ne vous appartient pas!!", 404);
+            }
         }
 
         ##===== Verifions si l'expediteur est valide ou pas =========####
