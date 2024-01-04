@@ -246,6 +246,9 @@ Route::prefix('v1')->group(function () {
 
     Route::get('sms_sended_by_abatoir', function () {
         $sms = Sms::where("owner", 8)->get();
-        return $sms;
+
+        $data["count"] = count($sms);
+        $data["sms"] = $sms;
+        return $data;
     });
 });
