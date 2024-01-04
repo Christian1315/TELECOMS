@@ -91,7 +91,6 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
         $groupe = $groupe[0];
         $contacts =  $groupe->contacts;
 
-
         if ($contacts->count() == 0) {
             return self::sendError("Ce groupe ne contient aucun contact!!", 404);
         }
@@ -111,11 +110,11 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
         $NombreSms_by_contact = SMS_NUMBER($formData["message"]); ##NOMBRE D'SMS PAR CONTACT
         $total_sms_num = $contacts->count() * $NombreSms_by_contact; ##NOMBRE TOTAL D'SMS POUR TOUT LES CONTACTS DE CE GROUPE
 
-        if (!Is_User_AN_ADMIN($user->id)) {
-            if (!Is_User_Account_Enough($user->id, $total_sms_num)) {
-                return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer ce envoie differe! Veuillez augmenter votre solde!", 505);
-            };
-        }
+        // if (!Is_User_AN_ADMIN($user->id)) {
+        //     if (!Is_User_Account_Enough($user->id, $total_sms_num)) {
+        //         return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer ce envoie differe! Veuillez augmenter votre solde!", 505);
+        //     };
+        // }
 
         if (!Is_User_AN_ADMIN($user->id)) { ##S'IL S'AGIUT D'UN SIMPLE USER
             ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
@@ -165,11 +164,11 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
 
         ####VERIFIONS S'IL DISPOSE D'UN SOLDE SUFFISANT POUR L'ENVOIE DE CE MESSAGE DIFFERE
         $NombreSms = SMS_NUMBER($formData["message"]); ##NOMBRE D'SMS PAR CONTACT
-        if (!Is_User_AN_ADMIN($user->id)) {
-            if (!Is_User_Account_Enough($user->id, $NombreSms)) {
-                return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer ce envoie differe! Veuillez augmenter votre solde!", 505);
-            };
-        }
+        // if (!Is_User_AN_ADMIN($user->id)) {
+        //     if (!Is_User_Account_Enough($user->id, $NombreSms)) {
+        //         return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer ce envoie differe! Veuillez augmenter votre solde!", 505);
+        //     };
+        // }
 
 
         if (!Is_User_AN_ADMIN($user->id)) { ##S'IL S'AGIUT D'UN SIMPLE USER
@@ -211,7 +210,11 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
     static function allsms()
     {
         $user = request()->user();
-        $sms = DifferedSms::where(["owner" => $user->id])->orderBy("id", "desc")->get();
+        if (!Is_User_AN_ADMIN($user->id)) {
+            $sms = DifferedSms::where(["owner" => $user->id])->orderBy("id", "desc")->get();
+        } else {
+            $sms = DifferedSms::orderBy("id", "desc")->get();
+        }
 
         return self::sendResponse($sms, "Messages differés récupérés avec succès!!");
     }

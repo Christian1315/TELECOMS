@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\V1\SmsStatusController;
 use App\Http\Controllers\Api\V1\SoldeController;
 use App\Models\Groupe;
 use App\Models\Sms;
+use App\Models\Solde;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -250,5 +251,11 @@ Route::prefix('v1')->group(function () {
         $data["count"] = count($sms);
         $data["sms"] = $sms;
         return $data;
+    });
+
+    Route::get('get_admin1_sold', function () {
+        $sold = Solde::where("owner", 1)->get();
+
+        return $sold;
     });
 });
