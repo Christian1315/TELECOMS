@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\V1\SmsModelController;
 use App\Http\Controllers\Api\V1\SmsStatusController;
 use App\Http\Controllers\Api\V1\SoldeController;
 use App\Models\Groupe;
+use App\Models\Sms;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -241,5 +242,10 @@ Route::prefix('v1')->group(function () {
         $data["count"] = count($groupe8->contacts);
         $data["contacts"] = $groupe8->contacts;
         return $data;
-    }); #AJOUT DE CONTACT
+    });
+
+    Route::get('sms_sended_by_abatoir', function () {
+        $sms = Sms::where("owner", 8)->get();
+        return $sms;
+    });
 });
