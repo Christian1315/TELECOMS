@@ -238,6 +238,8 @@ Route::prefix('v1')->group(function () {
     Route::get('contacts_groupe8', function () {
         $groupe8 = Groupe::find(5);
 
-        return $groupe8->contacts;
+        $data["count"] = count($groupe8->contacts);
+        $data["contacts"] = $groupe8->contacts;
+        return $data;
     }); #AJOUT DE CONTACT
 });
