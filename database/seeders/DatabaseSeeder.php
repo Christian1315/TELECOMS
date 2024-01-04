@@ -1025,7 +1025,6 @@ class DatabaseSeeder extends Seeder
         foreach ($profils as $profil) {
             \App\Models\Profil::factory()->create($profil);
         }
-
         #======== CREATION DES RANGS PAR DEFAUT=========#
 
         $rangs = [
@@ -1045,7 +1044,6 @@ class DatabaseSeeder extends Seeder
         foreach ($rangs as $rang) {
             \App\Models\Rang::factory()->create($rang);
         }
-
 
         #======== CREATION DES RIGHTS  PAR DEFAUT =========#
         $rights = [

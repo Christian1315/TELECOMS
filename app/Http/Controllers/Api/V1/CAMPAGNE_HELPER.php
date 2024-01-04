@@ -129,7 +129,17 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             if (!Is_User_Account_Enough($user->id, $TOTAL_SMS_NUM_FOR_THE_CAMPAGNE)) {
                 return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer cette campagne! Veuillez augmenter votre solde!", 505);
             };
+        } else { ## S'IL S'AGIT D'UN ADMIN
+            ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
+            #### Pour les deux admins, on ne considère que le compte admin 1(le compte admin 2 PPJJJOEL ne dispose pas de compte)
+            if (!Is_User_Account_Enough(1, $TOTAL_SMS_NUM_FOR_THE_CAMPAGNE)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
+                return self::sendError("Le compte Admin 1 ne dispose pas d'un solde suffisant pour effectuer cette campagne! Veuillez augmenter le solde!", 505);
+            }
+
+            #####DECREDITATION DE SON SOLDE
+            Decredite_User_Account(1, $TOTAL_SMS_NUM_FOR_THE_CAMPAGNE);
         }
+
 
         $Campagne = Campagne::create($formData);
         $Campagne->status = 1;
@@ -146,10 +156,10 @@ class CAMPAGNE_HELPER extends BASE_HELPER
                 // return $Campagne;
 
                 CampagneGroupe::create([
-                    "campagne_id"=>$Campagne->id,
-                    "groupe_id_new"=>$groupe->id,
+                    "campagne_id" => $Campagne->id,
+                    "groupe_id_new" => $groupe->id,
                 ]);
-                
+
                 // $groupe->campagnes()->attach($Campagne);
             }
         }

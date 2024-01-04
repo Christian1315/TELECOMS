@@ -164,7 +164,6 @@ class USER_HELPER extends BASE_HELPER
 
         #===== ENVOIE D'SMS AU USER DU COMPTE =======~####
 
-        // $compte_msg = "Votre compte a été crée avec succès sur FRIK-SMS. Voici ci-dessous vos identifiants de connexion: Username::" . $username . "   Password: " . $formData["password"];
         $compte_msg = "Votre compte a été crée avec succès sur FRIK-SMS";
 
         $account_activation_code = "http://manager.telecoms.digital/auth/register/activate?code=" . $active_compte_code . "  Code d'activation:: " . $active_compte_code;
@@ -189,32 +188,6 @@ class USER_HELPER extends BASE_HELPER
         } catch (\Throwable $th) {
             //throw $th;
         }
-        // ###____
-        // try {
-        //     ##___CREATION DE COMPTE
-        //     SMS_HELPER::_sendSms(
-        //         $user->phone,
-        //         $compte_msg,
-        //         $expediteur,
-        //         true,
-        //         User::find(1)
-        //     );
-        // } catch (\Throwable $th) {
-        //     //throw $th;
-        // }
-
-        // try {
-        //     ##___ACTIVATION DE COMPTE
-        //     SMS_HELPER::_sendSms(
-        //         $user->phone,
-        //         $compte_activation_msg,
-        //         $expediteur,
-        //         true,
-        //         User::find(1)
-        //     );
-        // } catch (\Throwable $th) {
-        //     //throw $th;
-        // }
 
         return self::sendResponse($user, 'User crée avec succès!!');
     }
@@ -562,8 +535,6 @@ class USER_HELPER extends BASE_HELPER
     //     return self::sendResponse([], "User Dettaché du right avec succès!!");
     // }
 
-
-    
     static function rightAttach($formData)
     {
         $current_user = request()->user();

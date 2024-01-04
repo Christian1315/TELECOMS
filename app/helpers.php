@@ -224,17 +224,19 @@ function Decredite_User_Account($userId, $NombreSms)
 {
     $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get();
 
-    ##~~l'ancien solde
-    $old_solde = $solde[0];
-    $old_solde->visible = 0;
-    $old_solde->save();
+    if (count($solde) != 0) {
+        ##~~l'ancien solde
+        $old_solde = $solde[0];
+        $old_solde->visible = 0;
+        $old_solde->save();
 
-    ##~~le nouveau solde
-    $new_solde = new Solde();
-    $new_solde->solde = $old_solde->solde - $NombreSms; ##creditation du compte
-    $new_solde->owner = $old_solde->owner;
-    $new_solde->decredited_at = now();
-    $new_solde->save();
+        ##~~le nouveau solde
+        $new_solde = new Solde();
+        $new_solde->solde = $old_solde->solde - $NombreSms; ##creditation du compte
+        $new_solde->owner = $old_solde->owner;
+        $new_solde->decredited_at = now();
+        $new_solde->save();
+    }
 }
 
 ##======== CE HELPER PERMET DE VERIFIER SI LE USER EST UN ADMIN OU PAS ==========## 

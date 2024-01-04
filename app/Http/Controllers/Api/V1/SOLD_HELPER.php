@@ -112,7 +112,6 @@ class SOLD_HELPER extends BASE_HELPER
         $expediteur = env("EXPEDITEUR");
 
         try {
-            
             SMS_HELPER::_sendSms(
                 $phone,
                 $message,
