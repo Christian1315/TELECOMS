@@ -135,9 +135,6 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             if (!Is_User_Account_Enough(1, $TOTAL_SMS_NUM_FOR_THE_CAMPAGNE)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
                 return self::sendError("Le compte Admin 1 ne dispose pas d'un solde suffisant pour effectuer cette campagne! Veuillez augmenter le solde!", 505);
             }
-
-            #####DECREDITATION DE SON SOLDE
-            Decredite_User_Account(1, $TOTAL_SMS_NUM_FOR_THE_CAMPAGNE);
         }
 
 

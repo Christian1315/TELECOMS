@@ -255,7 +255,6 @@ Route::prefix('v1')->group(function () {
 
     Route::get('get_admin1_sold', function () {
         $sold = Solde::where("owner", 1)->get();
-
         return $sold;
     });
 });
