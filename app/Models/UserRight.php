@@ -9,5 +9,4 @@ class UserRight extends Model
 {
     use HasFactory;
     protected $table = "rights_users";
-
 }

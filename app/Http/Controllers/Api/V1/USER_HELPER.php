@@ -223,10 +223,7 @@ class USER_HELPER extends BASE_HELPER
 
 
             #renvoie des droits du user 
-            // $attached_rights = $user->drts; #drts represente les droits associés au user par relation #Les droits attachés
             $attached_rights = $user->affected_rights; #affected_rights represente les droits associés au user par relation #Les droits attachés
-
-            // return $attached_rights;
 
             if ($attached_rights->count() == 0) { #si aucun droit ne lui est attaché
                 if (Is_User_AN_ADMIN($user->id)) { #s'il est un admin
@@ -492,48 +489,6 @@ class USER_HELPER extends BASE_HELPER
         $user->save();
         return self::sendResponse($user, "Utilisateur modifié avec succès!!");
     }
-
-    // static function rightAttach($formData)
-    // {
-    //     $user = User::where(['id' => $formData['user_id']])->get();
-    //     if (count($user) == 0) {
-    //         return self::sendError("Ce utilisateur n'existe pas!", 404);
-    //     };
-
-    //     $right = Right::where('id', $formData['right_id'])->get();
-    //     if (count($right) == 0) {
-    //         return self::sendError("Ce right n'existe pas!", 404);
-    //     };
-
-    //     $user = User::find($formData['user_id']);
-    //     $right = Right::find($formData['right_id']);
-
-    //     $right->user_id = $user->id;
-    //     $right->save();
-
-    //     return self::sendResponse([], "User attaché au right avec succès!!");
-    // }
-
-    // static function rightDesAttach($formData)
-    // {
-    //     $user = User::where(['id' => $formData['user_id']])->get();
-    //     if (count($user) == 0) {
-    //         return self::sendError("Ce utilisateur n'existe pas!", 404);
-    //     };
-
-    //     $right = Right::where('id', $formData['right_id'])->get();
-    //     if (count($right) == 0) {
-    //         return self::sendError("Ce right n'existe pas!", 404);
-    //     };
-
-    //     $user = User::find($formData['user_id']);
-    //     $right = Right::find($formData['right_id']);
-
-    //     $right->user_id = null;
-    //     $right->save();
-
-    //     return self::sendResponse([], "User Dettaché du right avec succès!!");
-    // }
 
     static function rightAttach($formData)
     {

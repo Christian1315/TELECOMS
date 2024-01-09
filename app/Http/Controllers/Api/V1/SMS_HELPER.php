@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Validator;
 class SMS_HELPER extends BASE_HELPER
 {
     ##======== REGISTER VALIDATION =======##
-
     static function sms_rules(): array
     {
         return [
@@ -241,6 +240,14 @@ class SMS_HELPER extends BASE_HELPER
                 return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
             }
 
+            ###___quand l'expediteur n'est pas crée sur KING SMS PRO
+            if ($response == "sender not found or not check") {
+                if ($out_call) {
+                    return false;
+                }
+                return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
+            }
+
             ###___Le type de $response->from permet de savoir si l'expediteur est validé sur KING SMS PRO
             if (gettype($response->from) == "array") {
                 if ($out_call) {
@@ -301,7 +308,6 @@ class SMS_HELPER extends BASE_HELPER
             }
             return self::sendError("Aucune formule d'envoie n'est active!", 505);
         }
-
 
         ###____
         $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
