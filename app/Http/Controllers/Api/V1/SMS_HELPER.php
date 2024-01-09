@@ -224,6 +224,14 @@ class SMS_HELPER extends BASE_HELPER
                 $MESSAGE
             );
 
+            // return $response->status;
+            if ($response->status == "LEN") {
+                if ($out_call) {
+                    return false;
+                }
+                return self::sendError("Echec d'envoie du message! Le message est trop long!", 505);
+            }
+
             ###___quand le compte de KING SMS PRO est insuffisant
             if (!$response) {
                 if ($out_call) {
@@ -312,6 +320,7 @@ class SMS_HELPER extends BASE_HELPER
         ###____
         $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
 
+        // return ;
         #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
         $data = [
             "messageId" => $messageId,
