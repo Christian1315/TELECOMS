@@ -110,11 +110,11 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
         $NombreSms_by_contact = SMS_NUMBER($formData["message"]); ##NOMBRE D'SMS PAR CONTACT
         $total_sms_num = $contacts->count() * $NombreSms_by_contact; ##NOMBRE TOTAL D'SMS POUR TOUT LES CONTACTS DE CE GROUPE
 
-        // if (!Is_User_AN_ADMIN($user->id)) {
-        //     if (!Is_User_Account_Enough($user->id, $total_sms_num)) {
-        //         return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer ce envoie differe! Veuillez augmenter votre solde!", 505);
-        //     };
-        // }
+        if (GET_ACTIVE_FORMULE() == "kingsmspro") {
+            if (strlen($formData["message"]) > 1530) {
+                return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
+            }
+        }
 
         if (!Is_User_AN_ADMIN($user->id)) { ##S'IL S'AGIUT D'UN SIMPLE USER
             ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
@@ -159,11 +159,13 @@ class DIFERED_SMS_HELPER extends BASE_HELPER
 
         ####VERIFIONS S'IL DISPOSE D'UN SOLDE SUFFISANT POUR L'ENVOIE DE CE MESSAGE DIFFERE
         $NombreSms = SMS_NUMBER($formData["message"]); ##NOMBRE D'SMS PAR CONTACT
-        // if (!Is_User_AN_ADMIN($user->id)) {
-        //     if (!Is_User_Account_Enough($user->id, $NombreSms)) {
-        //         return self::sendError("Vous ne disposez pas d'un solde suffisant pour effectuer ce envoie differe! Veuillez augmenter votre solde!", 505);
-        //     };
-        // }
+
+
+        if (GET_ACTIVE_FORMULE() == "kingsmspro") {
+            if (strlen($formData["message"]) > 1530) {
+                return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
+            }
+        }
 
 
         if (!Is_User_AN_ADMIN($user->id)) { ##S'IL S'AGIUT D'UN SIMPLE USER

@@ -166,6 +166,12 @@ class DEVELOPER_HELPER extends BASE_HELPER
             return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
         }
 
+        if (GET_ACTIVE_FORMULE() == "kingsmspro") {
+            if (strlen($message) > 1530) {
+                return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
+            }
+        }
+
         $user = User::find($user_id);
         ###====== ENVOIE D'SMS ======
 

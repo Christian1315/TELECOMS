@@ -92,6 +92,12 @@ class CAMPAGNE_HELPER extends BASE_HELPER
             return self::sendError("Ce expéditeur n'est pas valide", 404);
         }
 
+        if (GET_ACTIVE_FORMULE() == "kingsmspro") {
+            if (strlen($formData["message"]) > 1530) {
+                return self::sendError("Echec de creation de campagne! Le message ne doit pas depasser 1530 caractères!", 505);
+            }
+        }
+
         $groupes_ids = $formData["groupes"];
         // $groupes_ids = explode(",", $groupes_ids);
 
