@@ -42,7 +42,7 @@ class DEVELOPER_HELPER extends BASE_HELPER
     {
         return [
             'phone' => ['required', 'numeric'],
-            'message' => ['required', 'max:300'],
+            'message' => ['required'],
             'expediteur' => ['required'],
         ];
     }
@@ -54,7 +54,7 @@ class DEVELOPER_HELPER extends BASE_HELPER
             'expediteur.required' => 'Le champ expediteur est réquis!',
             'phone.numeric' => 'Le phone doit être un nombre entier',
             'message.required' => 'Le champ message est réquis!',
-            'message.max' => 'Le message ne doit pas depasser 300 caractères!',
+            // 'message.max' => 'Le message ne doit pas depasser 300 caractères!',
         ];
     }
 
