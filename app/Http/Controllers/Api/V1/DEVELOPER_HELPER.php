@@ -183,52 +183,6 @@ class DEVELOPER_HELPER extends BASE_HELPER
             $user
         );
 
-        // $BASE_URL = env("BASE_URL");
-        // $API_KEY = env("API_KEY");
-        // $CLIENT_ID = env("CLIENT_ID");
-        // $EXPEDITEUR = $request->get("expediteur");
-
-        // $DESTINATAIRE = $phone;
-        // $MESSAGE = $message;
-
-        // $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
-
-        // $smsData   = array(
-        //     'from' => $EXPEDITEUR, //l'expediteur
-        //     'to' => '' . $DESTINATAIRE . '', //destination au format international sans "+" ni "00". Ex: 22890443679
-        //     'type' => 1, //type de message text et flash
-        //     'message' => $MESSAGE, //le contenu de votre sms
-        //     'dlr' => 's' // 1 pour un retour par contre 0
-        // );
-
-        // $response = Http::withHeaders([
-        //     'APIKEY' => $API_KEY,
-        //     'CLIENTID' => $CLIENT_ID
-        // ])->post($url, $smsData);
-
-        // $result = json_decode($response);
-        // if (!$result->status === "ACT") { #LE MESSAGE N'A PAS ETE ENVOYE
-        //     return self::sendError("L'envoie a échoué", 505);
-        // }
-
-        // #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
-
-        // $data = [
-        //     "messageId" => $result->messageId,
-        //     "from" => $result->from,
-        //     "to" => $result->to,
-        //     "message" => $result->message,
-        //     "type" => $result->type,
-        //     "route" => $result->route,
-        //     "sms_count" => $result->sms_count,
-        //     "amount" => $result->amount,
-        //     "currency" => $result->currency,
-        //     "status" => $result->status
-        // ];
-
-        // $sms = Sms::create($data);
-        // $sms->owner = request()->user()->id;
-        // $sms->save();
 
         return self::sendResponse($user, 'Sms envoyé avec succès!!');
     }

@@ -455,6 +455,12 @@ class SMS_HELPER extends BASE_HELPER
         $message = $formData['message'];
         $expediteur = $formData['expediteur'];
 
+        if (GET_ACTIVE_FORMULE() == "kingsmspro") {
+            if (strlen($message) > 1530) {
+                return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
+            }
+        }
+
 
         $NombreSms = SMS_NUMBER($message); ##NOMBRE D'SMS PAR MESSAGE
         if (!Is_User_AN_ADMIN($user->id)) { ##S'IL S'AGIUT D'UN SIMPLE USER
