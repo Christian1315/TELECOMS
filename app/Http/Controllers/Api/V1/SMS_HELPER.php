@@ -186,7 +186,6 @@ class SMS_HELPER extends BASE_HELPER
             }
         }
 
-        // return $solde[0];
         ##===== Verifions si l'expediteur est valide ou pas =========####
         if ($expeditor[0]->status != 3) {
             return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);
@@ -215,6 +214,7 @@ class SMS_HELPER extends BASE_HELPER
             Decredite_User_Account(1, $NombreSms);
         }
 
+        // return "dd";
 
         ###___ENVOIE D'SMS
         if (GET_ACTIVE_FORMULE() == "kingsmspro") {

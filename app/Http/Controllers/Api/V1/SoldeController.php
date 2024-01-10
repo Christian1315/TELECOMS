@@ -12,6 +12,8 @@ class SoldeController extends SOLD_HELPER
         $this->middleware(['auth:api', 'scope:api-access']);
         $this->middleware("CheckAdmin")->except([
             "RetrieveSold",
+            "RetrieveUserSold",
+            "RetrieveSold"
         ]);
     }
 
