@@ -493,9 +493,9 @@ class SMS_HELPER extends BASE_HELPER
         $user = request()->user();
         if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
             ###il peut tout recuperer
-            $sms =  Sms::with(["status"])->get();
+            $sms =  Sms::with(["status"])->orderBy("id", "desc")->get();
         } else {
-            $sms =  Sms::where(["owner" => $user->id])->get();
+            $sms =  Sms::where(["owner" => $user->id])->orderBy("id", "desc")->get();
         }
         return self::sendResponse($sms, 'Tout les sms récupérés avec succès!!');
     }
