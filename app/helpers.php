@@ -142,6 +142,7 @@ function Campagne_Initiation($campagne)
         $campagne->save();
     }
 }
+
 function Send_Email($email, $subject, $message)
 {
     $data = [
@@ -188,12 +189,17 @@ function SMS_NUMBER($message)
 function Is_User_Account_Enough($userId, $NombreSms)
 {
     ####___________
-    $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get();
-    if (count($solde) == 0) {
+    // $solde = Solde::where(['owner' => $userId])->whereRaw('visible > 0')->get();
+    $solde = Solde::where(['owner' => $userId])->orderBy("id", "desc")->get();
+    $solde = $solde[0];
+    if ($solde->visible < 1) {
+        return false;
+    }
+    if (!$solde) {
         return false; ##IL NE DISPOSE MEME PAS DE COMPTE
     }
     ###Il DISPOSE D'UN COMPTE
-    $solde = $solde[0];
+    // $solde = $solde[0];
     if ($solde->solde >= $NombreSms) {
         return true; #Son solde est suffisant! il peut envoyer d'sms
     }

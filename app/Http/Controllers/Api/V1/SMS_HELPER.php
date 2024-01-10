@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\Expeditor;
 use App\Models\Groupe;
 use App\Models\Sms;
+use App\Models\Solde;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -185,6 +186,7 @@ class SMS_HELPER extends BASE_HELPER
             }
         }
 
+        // return $solde[0];
         ##===== Verifions si l'expediteur est valide ou pas =========####
         if ($expeditor[0]->status != 3) {
             return self::sendError("Ce expéditeur existe, mais n'est pas validé!", 404);

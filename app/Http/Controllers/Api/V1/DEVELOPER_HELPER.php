@@ -183,7 +183,6 @@ class DEVELOPER_HELPER extends BASE_HELPER
             $user
         );
 
-
         return self::sendResponse($user, 'Sms envoyé avec succès!!');
     }
 
