@@ -234,6 +234,7 @@ function Decredite_User_Account($userId, $NombreSms)
         $new_solde = new Solde();
         $new_solde->solde = $old_solde->solde - $NombreSms; ##creditation du compte
         $new_solde->owner = $old_solde->owner;
+        $new_solde->manager = request()->user()->id;
         $new_solde->decredited_at = now();
         $new_solde->save();
     }
