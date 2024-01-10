@@ -88,18 +88,18 @@ class SOLD_HELPER extends BASE_HELPER
         $old_solde->visible = 0;
         $old_solde->save();
 
-
+        
         ##~~le nouveau solde
         $new_solde = new Solde();
         $new_solde->solde = $old_solde->solde + $formData["solde_amount"]; ##creditation du compte
         $new_solde->manager = $user->id;
         $new_solde->owner = $old_solde->owner;
         $new_solde->credited_at = now();
-
+        
         $new_solde->save();
-
+        
         $manager = $new_solde->manager_with_name->firstname;
-
+        
         ####DECREDITATION DU SOLDE DE L'ADMIN S'IL C'EST L'ADMIN 1 QUI CREDITE LE SOLDE D'UN USER
         if (!Is_THIS_ADMIN_PPJJOEL()) {
             Decredite_User_Account($user->id, $formData["solde_amount"]);
@@ -112,13 +112,13 @@ class SOLD_HELPER extends BASE_HELPER
         $expediteur = env("EXPEDITEUR");
 
         try {
-            SMS_HELPER::_sendSms(
-                $phone,
-                $message,
-                $expediteur,
-                false,
-                $user,
-            );
+            // SMS_HELPER::_sendSms(
+            //     $phone,
+            //     $message,
+            //     $expediteur,
+            //     false,
+            //     $user,
+            // );
 
             Send_Notification(
                 User::find($old_solde->owner),
@@ -148,5 +148,13 @@ class SOLD_HELPER extends BASE_HELPER
     {
         $Soldes = Solde::with(["owner", "manager"])->latest()->get();
         return self::sendResponse($Soldes, 'Soldes récupérés avec succès!!');
+    }
+
+
+    static function retrieveUserSolde($id)
+    {
+        $Solde = Solde::with(["owner", "manager"])->where(["owner" => $id])->get();
+
+        return self::sendResponse($Solde, 'Solde récupéré avec succès!!');
     }
 }

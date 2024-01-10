@@ -194,7 +194,6 @@ class SMS_HELPER extends BASE_HELPER
         $DESTINATAIRE = $phone;
         $MESSAGE = $message;
 
-
         $NombreSms = SMS_NUMBER($MESSAGE); ##NOMBRE D'SMS PAR MESSAGE
         if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIUT D'UN SIMPLE USER
             ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
