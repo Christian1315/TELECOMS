@@ -267,6 +267,20 @@ function Is_THIS_ADMIN_PPJJOEL()
     return false; #il n'est pas PPJJOEL
 }
 
+function Is_THIS_ORION_ACCOUNT($USER)
+{ #
+
+    if (!$USER) {
+        return false;
+    }
+
+    if ($USER->id == 4) {
+        return true; #il est ORION
+    }
+    return false; #il n'est pas ORION
+}
+
+
 ##======== CE HELPER PERMET DE RECUPERER LES DROITS D'UN UTILISATEUR ==========## 
 function User_Rights($rangId, $profilId)
 { #

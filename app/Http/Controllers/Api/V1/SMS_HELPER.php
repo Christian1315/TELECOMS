@@ -136,11 +136,17 @@ class SMS_HELPER extends BASE_HELPER
         return $response;
     }
 
-    public static function SEND_BY_KING_SMS_PRO($EXPEDITEUR, $DESTINATAIRE, $MESSAGE)
+    public static function SEND_BY_KING_SMS_PRO($EXPEDITEUR, $DESTINATAIRE, $MESSAGE,$USER)
     {
         $BASE_URL = env("BASE_URL");
-        $API_KEY = env("API_KEY");
-        $CLIENT_ID = env("CLIENT_ID");
+
+        if (Is_THIS_ORION_ACCOUNT($USER)) {
+            $API_KEY = env("OLD_API_KEY");
+            $CLIENT_ID = env("OLD_CLIENT_ID");
+        } else {
+            $API_KEY = env("API_KEY");
+            $CLIENT_ID = env("CLIENT_ID");
+        }
 
         $url = $BASE_URL . "/send"; #URL D'ENVOIE DE L'SMS
 
@@ -174,10 +180,12 @@ class SMS_HELPER extends BASE_HELPER
             return self::sendError("Ce expéditeur n'existe pas!", 404);
         }
 
+        
         #SI L'OPERATION NE PRECISE PAS LE USER, ON PRENDS CELUI QUI EST CONNECTE PAR DEFAUT
         if (!$user) {
             $user = request()->user();
         }
+        // return Is_THIS_ORION_ACCOUNT($user);
 
         $userId =  $user->id;
         if (!Is_User_AN_ADMIN($userId)) {
@@ -223,7 +231,8 @@ class SMS_HELPER extends BASE_HELPER
             $response = self::SEND_BY_KING_SMS_PRO(
                 $EXPEDITEUR,
                 $DESTINATAIRE,
-                $MESSAGE
+                $MESSAGE,
+                $user
             );
 
             if (strlen($MESSAGE) > 1530) {
@@ -364,7 +373,8 @@ class SMS_HELPER extends BASE_HELPER
         $response = self::SEND_BY_KING_SMS_PRO(
             $EXPEDITEUR,
             $DESTINATAIRE,
-            $MESSAGE
+            $MESSAGE,
+            $user
         );
 
         if ($response == false) {
