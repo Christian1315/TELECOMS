@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('soldes', function (Blueprint $table) {
             $table->id();
             $table->integer("solde")->default(0);
+
             $table->foreignId("owner")
                 ->nullable()
                 ->constrained("users", "id")

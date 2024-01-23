@@ -94,6 +94,10 @@ class SOLD_HELPER extends BASE_HELPER
         $new_solde->solde = $old_solde->solde + $formData["solde_amount"]; ##creditation du compte
         $new_solde->manager = $user->id;
         $new_solde->owner = $old_solde->owner;
+        
+        $new_solde->old_sold = $old_solde->solde;
+        $new_solde->added_sold = $formData["solde_amount"];
+        
         $new_solde->credited_at = now();
         
         $new_solde->save();
