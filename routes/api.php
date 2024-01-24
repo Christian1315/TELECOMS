@@ -53,6 +53,7 @@ Route::prefix('v1')->group(function () {
         Route::any('attach-user', 'AttachRightToUser'); #Attacher un droit au user 
         Route::any('desattach-user', 'DesAttachRightToUser'); #Attacher un droit au user 
     });
+
     Route::any('authorization', [Authorization::class, 'Authorization'])->name('authorization');
 
     ###========== SMS STATUS ROUTINGS ========###
@@ -217,7 +218,9 @@ Route::prefix('v1')->group(function () {
                 // Route::any('generate', 'GenerateDeveloperKey');
                 Route::any('{id}/retrieve', 'RetrieveDeveloperKey');
                 Route::any('{id}/regenerate', 'RegenerateDeveloperKey');
-                // Route::any('{id}/delete', 'DeleteCampagne');
+                Route::any('user/{id}/bloc', '_BlocApiKey');## 
+
+                Route::any('user/{id}/debloc', '_DeBlocApiKey');## 
             });
 
             Route::prefix('sms')->group(function () {

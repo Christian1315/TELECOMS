@@ -99,7 +99,6 @@ class SOLD_HELPER extends BASE_HELPER
         $new_solde->added_sold = $formData["solde_amount"];
         
         $new_solde->credited_at = now();
-        
         $new_solde->save();
         
         $manager = $new_solde->manager_with_name->firstname;
@@ -153,7 +152,6 @@ class SOLD_HELPER extends BASE_HELPER
         $Soldes = Solde::with(["owner", "manager"])->latest()->get();
         return self::sendResponse($Soldes, 'Soldes récupérés avec succès!!');
     }
-
 
     static function retrieveUserSolde($id)
     {

@@ -67,31 +67,63 @@ class DEVELOPER_HELPER extends BASE_HELPER
         return $validator;
     }
 
-    // static function _createDeveloperKey()
-    // {
-    //     ##VERIFIONS SI CE USER DISPOSE DEJA D'UNE CLE
-    //     $dev = DeveloperKey::where(["owner" => request()->user()->id])->get();
-    //     if ($dev->count() != 0) {
-    //         return self::sendError("Vous disposez déjà d'une clé API", 505);
-    //     }
-    //     $Developer = new DeveloperKey();
-    //     $Developer->key = Str::uuid();
-    //     $Developer->owner = request()->user()->id;
-    //     $Developer->save();
-    //     return self::sendResponse($Developer, 'La clé API a été générée avec succès!!');
-    // }
-
     static function _retrieveDeveloperKey($userId)
     {
         $user = User::find($userId);
         if (!$user) {
-            return self::sendError("Cet utilisateur n'existe pas",505);
+            return self::sendError("Cet utilisateur n'existe pas", 505);
         }
-        $Developer = DeveloperKey::with(["user"])->where(['owner'=>$userId])->get();
+        $Developer = DeveloperKey::with(["user"])->where(['owner' => $userId])->get();
         if ($Developer->count() == 0) {
             return self::sendError("Ce Developer n'existe pas!!", 404);
         }
         return self::sendResponse($Developer, 'Developer récuperé avec succès!!');
+    }
+
+    // ##BLOQUER UNE CLE API
+    static function blocApiKey($userId)
+    {
+        $user = User::find($userId);
+        if (!$user) {
+            return self::sendError("Cet utilisateur n'existe pas", 505);
+        }
+        $Developer = DeveloperKey::with(["user"])->where(['owner' => $userId])->first();
+        if (!$Developer) {
+            return self::sendError("Ce Utilisateur ne dispose pas de clé API !!", 404);
+        }
+
+        // ###
+        if (!$Developer->actif) {
+            return self::sendError("Ce compte API est déjà bloqué!", 505);
+        }
+
+        // ###
+        $Developer->actif = 0;
+        $Developer->save();
+        return self::sendResponse($Developer, 'Compte API bloqué avec succès!!');
+    }
+
+    // ###DEBLOQUER UNE CLE API
+    static function deBlocApiKey($userId)
+    {
+        $user = User::find($userId);
+        if (!$user) {
+            return self::sendError("Cet utilisateur n'existe pas", 505);
+        }
+        $Developer = DeveloperKey::with(["user"])->where(['owner' => $userId])->first();
+        if (!$Developer) {
+            return self::sendError("Ce Utilisateur ne dispose pas de clé API !!", 404);
+        }
+
+        // ###
+        if ($Developer->actif) {
+            return self::sendError("Ce compte API est déjà débloqué!", 505);
+        }
+
+        // ###
+        $Developer->actif = 1;
+        $Developer->save();
+        return self::sendResponse($Developer, 'Compte API débloqué avec succès!!');
     }
 
     static function allDeveloperKeys()
@@ -138,15 +170,21 @@ class DEVELOPER_HELPER extends BASE_HELPER
         }
 
         ### VERIFIONS SI Clé API Existe
-        $dev = DeveloperKey::where(["key" => $api_key])->get();
-        if ($dev->count() == 0) {
+        $dev = DeveloperKey::where(["key" => $api_key])->first();
+        if (!$dev) {
             return self::sendError("La clé API n'existe pas", 505);
         }
 
         ### VERIFIONS SI Clé API EST VALIDE(voyons si elle appartient au user en question)
-        $dev = DeveloperKey::where(["key" => $api_key, "owner" => $user_id])->get();
-        if ($dev->count() == 0) {
+        $dev = DeveloperKey::where(["key" => $api_key, "owner" => $user_id])->first();
+        if (!$dev) {
             return self::sendError("La clé API ne vous appartient pas", 505);
+        }
+
+        ### VERIFIONS SI CETTE Clé API EST ACTIVE
+        $dev = DeveloperKey::where(["key" => $api_key, "owner" => $user_id])->first();
+        if (!$dev->actif) {
+            return self::sendError("Votre compte API est désactivé!", 505);
         }
 
         ####==== VOYONS SI L'EXPEDITEUR  EXISTE=======###
@@ -214,6 +252,12 @@ class DEVELOPER_HELPER extends BASE_HELPER
             return self::sendError("La clé API ne vous appartient pas", 505);
         }
 
+        ### VERIFIONS SI CETTE Clé API EST ACTIVE
+        $dev = DeveloperKey::where(["key" => $api_key, "owner" => $user_id])->first();
+        if (!$dev->actif) {
+            return self::sendError("Votre compte API est désactivé!", 505);
+        }
+
         $sms =  Sms::where(["owner" => $user_id])->orderBy("id", "desc")->get();
         return self::sendResponse($sms, 'Tout les sms récupérés avec succès!!');
     }
@@ -234,6 +278,12 @@ class DEVELOPER_HELPER extends BASE_HELPER
         $dev = DeveloperKey::where(["key" => $api_key, "owner" => $user_id])->get();
         if ($dev->count() == 0) {
             return self::sendError("La clé API ne vous appartient pas", 505);
+        }
+
+        ### VERIFIONS SI CETTE Clé API EST ACTIVE
+        $dev = DeveloperKey::where(["key" => $api_key, "owner" => $user_id])->first();
+        if (!$dev->actif) {
+            return self::sendError("Votre compte API est désactivé!", 505);
         }
 
         $sms = Sms::where(["id" => $id, "owner" => $user_id])->get();

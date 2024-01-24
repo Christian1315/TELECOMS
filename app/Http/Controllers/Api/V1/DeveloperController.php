@@ -111,4 +111,26 @@ class DeveloperController extends DEVELOPER_HELPER
         #RECUPERATION D'UN SMS VIA SON **id**
         return $this->retrieveSms($request, $id);
     }
+
+    function _BlocApiKey(Request $request,$userId)
+    {
+        #VERIFICATION DE LA METHOD
+        if ($this->methodValidation($request->method(), "GET") == False) {
+            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR SMS_HELPER
+            return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
+        };
+
+        return $this->blocApiKey($userId);
+    }
+
+    function _DeBlocApiKey(Request $request,$userId)
+    {
+        #VERIFICATION DE LA METHOD
+        if ($this->methodValidation($request->method(), "GET") == False) {
+            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR SMS_HELPER
+            return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
+        };
+
+        return $this->deBlocApiKey($userId);
+    }
 }
