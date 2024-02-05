@@ -13,7 +13,7 @@ class DeveloperController extends DEVELOPER_HELPER
             "Send", "GetAllSms", "getSms"
         ]);
 
-        set_time_limit(0);
+        // set_time_limit(0);
     }
 
     // function GenerateDeveloperKey(Request $request)
