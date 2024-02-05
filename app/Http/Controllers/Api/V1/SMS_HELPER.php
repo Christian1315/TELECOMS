@@ -128,14 +128,15 @@ class SMS_HELPER extends BASE_HELPER
         $password = env("OCEANIC_PASSWORD");
         $url = env("OCEANIC_BASE_URL") . "?user=" . $user . "&password=" . $password . "&from=" . $from . "&to=" . $to . "&text=" . $message;
 
+        $response = Http::get($url);
         try {
-            $response = Http::get($url);
         } catch (\Throwable $th) {
             $response = false;
         }
         return $response;
     }
 
+    
     public static function SEND_BY_KING_SMS_PRO($EXPEDITEUR, $DESTINATAIRE, $MESSAGE,$USER)
     {
         $BASE_URL = env("BASE_URL");
@@ -245,7 +246,6 @@ class SMS_HELPER extends BASE_HELPER
                 }
                 return self::sendError("Echec d'envoie du message! ", 505);
             }
-
 
             ###___quand l'expediteur n'est pas crée sur KING SMS PRO
             if ($response == "sender unauthorized") {
