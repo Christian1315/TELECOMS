@@ -158,16 +158,16 @@ class SMS_HELPER extends BASE_HELPER
             'dlr' => 's' // 1 pour un retour par contre 0
         );
 
-        try {
-            $response = Http::withHeaders([
-                'APIKEY' => $API_KEY,
-                'CLIENTID' => $CLIENT_ID
-            ])->post($url, $smsData);
+        $response = Http::withHeaders([
+            'APIKEY' => $API_KEY,
+            'CLIENTID' => $CLIENT_ID
+        ])->post($url, $smsData);
 
-            $response = json_decode($response);
-        } catch (\Throwable $th) {
-            $response = false;
-        }
+        $response = json_decode($response);
+        // try {
+        // } catch (\Throwable $th) {
+        //     $response = false;
+        // }
 
         return $response;
     }
@@ -179,13 +179,11 @@ class SMS_HELPER extends BASE_HELPER
         if ($expeditor->count() == 0) {
             return self::sendError("Ce expéditeur n'existe pas!", 404);
         }
-
         
         #SI L'OPERATION NE PRECISE PAS LE USER, ON PRENDS CELUI QUI EST CONNECTE PAR DEFAUT
         if (!$user) {
             $user = request()->user();
         }
-        // return Is_THIS_ORION_ACCOUNT($user);
 
         $userId =  $user->id;
         if (!Is_User_AN_ADMIN($userId)) {
@@ -221,8 +219,6 @@ class SMS_HELPER extends BASE_HELPER
             #####DECREDITATION DE SON SOLDE
             Decredite_User_Account(1, $NombreSms);
         }
-
-        // return "dd";
 
         ###___ENVOIE D'SMS
         if (GET_ACTIVE_FORMULE() == "kingsmspro") {
