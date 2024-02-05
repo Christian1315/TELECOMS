@@ -12,6 +12,8 @@ class DeveloperController extends DEVELOPER_HELPER
         $this->middleware(['auth:api', 'scope:api-access'])->except([
             "Send", "GetAllSms", "getSms"
         ]);
+
+        set_time_limit(0);
     }
 
     // function GenerateDeveloperKey(Request $request)
