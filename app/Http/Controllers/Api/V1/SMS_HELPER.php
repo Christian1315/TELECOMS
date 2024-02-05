@@ -242,20 +242,14 @@ class SMS_HELPER extends BASE_HELPER
                 return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
             }
 
-            if ($response->status == "LEN") {
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("Echec d'envoie du message! Le message est trop long!", 505);
-            }
-
             ###___quand le compte de KING SMS PRO est insuffisant
             if (!$response) {
                 if ($out_call) {
                     return false;
                 }
-                return self::sendError("Echec d'envoie du message! Le compte du fournisseur n'est pas rechargé!", 505);
+                return self::sendError("Echec d'envoie du message! ", 505);
             }
+
 
             ###___quand l'expediteur n'est pas crée sur KING SMS PRO
             if ($response == "sender unauthorized") {
@@ -271,6 +265,13 @@ class SMS_HELPER extends BASE_HELPER
                     return false;
                 }
                 return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
+            }
+            
+            if ($response->status == "LEN") {
+                if ($out_call) {
+                    return false;
+                }
+                return self::sendError("Echec d'envoie du message! Le message est trop long!", 505);
             }
 
             ###___Le type de $response->from permet de savoir si l'expediteur est validé sur KING SMS PRO
