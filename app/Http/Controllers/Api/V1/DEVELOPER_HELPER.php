@@ -13,7 +13,6 @@ use Illuminate\Validation\Rule;
 
 class DEVELOPER_HELPER extends BASE_HELPER
 {
-
     static function DEVELOPER_key_rules(): array
     {
         return [
@@ -36,7 +35,6 @@ class DEVELOPER_HELPER extends BASE_HELPER
         $validator = Validator::make($formDatas, $rules, $messages);
         return $validator;
     }
-
 
     static function sms_rules(): array
     {

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\Expeditor;
 use App\Models\Groupe;
 use App\Models\Sms;
-use App\Models\Solde;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -136,7 +135,7 @@ class SMS_HELPER extends BASE_HELPER
         return $response;
     }
 
-    
+
     public static function SEND_BY_KING_SMS_PRO($EXPEDITEUR, $DESTINATAIRE, $MESSAGE,$USER)
     {
         $BASE_URL = env("BASE_URL");
@@ -231,6 +230,7 @@ class SMS_HELPER extends BASE_HELPER
                 $MESSAGE,
                 $user
             );
+
 
             if (strlen($MESSAGE) > 1530) {
                 if ($out_call) {
