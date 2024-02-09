@@ -136,7 +136,7 @@ class SMS_HELPER extends BASE_HELPER
     }
 
 
-    public static function SEND_BY_KING_SMS_PRO($EXPEDITEUR, $DESTINATAIRE, $MESSAGE,$USER)
+    public static function SEND_BY_KING_SMS_PRO($EXPEDITEUR, $DESTINATAIRE, $MESSAGE, $USER)
     {
         $BASE_URL = env("BASE_URL");
 
@@ -179,7 +179,7 @@ class SMS_HELPER extends BASE_HELPER
         if ($expeditor->count() == 0) {
             return self::sendError("Ce expéditeur n'existe pas!", 404);
         }
-        
+
         #SI L'OPERATION NE PRECISE PAS LE USER, ON PRENDS CELUI QUI EST CONNECTE PAR DEFAUT
         if (!$user) {
             $user = request()->user();
@@ -208,16 +208,15 @@ class SMS_HELPER extends BASE_HELPER
                 return self::sendError("Echec d'envoie d'SMS! Votre solde est insuffisant. Veuillez le recharger", 505);
             }
             #####DECREDITATION DE SON SOLDE
-            Decredite_User_Account($userId, $NombreSms);
+            // Decredite_User_Account($userId, $NombreSms);
         } else { ## S'IL S'AGIT D'UN ADMIN
             ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
             #### Pour les deux admins, on ne considère que le compte admin 1(le compte admin 2 PPJJJOEL ne dispose pas de compte)
             if (!Is_User_Account_Enough(1, $NombreSms)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
                 return self::sendError("Echec d'envoie d'SMS! Le solde du compte admin 1 est insuffisant. Veuillez le recharger", 505);
             }
-
             #####DECREDITATION DE SON SOLDE
-            Decredite_User_Account(1, $NombreSms);
+            // Decredite_User_Account(1, $NombreSms);
         }
 
         ###___ENVOIE D'SMS
@@ -262,7 +261,7 @@ class SMS_HELPER extends BASE_HELPER
                 }
                 return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
             }
-            
+
             if ($response->status == "LEN") {
                 if ($out_call) {
                     return false;
@@ -331,10 +330,22 @@ class SMS_HELPER extends BASE_HELPER
             return self::sendError("Aucune formule d'envoie n'est active!", 505);
         }
 
+
+        ####____GESTION DU SOLDE
+        if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIUT D'UN SIMPLE USER
+           
+            #####DECREDITATION DE SON SOLDE
+            Decredite_User_Account($userId, $NombreSms);
+        } else { ## S'IL S'AGIT D'UN ADMIN
+            ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
+           
+            #####DECREDITATION DE SON SOLDE
+            Decredite_User_Account(1, $NombreSms);
+        }
+
         ###____
         $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
 
-        // return ;
         #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
         $data = [
             "messageId" => $messageId,
