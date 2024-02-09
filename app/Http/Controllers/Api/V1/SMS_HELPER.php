@@ -208,7 +208,7 @@ class SMS_HELPER extends BASE_HELPER
                 return self::sendError("Echec d'envoie d'SMS! Votre solde est insuffisant. Veuillez le recharger", 505);
             }
             #####DECREDITATION DE SON SOLDE
-            // Decredite_User_Account($userId, $NombreSms);
+            Decredite_User_Account($userId, $NombreSms);
         } else { ## S'IL S'AGIT D'UN ADMIN
             ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
             #### Pour les deux admins, on ne considère que le compte admin 1(le compte admin 2 PPJJJOEL ne dispose pas de compte)
@@ -216,8 +216,10 @@ class SMS_HELPER extends BASE_HELPER
                 return self::sendError("Echec d'envoie d'SMS! Le solde du compte admin 1 est insuffisant. Veuillez le recharger", 505);
             }
             #####DECREDITATION DE SON SOLDE
-            // Decredite_User_Account(1, $NombreSms);
+            Decredite_User_Account(1, $NombreSms);
         }
+
+        return self::sendResponse([], 'Sms envoyé avec succès!!');
 
         ###___ENVOIE D'SMS
         if (GET_ACTIVE_FORMULE() == "kingsmspro") {
@@ -330,18 +332,17 @@ class SMS_HELPER extends BASE_HELPER
             return self::sendError("Aucune formule d'envoie n'est active!", 505);
         }
 
-
         ####____GESTION DU SOLDE
-        if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIUT D'UN SIMPLE USER
+        // if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIUT D'UN SIMPLE USER
            
-            #####DECREDITATION DE SON SOLDE
-            Decredite_User_Account($userId, $NombreSms);
-        } else { ## S'IL S'AGIT D'UN ADMIN
-            ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
+        //     #####DECREDITATION DE SON SOLDE
+        //     Decredite_User_Account($userId, $NombreSms);
+        // } else { ## S'IL S'AGIT D'UN ADMIN
+        //     ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
            
-            #####DECREDITATION DE SON SOLDE
-            Decredite_User_Account(1, $NombreSms);
-        }
+        //     #####DECREDITATION DE SON SOLDE
+        //     Decredite_User_Account(1, $NombreSms);
+        // }
 
         ###____
         $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
