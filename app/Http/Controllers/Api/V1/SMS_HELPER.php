@@ -219,9 +219,9 @@ class SMS_HELPER extends BASE_HELPER
             // Decredite_User_Account(1, $NombreSms);
         }
 
-        if (Is_THIS_ORION_ACCOUNT($userId)) {
+        // if (Is_THIS_ORION_ACCOUNT($userId)) {
             return self::sendResponse([], 'Sms envoyé avec succès!!');
-        }
+        // }
 
         ###___ENVOIE D'SMS
         if (GET_ACTIVE_FORMULE() == "kingsmspro") {
