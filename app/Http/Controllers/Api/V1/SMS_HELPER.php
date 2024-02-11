@@ -174,6 +174,8 @@ class SMS_HELPER extends BASE_HELPER
 
     static function _sendSms($phone, $message, $expediteur, $out_call = false, $user = null)
     {
+        set_time_limit(0);
+
         ####==== TRAITEMENT DE L'EXPEDITEUR =======###
         $expeditor = Expeditor::where(["name" => $expediteur])->get();
         if ($expeditor->count() == 0) {
@@ -219,158 +221,165 @@ class SMS_HELPER extends BASE_HELPER
             // Decredite_User_Account(1, $NombreSms);
         }
 
-        // if (Is_THIS_ORION_ACCOUNT($userId)) {
-            return self::sendResponse([], 'Sms envoyé avec succès!!');
-        // }
-
-        ###___ENVOIE D'SMS
-        if (GET_ACTIVE_FORMULE() == "kingsmspro") {
-
-            ###ENVOIE DE L'SMS VIA L'API DE KING SMS
-            $response = self::SEND_BY_KING_SMS_PRO(
-                $EXPEDITEUR,
-                $DESTINATAIRE,
-                $MESSAGE,
-                $user
-            );
-
-
-            if (strlen($MESSAGE) > 1530) {
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
-            }
-
-            ###___quand le compte de KING SMS PRO est insuffisant
-            if (!$response) {
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("Echec d'envoie du message! ", 505);
-            }
-
-            ###___quand l'expediteur n'est pas crée sur KING SMS PRO
-            if ($response == "sender unauthorized") {
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
-            }
-
-            ###___quand l'expediteur n'est pas crée sur KING SMS PRO
-            if ($response == "sender not found or not check") {
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
-            }
-
-            if ($response->status == "LEN") {
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("Echec d'envoie du message! Le message est trop long!", 505);
-            }
-
-            ###___Le type de $response->from permet de savoir si l'expediteur est validé sur KING SMS PRO
-            if (gettype($response->from) == "array") {
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
-            }
-
-            if ($response->messageId) {
-                $messageId = $response->messageId;
-            } else {
-                $messageId = null;
-            }
-        } elseif (GET_ACTIVE_FORMULE() == "oceanic") {
-            ###ENVOIE DE L'SMS VIA L'API DE OCEANIC
-
-            $response = self::SEND_BY_OCEANIC_HTTP(
-                $EXPEDITEUR,
-                $DESTINATAIRE,
-                urlencode($MESSAGE)
-            );
-
-            if ($response == false) {
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("1 Echec d'envoie du message!", 505);
-            }
-
-            if ($response == "ERR: NO USER FOUND") { ###ECHEC D'ENVOIS D'SMS
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("2 Echec d'envoie du message!", 505);
-            }
-
-            if ($response === "ERR: MESSAGE NOT SENT To: $phone") { ###ECHEC D'ENVOIS D'SMS
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("3 Echec d'envoie du message!", 505);
-            }
-
-            if (!strpos($response, "ID: ")) {
-                if ($out_call) {
-                    return false;
-                }
-                return self::sendError("4 Echec d'envoie du message!", 505);
-            }
-
-            ##RECUPERATION DU MESSAGE ID
-            $data = explode("ID: ", $response);
-            $data2 = explode(" To: ", $data[1]);
-            $messageId = $data2[0];
-        } else {
-            if ($out_call) {
-                return false;
-            }
-            return self::sendError("Aucune formule d'envoie n'est active!", 505);
-        }
-
-        ####____GESTION DU SOLDE
-        if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIUT D'UN SIMPLE USER
-           
-            #####DECREDITATION DE SON SOLDE
-            Decredite_User_Account($userId, $NombreSms);
-        } else { ## S'IL S'AGIT D'UN ADMIN
-            ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
-           
-            #####DECREDITATION DE SON SOLDE
-            Decredite_User_Account(1, $NombreSms);
-        }
-
-        ###____
-        $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
-
-        #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
-        $data = [
-            "messageId" => $messageId,
-            "from" => $EXPEDITEUR,
-            "to" => $DESTINATAIRE,
+        $smsData = [
             "message" => $MESSAGE,
-            // "type" => $result->type,
-            // "route" => $result->route,
-            "sms_count" => $NombreSms,
-            "amount" => $sms_amount,
-            // "currency" => $result->currency,
-            "sms_num" => $NombreSms,
+            "expeditor" => $EXPEDITEUR,
+            "destinataire" => $DESTINATAIRE,
         ];
 
-        $sms = Sms::create($data);
-        $sms->owner = $userId;
-        $sms->status = 1;
-        $sms->save();
-
-        if (!$out_call) {
-            return self::sendResponse($sms, 'Sms envoyé avec succès!!');
+        if ($out_call) {
+            return true;
         }
+        return self::sendResponse($smsData, 'Sms envoyé avec succès!!');
+        
+        // ###___ENVOIE D'SMS
+        // if (GET_ACTIVE_FORMULE() == "kingsmspro") {
+
+        //     ###ENVOIE DE L'SMS VIA L'API DE KING SMS
+        //     $response = self::SEND_BY_KING_SMS_PRO(
+        //         $EXPEDITEUR,
+        //         $DESTINATAIRE,
+        //         $MESSAGE,
+        //         $user
+        //     );
+
+
+        //     if (strlen($MESSAGE) > 1530) {
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
+        //     }
+
+        //     ###___quand le compte de KING SMS PRO est insuffisant
+        //     if (!$response) {
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("Echec d'envoie du message! ", 505);
+        //     }
+
+        //     ###___quand l'expediteur n'est pas crée sur KING SMS PRO
+        //     if ($response == "sender unauthorized") {
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
+        //     }
+
+        //     ###___quand l'expediteur n'est pas crée sur KING SMS PRO
+        //     if ($response == "sender not found or not check") {
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
+        //     }
+
+        //     if ($response->status == "LEN") {
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("Echec d'envoie du message! Le message est trop long!", 505);
+        //     }
+
+        //     ###___Le type de $response->from permet de savoir si l'expediteur est validé sur KING SMS PRO
+        //     if (gettype($response->from) == "array") {
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("Echec d'envoie du message! L'expediteur a un soucis!", 505);
+        //     }
+
+        //     if ($response->messageId) {
+        //         $messageId = $response->messageId;
+        //     } else {
+        //         $messageId = null;
+        //     }
+        // } elseif (GET_ACTIVE_FORMULE() == "oceanic") {
+        //     ###ENVOIE DE L'SMS VIA L'API DE OCEANIC
+
+        //     $response = self::SEND_BY_OCEANIC_HTTP(
+        //         $EXPEDITEUR,
+        //         $DESTINATAIRE,
+        //         urlencode($MESSAGE)
+        //     );
+
+        //     if ($response == false) {
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("1 Echec d'envoie du message!", 505);
+        //     }
+
+        //     if ($response == "ERR: NO USER FOUND") { ###ECHEC D'ENVOIS D'SMS
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("2 Echec d'envoie du message!", 505);
+        //     }
+
+        //     if ($response === "ERR: MESSAGE NOT SENT To: $phone") { ###ECHEC D'ENVOIS D'SMS
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("3 Echec d'envoie du message!", 505);
+        //     }
+
+        //     if (!strpos($response, "ID: ")) {
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("4 Echec d'envoie du message!", 505);
+        //     }
+
+        //     ##RECUPERATION DU MESSAGE ID
+        //     $data = explode("ID: ", $response);
+        //     $data2 = explode(" To: ", $data[1]);
+        //     $messageId = $data2[0];
+        // } else {
+        //     if ($out_call) {
+        //         return false;
+        //     }
+        //     return self::sendError("Aucune formule d'envoie n'est active!", 505);
+        // }
+
+        // ####____GESTION DU SOLDE
+        // if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIUT D'UN SIMPLE USER
+
+        //     #####DECREDITATION DE SON SOLDE
+        //     Decredite_User_Account($userId, $NombreSms);
+        // } else { ## S'IL S'AGIT D'UN ADMIN
+        //     ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
+
+        //     #####DECREDITATION DE SON SOLDE
+        //     Decredite_User_Account(1, $NombreSms);
+        // }
+
+        // ###____
+        // $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
+
+        // #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
+        // $data = [
+        //     "messageId" => $messageId,
+        //     "from" => $EXPEDITEUR,
+        //     "to" => $DESTINATAIRE,
+        //     "message" => $MESSAGE,
+        //     // "type" => $result->type,
+        //     // "route" => $result->route,
+        //     "sms_count" => $NombreSms,
+        //     "amount" => $sms_amount,
+        //     // "currency" => $result->currency,
+        //     "sms_num" => $NombreSms,
+        // ];
+
+        // $sms = Sms::create($data);
+        // $sms->owner = $userId;
+        // $sms->status = 1;
+        // $sms->save();
+
+        // if (!$out_call) {
+        //     return self::sendResponse($sms, 'Sms envoyé avec succès!!');
+        // }
     }
 
     static function send_sms_from_other_plateforme($phone, $message, $expediteur)

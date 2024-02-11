@@ -10,6 +10,8 @@ class SmsController extends SMS_HELPER
     public function __construct()
     {
         $this->middleware(['auth:api', 'scope:api-access'])->except(["_Send_Sms_From_Other_Plateforme"]);
+
+        set_time_limit(0);
     }
 
     #SEND AN SMS UNITAIRE
