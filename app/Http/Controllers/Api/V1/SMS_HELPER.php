@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\DefinitifSMs;
 use App\Models\Expeditor;
 use App\Models\Groupe;
 use App\Models\Sms;
@@ -221,18 +222,34 @@ class SMS_HELPER extends BASE_HELPER
             // Decredite_User_Account(1, $NombreSms);
         }
 
-        $smsData = [
-            "message" => $MESSAGE,
-            "expeditor" => $EXPEDITEUR,
-            "destinataire" => $DESTINATAIRE,
-        ];
-
         if ($out_call) {
             return true;
         }
+
+        if (strlen($MESSAGE) > 1530) {
+            if ($out_call) {
+                return false;
+            }
+            return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
+        }
+
+        $sms_amount = env("COST_OF_ONE_SMS") * $NombreSms;
+
+        ##___ENREGISTREMENT DU MESSAGE DE FAçON PARTIELLE
+        $smsData = DefinitifSMs::create([
+            "sender" => $userId,
+            "message" => $MESSAGE,
+            "expeditor" => $EXPEDITEUR,
+            "destinataire" => $DESTINATAIRE,
+            "sms_count" => $NombreSms,
+            "amount" => $sms_amount,
+            "sms_num" => $NombreSms,
+        ]);
+
         return self::sendResponse($smsData, 'Sms envoyé avec succès!!');
-        
-        // ###___ENVOIE D'SMS
+
+        ###___ENVOIE D'SMS
+
         // if (GET_ACTIVE_FORMULE() == "kingsmspro") {
 
         //     ###ENVOIE DE L'SMS VIA L'API DE KING SMS
@@ -243,13 +260,15 @@ class SMS_HELPER extends BASE_HELPER
         //         $user
         //     );
 
+        //     // return $response;
 
-        //     if (strlen($MESSAGE) > 1530) {
-        //         if ($out_call) {
-        //             return false;
-        //         }
-        //         return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
+
+        // if (strlen($MESSAGE) > 1530) {
+        //     if ($out_call) {
+        //         return false;
         //     }
+        //     return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
+        // }
 
         //     ###___quand le compte de KING SMS PRO est insuffisant
         //     if (!$response) {

@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class DefinitifSMs extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        "sender",
+        "message",
+        "expeditor",
+        "destinataire",
+        "sms_count",
+        "amount",
+        "sms_num"
+    ];
+}
