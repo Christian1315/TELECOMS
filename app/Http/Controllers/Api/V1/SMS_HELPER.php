@@ -222,10 +222,7 @@ class SMS_HELPER extends BASE_HELPER
             // Decredite_User_Account(1, $NombreSms);
         }
 
-        if ($out_call) {
-            return true;
-        }
-
+        
         if (strlen($MESSAGE) > 1530) {
             if ($out_call) {
                 return false;
@@ -245,6 +242,10 @@ class SMS_HELPER extends BASE_HELPER
             "amount" => $sms_amount,
             "sms_num" => $NombreSms,
         ]);
+
+        if ($out_call) {
+            return true;
+        }
 
         return self::sendResponse($smsData, 'Sms envoyé avec succès!!');
 
