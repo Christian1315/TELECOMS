@@ -72,21 +72,21 @@ class SendMessageDefinitivelly extends Command
                     return  false;
                 }
 
-                if ($response->status == "LEN") {
-                    return  false;
-                }
+                // if ($response->status == "LEN") {
+                //     return  false;
+                // }
 
                 ###___Le type de $response->from permet de savoir si l'expediteur est validé sur KING SMS PRO
                 
-                if (gettype($response->from) == "array") {
-                    return  false;
-                }
+                // if (gettype($response->from) == "array") {
+                //     return  false;
+                // }
 
-                if ($response->messageId) {
-                    $messageId = $response->messageId;
-                } else {
-                    $messageId = null;
-                }
+                // if ($response->messageId) {
+                //     $messageId = $response->messageId;
+                // } else {
+                //     $messageId = null;
+                // }
             } elseif (GET_ACTIVE_FORMULE() == "oceanic") {
                 ###ENVOIE DE L'SMS VIA L'API DE OCEANIC
 
@@ -116,7 +116,7 @@ class SendMessageDefinitivelly extends Command
 
             #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
             $data = [
-                "messageId" => $messageId,
+                "messageId" => "messageId",
                 "from" => $EXPEDITEUR,
                 "to" => $DESTINATAIRE,
                 "message" => $MESSAGE,
