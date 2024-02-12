@@ -52,7 +52,7 @@ class SendMessageDefinitivelly extends Command
                     $user
                 );
 
-                dd($response);
+                // dd($response);
                 if (strlen($MESSAGE) > 1530) {
                     return  false;
                 }
