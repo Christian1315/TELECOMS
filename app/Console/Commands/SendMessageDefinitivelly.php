@@ -71,9 +71,9 @@ class SendMessageDefinitivelly extends Command
                     return  false;
                 }
 
-                if ($response->status == "LEN") {
-                    return  false;
-                }
+                // if ($response->status == "LEN") {
+                //     return  false;
+                // }
 
                 ###___Le type de $response->from permet de savoir si l'expediteur est validé sur KING SMS PRO
                 if (gettype($response->from) == "array") {
