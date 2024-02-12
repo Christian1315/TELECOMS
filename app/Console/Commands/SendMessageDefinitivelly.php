@@ -32,7 +32,6 @@ class SendMessageDefinitivelly extends Command
 
         $suspendSms = DefinitifSMs::where(["sended" => 0])->get();
 
-        // echo $suspendSms;
         foreach ($suspendSms as $sms) {
             $EXPEDITEUR = $sms->expeditor;
             $DESTINATAIRE = $sms->destinataire;
@@ -54,7 +53,7 @@ class SendMessageDefinitivelly extends Command
                 );
 
                 if (strlen($MESSAGE) > 1530) {
-                    return  "false";
+                    return  false;
                 }
 
                 ###___quand le compte de KING SMS PRO est insuffisant
