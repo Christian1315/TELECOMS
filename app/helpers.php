@@ -269,7 +269,6 @@ function Is_THIS_ADMIN_PPJJOEL()
 
 function Is_THIS_ORION_ACCOUNT($USER)
 { #
-
     if (!$USER) {
         return false;
     }
