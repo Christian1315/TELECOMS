@@ -84,23 +84,23 @@ class SendMessageDefinitivelly extends Command
                 //     return  false;
                 // }
 
-                if (array_key_exists("status", $response)) {
-                    if ($response->status == "LEN") {
-                        return  false;
-                    }
+                // if (array_key_exists("status", $response)) {
+                //     if ($response->status == "LEN") {
+                //         return  false;
+                //     }
 
-                    if ($response->status == "ACT") {
-                        $this->delivered = true;
-                    }
-                }
+                //     if ($response->status == "ACT") {
+                //         $this->delivered = true;
+                //     }
+                // }
 
-                if (array_key_exists("messageId", $response)) {
-                    if ($response->messageId) {
-                        $this->messageId = $response->messageId;
-                    } else {
-                        $this->messageId = null;
-                    }
-                }
+                // if (array_key_exists("messageId", $response)) {
+                //     if ($response->messageId) {
+                //         $this->messageId = $response->messageId;
+                //     } else {
+                //         $this->messageId = null;
+                //     }
+                // }
             } elseif (GET_ACTIVE_FORMULE() == "oceanic") {
                 ###ENVOIE DE L'SMS VIA L'API DE OCEANIC
 
@@ -116,23 +116,23 @@ class SendMessageDefinitivelly extends Command
                 $messageId = $data2[0];
             }
 
-            if ($this->delivered) {
-                ####____GESTION DU SOLDE
-                if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIT D'UN SIMPLE USER
+            // if ($this->delivered) {
+            ####____GESTION DU SOLDE
+            if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIT D'UN SIMPLE USER
 
-                    #####DECREDITATION DE SON SOLDE
-                    Decredite_User_Account($userId, $NombreSms);
-                } else { ## S'IL S'AGIT D'UN ADMIN
-                    ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
+                #####DECREDITATION DE SON SOLDE
+                Decredite_User_Account($userId, $NombreSms);
+            } else { ## S'IL S'AGIT D'UN ADMIN
+                ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
 
-                    #####DECREDITATION DE SON SOLDE
-                    Decredite_User_Account(1, $NombreSms);
-                }
+                #####DECREDITATION DE SON SOLDE
+                Decredite_User_Account(1, $NombreSms);
             }
+            // }
 
             #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
             $data = [
-                "messageId" => $this->messageId?$this->messageId:"messageId",
+                "messageId" => $this->messageId ? $this->messageId : "messageId",
                 "from" => $EXPEDITEUR,
                 "to" => $DESTINATAIRE,
                 "message" => $MESSAGE,
