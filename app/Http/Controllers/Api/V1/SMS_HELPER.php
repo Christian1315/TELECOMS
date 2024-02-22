@@ -222,7 +222,6 @@ class SMS_HELPER extends BASE_HELPER
             // Decredite_User_Account(1, $NombreSms);
         }
 
-        
         if (strlen($MESSAGE) > 1530) {
             if ($out_call) {
                 return false;
@@ -264,12 +263,12 @@ class SMS_HELPER extends BASE_HELPER
         //     // return $response;
 
 
-        // if (strlen($MESSAGE) > 1530) {
-        //     if ($out_call) {
-        //         return false;
+        //     if (strlen($MESSAGE) > 1530) {
+        //         if ($out_call) {
+        //             return false;
+        //         }
+        //         return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
         //     }
-        //     return self::sendError("Echec d'envoie du message! Le message ne doit pas depasser 1530 caractères!", 505);
-        // }
 
         //     ###___quand le compte de KING SMS PRO est insuffisant
         //     if (!$response) {
