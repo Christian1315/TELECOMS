@@ -132,7 +132,7 @@ class SendMessageDefinitivelly extends Command
 
             #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
             $data = [
-                "messageId" => $this->messageId ? $this->messageId : "messageId",
+                "messageId" => "messageId",
                 "from" => $EXPEDITEUR,
                 "to" => $DESTINATAIRE,
                 "message" => $MESSAGE,
