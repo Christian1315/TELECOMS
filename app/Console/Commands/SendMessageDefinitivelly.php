@@ -45,8 +45,8 @@ class SendMessageDefinitivelly extends Command
             $NombreSms = $sms->sms_count;
             $sms_amount = $sms->amount;
 
-            // echo array_key_exists("status",["status"=>1]);
-            // return ;
+            // echo "dd".array_key_exists("status",["status"=>1]);
+
             ###___ENVOIE D'SMS
             if (GET_ACTIVE_FORMULE() == "kingsmspro") {
 

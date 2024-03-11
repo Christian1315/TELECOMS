@@ -156,7 +156,7 @@ class SMS_HELPER extends BASE_HELPER
             'to' => '' . $DESTINATAIRE . '', //destination au format international sans "+" ni "00". Ex: 22890443679
             'type' => 1, //type de message text et flash
             'message' => $MESSAGE, //le contenu de votre sms
-            'dlr' => 's' // 1 pour un retour par contre 0
+            'dlr' => 'yes' // 1 pour un retour par contre 0
         );
 
         $response = Http::withHeaders([
@@ -363,7 +363,7 @@ class SMS_HELPER extends BASE_HELPER
         // }
 
         // ####____GESTION DU SOLDE
-        // if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIUT D'UN SIMPLE USER
+        // if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIT D'UN SIMPLE USER
 
         //     #####DECREDITATION DE SON SOLDE
         //     Decredite_User_Account($userId, $NombreSms);
