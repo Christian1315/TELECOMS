@@ -215,7 +215,7 @@ class USER_HELPER extends BASE_HELPER
 
             $user['rang'] = $user->rang;
             $user['profil'] = $user->profil;
-            $user['solde'] = $user->sold;
+            $user['solde'] = Solde::with(["manager"])->where(["owner" => $user->id, "visible" => 1])->latest();
             $user['developer'] = $user->developer;
             $user['expeditors'] = $user->expeditors;
             $user['token'] = $token;
