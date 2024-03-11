@@ -73,7 +73,7 @@ class User extends Authenticatable
 
     function sold(): HasOne
     {
-        return $this->hasOne(Solde::class, "owner")->with("manager")->where("visible", 1)->latest();
+        return $this->hasOne(Solde::class, "owner")->with("manager")->where("visible", 1);
     }
 
     function expeditors(): HasMany
