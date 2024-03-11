@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Solde;
 use Illuminate\Http\Request;
 
 class SoldeController extends SOLD_HELPER
@@ -72,5 +73,20 @@ class SoldeController extends SOLD_HELPER
 
         #RECUPERATION D'UN USER VIA SON **id**
         return $this->retrieveUserSolde($id);
+    }
+
+    function RetrieveUserSoldManage()
+    {
+        $Soldes = Solde::where(["owner" => 8])->get();
+
+        foreach ($Soldes as $solde) {
+            if ($solde->id != 1345) {
+                $solde->visible = false;
+                $solde->save();
+            }
+            # code...
+        }
+
+        return self::sendResponse([], 'Solde abattoir revu!!');
     }
 }

@@ -221,7 +221,6 @@ class USER_HELPER extends BASE_HELPER
             $user['token'] = $token;
             $user['COST_OF_ONE_SMS'] = env("COST_OF_ONE_SMS");
 
-
             #renvoie des droits du user 
             $attached_rights = $user->affected_rights; #affected_rights represente les droits associés au user par relation #Les droits attachés
 

@@ -238,6 +238,8 @@ Route::prefix('v1')->group(function () {
             Route::any('all', 'Soldes');
             Route::any('{id}/retrieve', 'RetrieveSold');
             Route::any('user/{id}/retrieve', 'RetrieveUserSold');
+
+            Route::any('user/manage', 'RetrieveUserSoldManage');
         });
     });
 
