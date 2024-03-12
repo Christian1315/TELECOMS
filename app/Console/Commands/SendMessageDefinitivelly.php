@@ -58,6 +58,8 @@ class SendMessageDefinitivelly extends Command
                     $MESSAGE,
                     $user
                 );
+                // dd($response);
+                // dd(array_key_exists("status", $response));
                 // echo "dd".$response;
 
                 // if (strlen($MESSAGE) > 1530) {

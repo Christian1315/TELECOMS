@@ -46,6 +46,11 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
+        'elastic_email' => [
+            'transport' => 'elastic_email',
+            'key' => env('ELASTIC_KEY')
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],
