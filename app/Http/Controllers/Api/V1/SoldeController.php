@@ -85,15 +85,16 @@ class SoldeController extends SOLD_HELPER
 
         $formatedSoldes = [];
         foreach ($Soldes as $solde) {
-            if ($solde->id>=15692) {
-                array_push($formatedSoldes,$solde);
+            if ($solde->id >= 15692) {
+                $solde->solde = $solde->solde - 1;
+                $solde->save();
+                array_push($formatedSoldes, $solde);
             }
             # code...
         }
-
         $data = [
             // "soldes"=>$formatedSoldes,
-            "count"=>count($formatedSoldes),
+            "count" => count($formatedSoldes),
         ];
 
         return self::sendResponse($data, 'Solde abattoir revu!!');
