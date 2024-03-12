@@ -16,6 +16,8 @@ class SoldeController extends SOLD_HELPER
             "RetrieveUserSold",
             "RetrieveSold"
         ]);
+
+        set_time_limit(0);
     }
 
     function CredidateSold(Request $request)
@@ -77,6 +79,8 @@ class SoldeController extends SOLD_HELPER
 
     function RetrieveUserSoldManage()
     {
+        set_time_limit(0);
+
         $Soldes = Solde::where(["owner" => 4])->get();
 
         foreach ($Soldes as $solde) {
