@@ -159,4 +159,5 @@ class SOLD_HELPER extends BASE_HELPER
 
         return self::sendResponse($Solde, 'Solde récupéré avec succès!!');
     }
+    
 }

@@ -77,10 +77,10 @@ class SoldeController extends SOLD_HELPER
 
     function RetrieveUserSoldManage()
     {
-        $Soldes = Solde::where(["owner" => 8])->get();
+        $Soldes = Solde::where(["owner" => 4])->get();
 
         foreach ($Soldes as $solde) {
-            if ($solde->id != 1345) {
+            if ($solde->id != 63475) {
                 $solde->visible = false;
                 $solde->save();
             }
