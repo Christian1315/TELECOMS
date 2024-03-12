@@ -147,7 +147,7 @@ class SmsController extends SMS_HELPER
         return $this->smsReports($request->all());
     }
 
-    function getUserSms(Request $request, $id)
+    function SmsUser(Request $request, $id)
     {
         $sms = Sms::where(["owner" => $id])->get();
 
