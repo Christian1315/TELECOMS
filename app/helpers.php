@@ -228,11 +228,11 @@ function CAMPAGNE_PERIOD($start_date, $end_date)
 ##======== CE HELPER PERMET DE DECREDITER LE SOLDE D'USER ==========## 
 function Decredite_User_Account($userId, $NombreSms)
 {
-    $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get();
+    $solde = Solde::where(['owner' => $userId, 'visible' => 1])->get()->last();
 
-    if (count($solde) != 0) {
+    if ($solde) {
         ##~~l'ancien solde
-        $old_solde = $solde[0];
+        $old_solde = $solde;
         $old_solde->visible = 0;
         $old_solde->save();
 

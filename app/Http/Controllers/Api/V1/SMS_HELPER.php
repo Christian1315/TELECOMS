@@ -6,6 +6,7 @@ use App\Models\DefinitifSMs;
 use App\Models\Expeditor;
 use App\Models\Groupe;
 use App\Models\Sms;
+use App\Models\Solde;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
