@@ -60,24 +60,24 @@ class SendMessageDefinitivelly extends Command
                 );
                 // echo "dd".$response;
 
-                if (strlen($MESSAGE) > 1530) {
-                    return  false;
-                }
+                // if (strlen($MESSAGE) > 1530) {
+                //     return  false;
+                // }
 
-                ###___quand le compte de KING SMS PRO est insuffisant
-                if (!$response) {
-                    return  false;
-                }
+                // ###___quand le compte de KING SMS PRO est insuffisant
+                // if (!$response) {
+                //     return  false;
+                // }
 
-                ###___quand l'expediteur n'est pas crée sur KING SMS PRO
-                if ($response == "sender unauthorized") {
-                    return  false;
-                }
+                // ###___quand l'expediteur n'est pas crée sur KING SMS PRO
+                // if ($response == "sender unauthorized") {
+                //     return  false;
+                // }
 
-                ###___quand l'expediteur n'est pas crée sur KING SMS PRO
-                if ($response == "sender not found or not check") {
-                    return  false;
-                }
+                // ###___quand l'expediteur n'est pas crée sur KING SMS PRO
+                // if ($response == "sender not found or not check") {
+                //     return  false;
+                // }
 
                 ###___Le type de $response->from permet de savoir si l'expediteur est validé sur KING SMS PRO
 
