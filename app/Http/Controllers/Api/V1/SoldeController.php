@@ -83,14 +83,19 @@ class SoldeController extends SOLD_HELPER
 
         $Soldes = Solde::where(["owner" => 4])->get();
 
+        $formatedSoldes = [];
         foreach ($Soldes as $solde) {
-            if ($solde->id != 63475) {
-                $solde->visible = false;
-                $solde->save();
+            if ($solde->id>=15692) {
+                array_push($formatedSoldes,$solde);
             }
             # code...
         }
 
-        return self::sendResponse([], 'Solde abattoir revu!!');
+        $data = [
+            // "soldes"=>$formatedSoldes,
+            "count"=>count($formatedSoldes),
+        ];
+
+        return self::sendResponse($data, 'Solde abattoir revu!!');
     }
 }
