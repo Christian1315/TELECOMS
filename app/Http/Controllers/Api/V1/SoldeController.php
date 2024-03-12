@@ -85,8 +85,9 @@ class SoldeController extends SOLD_HELPER
 
         $formatedSoldes = [];
         foreach ($Soldes as $solde) {
-            if ($solde->id >= 15692) {
-                $solde->solde = $solde->solde - 1;
+            if ($solde->id > 15692) {
+                $next_solde = $solde->solde - 1;
+                $solde->solde = $next_solde;
                 $solde->save();
                 array_push($formatedSoldes, $solde);
             }
