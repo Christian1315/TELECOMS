@@ -36,6 +36,7 @@ class SendMessageDefinitivelly extends Command
         set_time_limit(0);
         $suspendSms = DefinitifSMs::where(["sended" => 0])->get();
 
+        dd($suspendSms);
         foreach ($suspendSms as $sms) {
             $EXPEDITEUR = $sms->expeditor;
             $DESTINATAIRE = $sms->destinataire;
