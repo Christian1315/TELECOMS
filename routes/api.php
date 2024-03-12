@@ -75,6 +75,9 @@ Route::prefix('v1')->group(function () {
             Route::any('reports', 'SmsRapports'); #RAPPORTS D'UN SMS
             Route::any('send-to-groupe', 'SmsGroupe'); #ENVOIE D'SMS GROUPE
 
+            Route::any('user/{id}/sms', 'SmsUser'); 
+
+
             ###========== SMS DIFFERES ROUTINGS ========###
             Route::prefix('differed')->group(function () {
                 Route::controller(DifferedSmsController::class)->group(function () {

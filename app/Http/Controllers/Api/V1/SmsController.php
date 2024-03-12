@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Sms;
 use Illuminate\Http\Request;
 
 class SmsController extends SMS_HELPER
@@ -144,5 +145,16 @@ class SmsController extends SMS_HELPER
 
         #RECUPERATION D'UN SMS VIA SON **id**
         return $this->smsReports($request->all());
+    }
+
+    function getUserSms(Request $request, $id)
+    {
+        $sms = Sms::where(["owner" => $id])->get();
+
+        $data = [
+            "smsAll" => $sms,
+            "count" => count($sms),
+        ];
+        return $this->sendResponse($data, "Sms user recupéres avec succès!");
     }
 }
