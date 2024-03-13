@@ -143,11 +143,11 @@ class GROUPE_HELPER extends BASE_HELPER
     {
         $user = request()->user();
 
-        $groupe = Groupe::where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
+        $groupe = Groupe::where(["id" => $id, "owner" => $user->id])->get();
 
-        if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
-            return self::sendError('Ce groupe n\'existe pas!', 404);
-        };
+        // if ($groupe->count() == 0) { #QUAND **$groupe** n'existe pas
+        //     return self::sendError('Ce groupe n\'existe pas!', 404);
+        // };
         $groupe = $groupe[0];
         #SUPPRESSION DU GROUPE;
         $groupe->visible = 0;
