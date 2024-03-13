@@ -13,10 +13,10 @@ class CONTACT_HELPER extends BASE_HELPER
     static function contact_rules(): array
     {
         return [
-            'firstname' => ['required'],
-            'lastname' => ['required'],
+            // 'firstname' => ['required'],
+            // 'lastname' => ['required'],
             'phone' => ['required', 'numeric'],
-            'detail' => ['required', 'max:200'],
+            // 'detail' => ['required', 'max:200'],
         ];
     }
 
@@ -26,10 +26,10 @@ class CONTACT_HELPER extends BASE_HELPER
             'phone.required' => 'Le champ phone est réquis!',
             'phone.numeric' => 'Le phone doit être un nombre entier',
             'phone.unique' => 'Ce contact existe déjà',
-            'firstname.required' => 'Le champ firstname est réquis!',
-            'lastname.required' => 'Le champ lastname est réquis!',
-            'detail.required' => 'Le detail est réquis!',
-            'detail.max' => 'Le detail ne doit pas depasser 150 caractères!',
+            // 'firstname.required' => 'Le champ firstname est réquis!',
+            // 'lastname.required' => 'Le champ lastname est réquis!',
+            // 'detail.required' => 'Le detail est réquis!',
+            // 'detail.max' => 'Le detail ne doit pas depasser 150 caractères!',
         ];
     }
 

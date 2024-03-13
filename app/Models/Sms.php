@@ -20,7 +20,8 @@ class Sms extends Model
         "sms_count",
         "amount",
         "currency",
-        "sms_num"
+        "sms_num",
+        "delivered"
     ];
 
     function status(): BelongsTo
