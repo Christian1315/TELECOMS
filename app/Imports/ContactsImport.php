@@ -18,10 +18,10 @@ class ContactsImport implements ToModel, WithHeadingRow, WithChunkReading
     public function model(array $contact)
     {
         $contact = Contact::create([
-            'firstname'    => $contact['firstname'],
-            'lastname'     => $contact['lastname'],
-            'phone'    => $contact['phone'],
-            'detail'    => $contact['detail'],
+            'firstname'    => isset($contact['lastname']) ? $contact['lastname'] : null,
+            'lastname'     => isset($contact['lastname']) ? $contact['lastname'] : null,
+            'phone'    => isset($contact['phone']) ? $contact['phone'] : null,
+            'detail'    => isset($contact['detail']) ? $contact['detail'] : null,
         ]);
 
         $contact->owner = request()->user()->id;

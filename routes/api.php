@@ -77,7 +77,6 @@ Route::prefix('v1')->group(function () {
 
             Route::any('user/{id}/sms', 'SmsUser'); 
 
-
             ###========== SMS DIFFERES ROUTINGS ========###
             Route::prefix('differed')->group(function () {
                 Route::controller(DifferedSmsController::class)->group(function () {
