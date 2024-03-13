@@ -122,8 +122,8 @@ class SendMessageDefinitivelly extends Command
             }
 
             ###__NOTIFIONS QUE L'SMS DEFINITIF A ETE DELIVRE
-            $sms_dif->delivered = true;
-            $sms_dif->save();
+            // $sms_dif->delivered = true;
+            // $sms_dif->save();
             // }
 
             #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
