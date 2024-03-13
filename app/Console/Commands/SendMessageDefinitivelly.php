@@ -89,9 +89,9 @@ class SendMessageDefinitivelly extends Command
                 //     }
                 // }
                 // dd("gogo");
-                if ($response->status == "ACT") {
-                    $this->delivered = true;
-                }
+                // if ($response->status == "ACT") {
+                //     $this->delivered = true;
+                // }
 
             } elseif (GET_ACTIVE_FORMULE() == "oceanic") {
                 ###ENVOIE DE L'SMS VIA L'API DE OCEANIC
@@ -108,23 +108,23 @@ class SendMessageDefinitivelly extends Command
                 $messageId = $data2[0];
             }
 
-            if ($this->delivered) {
-                ####____GESTION DU SOLDE
-                if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIT D'UN SIMPLE USER
+            // if ($this->delivered) {
+            ####____GESTION DU SOLDE
+            if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIT D'UN SIMPLE USER
 
-                    #####DECREDITATION DE SON SOLDE
-                    Decredite_User_Account($userId, $NombreSms);
-                } else { ## S'IL S'AGIT D'UN ADMIN
-                    ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
+                #####DECREDITATION DE SON SOLDE
+                Decredite_User_Account($userId, $NombreSms);
+            } else { ## S'IL S'AGIT D'UN ADMIN
+                ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
 
-                    #####DECREDITATION DE SON SOLDE
-                    Decredite_User_Account(1, $NombreSms);
-                }
-
-                ###__NOTIFIONS QUE L'SMS DEFINITIF A ETE DELIVRE
-                $sms_dif->delivered = true;
-                $sms_dif->save();
+                #####DECREDITATION DE SON SOLDE
+                Decredite_User_Account(1, $NombreSms);
             }
+
+            ###__NOTIFIONS QUE L'SMS DEFINITIF A ETE DELIVRE
+            $sms_dif->delivered = true;
+            $sms_dif->save();
+            // }
 
             #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
             $data = [
@@ -143,9 +143,9 @@ class SendMessageDefinitivelly extends Command
             $actualise_sms = Sms::create($data);
             $actualise_sms->owner = $userId;
             $actualise_sms->status = 1;
-            if ($this->delivered) {
-                $actualise_sms->delivered = true;
-            }
+            // if ($this->delivered) {
+            //     $actualise_sms->delivered = true;
+            // }
             $actualise_sms->save();
 
             ###___
