@@ -74,7 +74,7 @@ class GROUPE_HELPER extends BASE_HELPER
         $user = request()->user();
         if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
             ###il peut tout recuperer
-            $groupe = Groupe::with(["contacts", "campagnes", "owner"])->where(["id" => $id])->get();
+            $groupe = Groupe::with(["contacts", "campagnes", "owner"])->where(["id" => $id, "visible" => 1])->get();
         } else {
             $groupe = Groupe::with(["contacts", "campagnes", "owner"])->where(["id" => $id, "visible" => 1, "owner" => $user->id])->get();
         }
@@ -92,7 +92,7 @@ class GROUPE_HELPER extends BASE_HELPER
         $user = request()->user();
         if ($user->is_admin) { ###S'IL S'AGIT D'UN ADMIN
             ###il peut tout recuperer
-            $Groupes = Groupe::with(["contacts", "campagnes", "owner"])->latest()->get();
+            $Groupes = Groupe::with(["contacts", "campagnes", "owner"])->where(["visible" => 1])->latest()->get();
         } else {
             $Groupes = Groupe::with(["contacts", "campagnes", "owner"])->where(["visible" => 1, "owner" => $user->id])->latest()->get();
         }

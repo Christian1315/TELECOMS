@@ -91,7 +91,6 @@ class SoldeController extends SOLD_HELPER
                 $solde->save();
                 array_push($formatedSoldes, $solde);
             }
-            # code...
         }
         $data = [
             // "soldes"=>$formatedSoldes,
