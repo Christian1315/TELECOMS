@@ -81,22 +81,22 @@ class SoldeController extends SOLD_HELPER
     {
         set_time_limit(0);
 
-        $Soldes = Solde::where(["owner" => 4])->get();
+        $Soldes = Solde::where(["owner" => 8, "visible" => 1])->get();
 
-        $formatedSoldes = [];
-        foreach ($Soldes as $solde) {
-            if ($solde->id > 15692) {
-                $next_solde = $solde->solde - 1;
-                $solde->solde = $next_solde;
-                $solde->save();
-                array_push($formatedSoldes, $solde);
-            }
-        }
-        $data = [
-            // "soldes"=>$formatedSoldes,
-            "count" => count($formatedSoldes),
-        ];
+        // $formatedSoldes = [];
+        // foreach ($Soldes as $solde) {
+        //     if ($solde->id > 15692) {
+        //         $next_solde = $solde->solde - 1;
+        //         $solde->solde = $next_solde;
+        //         $solde->save();
+        //         array_push($formatedSoldes, $solde);
+        //     }
+        // }
+        // $data = [
+        //     // "soldes"=>$formatedSoldes,
+        //     "count" => count($formatedSoldes),
+        // ];
 
-        return self::sendResponse($data, 'Solde abattoir revu!!');
+        return self::sendResponse($Soldes, 'Solde abattoir revu!!');
     }
 }

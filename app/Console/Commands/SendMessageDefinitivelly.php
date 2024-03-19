@@ -58,6 +58,7 @@ class SendMessageDefinitivelly extends Command
                     $MESSAGE,
                     $user
                 );
+                // dd($response);
                 // dd(array_key_exists("status", $response));
                 // echo "dd".$response;
 
@@ -88,7 +89,6 @@ class SendMessageDefinitivelly extends Command
                 //     if (array_key_exists("status", $response)) {
                 //     }
                 // }
-                // dd("gogo");
                 // if ($response->status == "ACT") {
                 //     $this->delivered = true;
                 // }
