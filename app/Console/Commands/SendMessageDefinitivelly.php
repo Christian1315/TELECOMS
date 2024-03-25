@@ -36,7 +36,6 @@ class SendMessageDefinitivelly extends Command
         set_time_limit(0);
         $suspendSms = DefinitifSMs::where(["sended" => 0])->get();
 
-        // dd($suspendSms);
         foreach ($suspendSms as $sms_dif) {
             $EXPEDITEUR = $sms_dif->expeditor;
             $DESTINATAIRE = $sms_dif->destinataire;
@@ -46,53 +45,39 @@ class SendMessageDefinitivelly extends Command
             $NombreSms = $sms_dif->sms_count;
             $sms_amount = $sms_dif->amount;
 
-            // echo "dd".array_key_exists("status",["status"=>1]);
-            // dd(GET_ACTIVE_FORMULE());
+
             ###___ENVOIE D'SMS
             if (GET_ACTIVE_FORMULE() == "kingsmspro") {
 
                 ###ENVOIE DE L'SMS VIA L'API DE KING SMS
-                $response = SMS_HELPER::SEND_BY_KING_SMS_PRO(
+                $res = SMS_HELPER::SEND_BY_KING_SMS_PRO(
                     $EXPEDITEUR,
                     $DESTINATAIRE,
                     $MESSAGE,
                     $user
                 );
-                // dd($response);
-                // dd(array_key_exists("status", $response));
-                // echo "dd".$response;
 
-                // if (strlen($MESSAGE) > 1530) {
-                //     return  false;
-                // }
+                ##___TRANSFORMONS L'OBJET EN ARRAY
+                $response =  (array)$res;
 
-                // ###___quand le compte de KING SMS PRO est insuffisant
-                // if (!$response) {
-                //     return  false;
-                // }
+                ##___INITIATIATION DU STATUS A FALSE
+                $sms_status = false;
 
-                // ###___quand l'expediteur n'est pas crée sur KING SMS PRO
-                // if ($response == "sender unauthorized") {
-                //     return  false;
-                // }
+                if (array_key_exists("status", $response)) {
+                    $sms_status = $sms_status;
 
-                // ###___quand l'expediteur n'est pas crée sur KING SMS PRO
-                // if ($response == "sender not found or not check") {
-                //     return  false;
-                // }
+                    if ($response["status"] == "ACT") {
+                        $sms_status = true;
+                    }
+                }
 
-                ###___Le type de $response->from permet de savoir si l'expediteur est validé sur KING SMS PRO
-                // dd($response);
-                // if (gettype($response) == "array") {
-                //     dd($response->status);
-
-                //     if (array_key_exists("status", $response)) {
-                //     }
-                // }
-                // if ($response->status == "ACT") {
-                //     $this->delivered = true;
-                // }
-
+                if (array_key_exists("messageId", $response)) {
+                    if ($response["messageId"]) {
+                        $messageId = $response["messageId"];
+                    } else {
+                        $messageId = "messageId";
+                    }
+                }
             } elseif (GET_ACTIVE_FORMULE() == "oceanic") {
                 ###ENVOIE DE L'SMS VIA L'API DE OCEANIC
 
@@ -108,27 +93,23 @@ class SendMessageDefinitivelly extends Command
                 $messageId = $data2[0];
             }
 
-            // if ($this->delivered) {
-            ####____GESTION DU SOLDE
-            if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIT D'UN SIMPLE USER
+            ##__On decredite  le compte seulement quand le status est true
+            if ($sms_status) {
+                if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIT D'UN SIMPLE USER
 
-                #####DECREDITATION DE SON SOLDE
-                Decredite_User_Account($userId, $NombreSms);
-            } else { ## S'IL S'AGIT D'UN ADMIN
-                ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
+                    #####DECREDITATION DE SON SOLDE
+                    Decredite_User_Account($userId, $NombreSms);
+                } else { ## S'IL S'AGIT D'UN ADMIN
+                    ###~~VERIFIONS SI LE SOLDE DU COMPTE ADMIN **premier admin ID 1** EST SUFFISANT
 
-                #####DECREDITATION DE SON SOLDE
-                Decredite_User_Account(1, $NombreSms);
+                    #####DECREDITATION DE SON SOLDE
+                    Decredite_User_Account(1, $NombreSms);
+                }
             }
-
-            ###__NOTIFIONS QUE L'SMS DEFINITIF A ETE DELIVRE
-            // $sms_dif->delivered = true;
-            // $sms_dif->save();
-            // }
 
             #ENREGISTREMENT DES INFOS DE L'SMS DANS LA DB
             $data = [
-                "messageId" => "messageId",
+                "messageId" => $messageId,
                 "from" => $EXPEDITEUR,
                 "to" => $DESTINATAIRE,
                 "message" => $MESSAGE,
@@ -142,14 +123,15 @@ class SendMessageDefinitivelly extends Command
 
             $actualise_sms = Sms::create($data);
             $actualise_sms->owner = $userId;
-            $actualise_sms->status = 1;
-            // if ($this->delivered) {
-            //     $actualise_sms->delivered = true;
-            // }
+            $actualise_sms->status = $sms_status ? 1 : 2;
+            $actualise_sms->delivered = $sms_status ? 1 : 0;
             $actualise_sms->save();
 
             ###___
+            ###__NOTIFIONS QUE L'SMS DEFINITIF A ETE DELIVRE SI LE STATUS EST "ACT"
+
             $sms_dif->sended = 1;
+            $sms_dif->delivered = 1;
             $sms_dif->save();
         }
     }
