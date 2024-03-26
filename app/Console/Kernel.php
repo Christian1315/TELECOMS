@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
         $schedule->command("app:send-campagne-to-groupe")->everyMinute()->runInBackground(); ##PARCOURIR LES CAMPAGNES CHAQUE MINUITE
         $schedule->command("app:reinitialize_campagne_after_a_day")->daily()->runInBackground(); ##REINITIALISATION DES NOMBRE D'ENVOIE DES CAMPAGNES CHAQUE MINUIT
         $schedule->command("app:diffus-message")->everyMinute()->runInBackground(); ##LANCEMENT DE LA DIFFUSION DES MESSAGE A DIFFERER CHAQUE SECONDES
-        // $schedule->command("app:send-message-definitivelly")->everyMinute()->runInBackground(); ##LANCEMENT DE L'ENVOIE DEFINITIF DES SMS
+        $schedule->command("app:send-message-definitivelly")->everyMinute()->runInBackground(); ##LANCEMENT DE L'ENVOIE DEFINITIF DES SMS
     }
 
     /**
