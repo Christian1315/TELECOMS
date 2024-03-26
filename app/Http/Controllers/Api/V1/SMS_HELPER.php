@@ -273,6 +273,8 @@ class SMS_HELPER extends BASE_HELPER
 
             ##___INITIATIATION DU STATUS A FALSE
             $sms_status = false;
+            $messageId = "messageId";
+
 
             if (strlen($MESSAGE) > 1530) {
                 if ($out_call) {
@@ -322,8 +324,6 @@ class SMS_HELPER extends BASE_HELPER
             if (array_key_exists("messageId", $response)) {
                 if ($response["messageId"]) {
                     $messageId = $response["messageId"];
-                } else {
-                    $messageId = "messageId";
                 }
             }
         } elseif (GET_ACTIVE_FORMULE() == "oceanic") {
