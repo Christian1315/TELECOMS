@@ -210,8 +210,6 @@ class SMS_HELPER extends BASE_HELPER
 
         $NombreSms = SMS_NUMBER($MESSAGE); ##NOMBRE D'SMS PAR MESSAGE
 
-        ###__LA VERIFICATION DU SOLDE SE FAIT SEULEMENT QUAND
-        ###__LA REQUETE EST INTERNE($out_call==false)
         if (!Is_User_AN_ADMIN($userId)) { ##S'IL S'AGIT D'UN SIMPLE USER
             ###~~VERIFIONS SI LE SOLDE DU USER EST SUFFISANT
             if (!Is_User_Account_Enough($userId, $NombreSms)) { #IL NE DISPOSE PAS D'UN SOLDE SUFFISANT
