@@ -62,6 +62,7 @@ class SendMessageDefinitivelly extends Command
 
                 ##___INITIATIATION DU STATUS A FALSE
                 $sms_status = false;
+                $messageId = "messageId";
 
                 if (array_key_exists("status", $response)) {
                     $sms_status = $sms_status;
@@ -74,8 +75,6 @@ class SendMessageDefinitivelly extends Command
                 if (array_key_exists("messageId", $response)) {
                     if ($response["messageId"]) {
                         $messageId = $response["messageId"];
-                    } else {
-                        $messageId = "messageId";
                     }
                 }
             } elseif (GET_ACTIVE_FORMULE() == "oceanic") {
