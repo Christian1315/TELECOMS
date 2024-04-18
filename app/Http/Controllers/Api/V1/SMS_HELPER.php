@@ -276,6 +276,7 @@ class SMS_HELPER extends BASE_HELPER
             );
 
             ##___TRANSFORMONS L'OBJET EN ARRAY
+            // return $res;
             $response =  (array)$res;
 
             ##___INITIATIATION DU STATUS A FALSE

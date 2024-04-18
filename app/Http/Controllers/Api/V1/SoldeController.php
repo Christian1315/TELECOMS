@@ -14,7 +14,8 @@ class SoldeController extends SOLD_HELPER
         $this->middleware("CheckAdmin")->except([
             "RetrieveSold",
             "RetrieveUserSold",
-            "RetrieveSold"
+            "RetrieveSold",
+            "RetrieveUserSoldManage"
         ]);
 
         set_time_limit(0);
