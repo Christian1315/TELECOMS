@@ -92,9 +92,9 @@ class SoldeController extends SOLD_HELPER
         //     }
         // }
 
-        $sol_ = Solde::find(99982);
-        $sol_->solde = 281;
-        $sol_->save();
+        // $sol_ = Solde::find(99982);
+        // $sol_->solde = 281;
+        // $sol_->save();
 
         // $data = [
         //     // "soldes"=>$formatedSoldes,
