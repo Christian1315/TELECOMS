@@ -85,12 +85,12 @@ class SoldeController extends SOLD_HELPER
         $Soldes = Solde::where(["owner" => 8, "visible" => 1])->get();
 
         // $formatedSoldes = [];
-        // foreach ($Soldes as $solde) {
-        //     if ($solde->id != 99068) {
-        //         $solde->visible = 0;
-        //         $solde->save();
-        //     }
-        // }
+        foreach ($Soldes as $solde) {
+            if ($solde->id != 99982) {
+                $solde->visible = 0;
+                $solde->save();
+            }
+        }
         // $data = [
         //     // "soldes"=>$formatedSoldes,
         //     "count" => count($formatedSoldes),
