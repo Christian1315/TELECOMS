@@ -67,8 +67,7 @@ function Campagne_Initiation($campagne)
     $start_time = strtotime($campagne->start_date);
     $end_time = strtotime($campagne->end_date);
     $now = Custom_Timestamp(); ##ON AJOUTE 1heure(en local) au timestamp pour que cela corresponde au timestamp actuel
-    // return $start_time . " " . $now . " " . $end_time;
-
+    
     ##_______VERIFIONS SI LA PERIODE DE LA CAMPAGNE EST PASSEE OU PAS_______
     if ($start_time < $now && $now < $end_time) {
 
@@ -80,7 +79,7 @@ function Campagne_Initiation($campagne)
         ##__verifions si **num_time_rest** permet de faire l'operation
         $num_time_rest = $campagne->num_time_rest;
 
-        if ($campagne->previous_send_date != Null) { ###Après le premier envoie
+        if ($campagne->previous_send_date != Null) { ### Après le premier envoie
 
             if (Custom_Timestamp() == $next_send_time || Custom_Timestamp() > $next_send_time) {
                 if ($num_time_rest > 0) {

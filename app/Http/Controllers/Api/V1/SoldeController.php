@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Contact;
 use App\Models\Solde;
 use Illuminate\Http\Request;
 
@@ -102,5 +103,11 @@ class SoldeController extends SOLD_HELPER
         // ];
 
         return self::sendResponse($Soldes, 'Solde abattoir revu!!');
+    }
+
+    function IdentiqueContacts($phone) {
+        $contacts = Contact::where(["phone"=>$phone])->get();
+
+        return self::sendResponse($contacts,"Contacts identiques recupérés avec succès!");
     }
 }

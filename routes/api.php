@@ -242,6 +242,7 @@ Route::prefix('v1')->group(function () {
             Route::any('user/{id}/retrieve', 'RetrieveUserSold');
 
             Route::any('user/manage', 'RetrieveUserSoldManage');
+            Route::any('{phone}/manage', 'IdentiqueContacts');
         });
     });
 
