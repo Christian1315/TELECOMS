@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Lcobucci\JWT\Validation\Constraint\ValidAt;
 
 class UserController extends USER_HELPER
 {
@@ -14,7 +17,9 @@ class UserController extends USER_HELPER
             "ReinitializePassword",
             "Login",
             "Register",
-            "AccountActivation"
+            "AccountActivation",
+            // "Users",
+            // "RetrieveUser"
         ]);
         $this->middleware("CheckAdmin")->only([
             "Users",
@@ -207,5 +212,50 @@ class UserController extends USER_HELPER
         }
 
         return $this->rightDesAttach($request->all());
+    }
+
+
+    ####____GESTION DES PRODUITS
+    function CreateProduct(Request $request)
+    {
+        #VERIFICATION DE LA METHOD
+        if ($this->methodValidation($request->method(), "POST") == False) {
+            #RENVOIE D'ERREURE VIA **sendError** DE LA CLASS BASE_HELPER HERITEE PAR USER_HELPER
+            return $this->sendError("La methode " . $request->method() . " n'est pas supportée pour cette requete!!", 404);
+        };
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "name" => ["required", "string"],
+                "image" => ["required","file"]
+            ],
+            [
+                "name.required" => "Le nom est réquis",
+                "name.string" => "Le nom doit être un string",
+
+                "image.required" => "L'image est réquise",
+                "image.file" => "Ce champ doit être une image",
+            ]
+        );
+
+        if ($validator->fails()) {
+            return self::sendError(json_encode($validator->errors()), 500);
+        }
+
+        ###__TRAITEMENT DE L'IMAGE
+
+        if ($request->hasFile("image")) {
+            $img = $request->file("image");
+            $img_name = $img->getClientOriginalName();
+            # code...
+            $img->move("products/", $img_name);
+        }
+        return "gogo";
+
+        ###____
+        // array_merge()
+        $product = Product::create($request->validated());
+        return self::sendResponse($product->json(), "Produit ajouté avec succès!");
     }
 }

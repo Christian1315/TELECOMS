@@ -134,12 +134,12 @@ class SMS_HELPER extends BASE_HELPER
 
         $response = Http::get($url);
         try {
+            
         } catch (\Throwable $th) {
             $response = false;
         }
         return $response;
     }
-
 
     public static function SEND_BY_KING_SMS_PRO($EXPEDITEUR, $DESTINATAIRE, $MESSAGE, $USER)
     {
@@ -273,6 +273,8 @@ class SMS_HELPER extends BASE_HELPER
                 $MESSAGE,
                 $user
             );
+
+            return $res;
 
             ##___TRANSFORMONS L'OBJET EN ARRAY
 

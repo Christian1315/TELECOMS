@@ -99,7 +99,6 @@ class USER_HELPER extends BASE_HELPER
 
     static function Login_Validator($formDatas)
     {
-        #
         $rules = self::login_rules();
         $messages = self::login_messages();
 

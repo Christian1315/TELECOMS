@@ -163,6 +163,8 @@ return [
          * Application Service Providers...
          */
 
+        
+
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -170,6 +172,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         \FlexFlux\LaravelElasticEmail\LaravelElasticEmailServiceProvider::class,
+        L5Swagger\L5SwaggerServiceProvider::class,
     ])->toArray(),
 
     /*

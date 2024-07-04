@@ -52,6 +52,8 @@ Route::prefix('v1')->group(function () {
         Route::any('{id}/delete', 'DeleteUser');
         Route::any('attach-user', 'AttachRightToUser'); #Attacher un droit au user 
         Route::any('desattach-user', 'DesAttachRightToUser'); #Attacher un droit au user 
+
+        Route::any("create/", "CreateProduct"); ### creation d'un produit
     });
 
     Route::any('authorization', [Authorization::class, 'Authorization'])->name('authorization');
@@ -63,8 +65,8 @@ Route::prefix('v1')->group(function () {
             Route::any('{id}/retrieve', 'RetrieveSmsStatus'); #RECUPERATION D'UN STATUS D'SMS
         });
     });
-    ###========== SMS ROUTINGS ========###
 
+    ###========== SMS ROUTINGS ========###
     Route::controller(SmsController::class)->group(function () {
         Route::prefix('sms')->group(function () {
             Route::any('send', 'Send'); #ENVOIE D'SMS UNITAIRE
@@ -75,7 +77,7 @@ Route::prefix('v1')->group(function () {
             Route::any('reports', 'SmsRapports'); #RAPPORTS D'UN SMS
             Route::any('send-to-groupe', 'SmsGroupe'); #ENVOIE D'SMS GROUPE
 
-            Route::any('user/{id}/sms', 'SmsUser'); 
+            Route::any('user/{id}/sms', 'SmsUser');
 
             ###========== SMS DIFFERES ROUTINGS ========###
             Route::prefix('differed')->group(function () {
@@ -220,9 +222,9 @@ Route::prefix('v1')->group(function () {
                 // Route::any('generate', 'GenerateDeveloperKey');
                 Route::any('{id}/retrieve', 'RetrieveDeveloperKey');
                 Route::any('{id}/regenerate', 'RegenerateDeveloperKey');
-                Route::any('user/{id}/bloc', '_BlocApiKey');## 
+                Route::any('user/{id}/bloc', '_BlocApiKey'); ## 
 
-                Route::any('user/{id}/debloc', '_DeBlocApiKey');## 
+                Route::any('user/{id}/debloc', '_DeBlocApiKey'); ## 
             });
 
             Route::prefix('sms')->group(function () {

@@ -4,6 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Info(
+ *     title="My First API",
+ *     version="0.1"
+ * )
+ */
+
 class ActionController extends ACTION_HELPER
 {
     #VERIFIONS SI LE USER EST AUTHENTIFIE
@@ -12,6 +19,16 @@ class ActionController extends ACTION_HELPER
         $this->middleware(['auth:api', 'scope:api-access']);
     }
 
+     /**
+     * @OA\Get(
+     *     path="/api/data.json",
+     *     @OA\Response(
+     *         response="200",
+     *         description="The data"
+     *     )
+     * )
+     */
+    
     function CreateAction(Request $request)
     {
         #VERIFICATION DE LA METHOD
